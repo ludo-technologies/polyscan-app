@@ -9,9 +9,8 @@
 				"title": "安装 GitHub App"
 			},
 			"step2": {
-				"badge": "可选",
-				"description": "添加 .github/polyscan.yml 自定义行为。",
-				"title": "配置设置"
+				"description": "在 .github/polyscan.yml 中添加 pr_review: true。PR 审查需按仓库启用，默认关闭。",
+				"title": "启用 PR 审查"
 			},
 			"step3": {
 				"description": "创建 Pull Request，Polyscan 将自动审查。",
@@ -71,12 +70,14 @@
 			"comment": {
 				"audit": "审计间隔 (默认: weekly)",
 				"language": "报告语言 (默认: en)",
+				"pr": "PR 审查 (默认: false，仅 Pro)",
 				"target": "目标目录 (默认: 全部)"
 			},
 			"description": "使用简单的 YAML 文件自定义 Polyscan 行为。无需复杂设置。",
 			"option1": "报告语言: en, ja, zh, ko, es, fr, de, pt",
 			"option2": "分析目标目录",
 			"option3": "审计间隔: daily (Pro), weekly, monthly",
+			"option4": "PR 审查: pr_review: true (Pro，默认关闭)",
 			"title": "简单的 YAML 配置"
 		},
 		"pr": {

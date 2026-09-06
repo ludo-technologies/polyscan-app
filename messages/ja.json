@@ -9,9 +9,8 @@
 				"title": "GitHub Appをインストール"
 			},
 			"step2": {
-				"badge": "オプション",
-				"description": ".github/polyscan.yml を追加して動作をカスタマイズ。",
-				"title": "設定をカスタマイズ"
+				"description": ".github/polyscan.yml に pr_review: true を追加。PRレビューはリポジトリごとに有効化するまで動作しません。",
+				"title": "PRレビューを有効化"
 			},
 			"step3": {
 				"description": "プルリクエストを作成すると、Polyscanが自動でレビューします。",
@@ -71,12 +70,14 @@
 			"comment": {
 				"audit": "監査間隔 (デフォルト: weekly)",
 				"language": "レポート言語 (デフォルト: en)",
+				"pr": "PRレビュー (デフォルト: false、Proのみ)",
 				"target": "対象ディレクトリ (デフォルト: 全体)"
 			},
 			"description": "シンプルなYAMLファイルでPolyscanの動作をカスタマイズ。複雑なセットアップは不要です。",
 			"option1": "レポート言語: en, ja, zh, ko, es, fr, de, pt",
 			"option2": "解析対象ディレクトリ",
 			"option3": "監査間隔: daily (Pro), weekly, monthly",
+			"option4": "PRレビュー: pr_review: true (Pro、デフォルトはオフ)",
 			"title": "シンプルなYAML設定"
 		},
 		"pr": {

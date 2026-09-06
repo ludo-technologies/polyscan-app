@@ -9,9 +9,8 @@
 				"title": "Install GitHub App"
 			},
 			"step2": {
-				"badge": "Optional",
-				"description": "Add .github/polyscan.yml to customize behavior.",
-				"title": "Configure Settings"
+				"description": "Add .github/polyscan.yml with pr_review: true. PR review is off until you enable it per repository.",
+				"title": "Enable PR Review"
 			},
 			"step3": {
 				"description": "Create a pull request and Polyscan will automatically review.",
@@ -71,12 +70,14 @@
 			"comment": {
 				"audit": "Audit interval (default: weekly)",
 				"language": "Report language (default: en)",
+				"pr": "PR review (default: false, Pro only)",
 				"target": "Target directories (default: all)"
 			},
 			"description": "Customize Polyscan behavior with a simple YAML file. No complex setup required.",
 			"option1": "Report language: en, ja, zh, ko, es, fr, de, pt",
 			"option2": "Target directories to analyze",
 			"option3": "Audit interval: daily (Pro), weekly, monthly",
+			"option4": "PR review: pr_review: true (Pro, off by default)",
 			"title": "Simple YAML Configuration"
 		},
 		"pr": {
