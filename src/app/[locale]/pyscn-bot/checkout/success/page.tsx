@@ -104,14 +104,9 @@ export default async function CheckoutSuccessPage() {
 									<span className="text-gray-500 font-bold">2</span>
 								</div>
 								<div className="flex-1">
-									<div className="flex items-center gap-2 mb-2">
-										<h3 className="text-xl font-bold text-gray-900">
-											{t("checkout.success.step2.title")}
-										</h3>
-										<span className="px-2 py-0.5 text-xs font-medium bg-gray-100 text-gray-600 rounded-full">
-											{t("checkout.success.step2.badge")}
-										</span>
-									</div>
+									<h3 className="text-xl font-bold text-gray-900 mb-2">
+										{t("checkout.success.step2.title")}
+									</h3>
 									<p className="text-gray-600 mb-4">
 										{t("checkout.success.step2.description")}
 									</p>
@@ -153,6 +148,14 @@ export default async function CheckoutSuccessPage() {
 												<span className="text-green-400">audit_interval</span>
 												<span className="text-gray-400">:</span>{" "}
 												<span className="text-amber-400">weekly</span>
+												{"\n\n"}
+												<span className="text-gray-500">
+													# {t("features.config.comment.pr")}
+												</span>
+												{"\n"}
+												<span className="text-green-400">pr_review</span>
+												<span className="text-gray-400">:</span>{" "}
+												<span className="text-amber-400">true</span>
 											</code>
 										</pre>
 									</div>

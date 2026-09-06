@@ -227,19 +227,21 @@ export default async function PyscnBotLandingPage() {
 									{t("features.config.description")}
 								</p>
 								<ul className="space-y-2 text-sm text-[var(--text-light)]">
-									{(["option1", "option2", "option3"] as const).map((o) => (
-										<li key={o} className="flex items-start gap-3">
-											<span
-												aria-hidden="true"
-												className="font-mono leading-5 text-[var(--reading-ok)]"
-											>
-												●
-											</span>
-											<span className="leading-5">
-												{t(`features.config.${o}`)}
-											</span>
-										</li>
-									))}
+									{(["option1", "option2", "option3", "option4"] as const).map(
+										(o) => (
+											<li key={o} className="flex items-start gap-3">
+												<span
+													aria-hidden="true"
+													className="font-mono leading-5 text-[var(--reading-ok)]"
+												>
+													●
+												</span>
+												<span className="leading-5">
+													{t(`features.config.${o}`)}
+												</span>
+											</li>
+										),
+									)}
 								</ul>
 							</div>
 							<div className="bg-[var(--bg-ink)] p-6 sm:p-8">
@@ -273,6 +275,14 @@ export default async function PyscnBotLandingPage() {
 										<span className="text-green-400">audit_interval</span>
 										<span className="text-gray-400">:</span>{" "}
 										<span className="text-amber-400">weekly</span>
+										{"\n\n"}
+										<span className="text-gray-500">
+											# {t("features.config.comment.pr")}
+										</span>
+										{"\n"}
+										<span className="text-green-400">pr_review</span>
+										<span className="text-gray-400">:</span>{" "}
+										<span className="text-amber-400">true</span>
 									</code>
 								</pre>
 							</div>
