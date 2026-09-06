@@ -22,7 +22,7 @@ export default function FloatingAppCard() {
 	return (
 		<aside
 			aria-label="Polyscan GitHub App"
-			className="fixed inset-x-3 bottom-3 z-50 border border-[var(--border-light)] border-t-2 border-t-[var(--brand-blue)] bg-[var(--bg-card)] p-3 shadow-[0_12px_32px_rgba(12,18,32,0.18)] sm:inset-x-auto sm:right-5 sm:bottom-5 sm:w-80 sm:p-5"
+			className="fixed inset-x-3 bottom-3 z-50 border border-[var(--border-light)] border-t-2 border-t-[var(--brand-blue)] bg-[var(--bg-card)] p-3 sm:inset-x-auto sm:right-5 sm:bottom-5 sm:w-80 sm:p-5"
 		>
 			<button
 				type="button"

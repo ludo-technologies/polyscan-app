@@ -21,6 +21,22 @@ type ViewState =
 	| { status: "error" }
 	| { status: "ready"; data: AccountResponse };
 
+function Silkscreen({ children }: { children: React.ReactNode }) {
+	return (
+		<p className="font-mono text-[11px] uppercase tracking-[0.25em] text-[var(--text-muted)]">
+			{children}
+		</p>
+	);
+}
+
+function Notice({ children }: { children: React.ReactNode }) {
+	return (
+		<main className="flex min-h-screen items-center justify-center px-4">
+			<p className="font-mono text-sm text-[var(--text-muted)]">{children}</p>
+		</main>
+	);
+}
+
 export default function AccountView() {
 	const t = useTranslations();
 	const [state, setState] = useState<ViewState>({ status: "loading" });
@@ -47,97 +63,88 @@ export default function AccountView() {
 		};
 	}, []);
 
-	if (state.status === "loading") {
-		return (
-			<div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white flex items-center justify-center">
-				<p className="text-slate-400">Loading…</p>
-			</div>
-		);
-	}
-
-	if (state.status === "error") {
-		return (
-			<div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white flex items-center justify-center">
-				<p className="text-slate-400">
-					Something went wrong. Please try again.
-				</p>
-			</div>
-		);
-	}
+	if (state.status === "loading") return <Notice>Loading…</Notice>;
+	if (state.status === "error")
+		return <Notice>Something went wrong. Please try again.</Notice>;
 
 	const { login, userId, planName, isPaid, updatedAt, hasStripeSubscription } =
 		state.data;
 
 	return (
-		<div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
-			<div className="max-w-2xl mx-auto px-4 py-16">
+		<main className="min-h-screen pt-16 pb-16">
+			<div className="mx-auto max-w-2xl px-4 sm:px-6">
 				<a
 					href="/pyscn-bot"
-					className="text-cyan-400 hover:text-cyan-300 mb-8 inline-block"
+					className="mb-8 inline-flex font-mono text-xs uppercase tracking-[0.15em] text-[var(--text-secondary)] transition-colors hover:text-[var(--brand-blue)]"
 				>
-					&larr; Back to Polyscan
+					← Polyscan
 				</a>
 
-				<h1 className="text-3xl font-bold mb-8">{t("nav.mypage")}</h1>
+				<Silkscreen>Account</Silkscreen>
+				<h1 className="type-display mt-3 mb-8 text-4xl font-bold text-[var(--text-primary)]">
+					{t("nav.mypage")}
+				</h1>
 
-				<div className="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
-					<div className="flex items-center gap-4 mb-6">
+				<div className="border border-[var(--border-light)] bg-[var(--bg-card)]">
+					<div className="flex items-center gap-4 border-b border-[var(--border-subtle)] p-5">
 						{/* biome-ignore lint/performance/noImgElement: external GitHub avatar URL, not a local/optimizable asset */}
 						<img
 							src={`https://github.com/${login}.png`}
 							alt={login}
-							className="w-16 h-16 rounded-full"
+							className="size-14 border border-[var(--border-subtle)]"
 						/>
 						<div>
-							<h2 className="text-xl font-semibold">{login}</h2>
-							<p className="text-slate-400">GitHub ID: {userId}</p>
+							<h2 className="font-mono text-lg font-bold text-[var(--text-primary)]">
+								{login}
+							</h2>
+							<p className="font-mono text-xs text-[var(--text-muted)]">
+								GitHub ID {userId}
+							</p>
 						</div>
 					</div>
 
-					<div className="border-t border-slate-700 pt-6">
-						<h3 className="text-lg font-medium mb-4">Plan Status</h3>
-
-						<div className="flex items-center gap-3">
+					<div className="p-5">
+						<Silkscreen>Plan</Silkscreen>
+						<div className="mt-3 flex items-baseline gap-3">
 							<span
-								className={`px-3 py-1 rounded-full text-sm font-medium ${
-									isPaid
-										? "bg-gradient-to-r from-cyan-500 to-blue-500 text-white"
-										: "bg-slate-700 text-slate-300"
-								}`}
+								className="font-mono text-3xl font-bold"
+								style={{
+									color: isPaid ? "var(--brand-blue)" : "var(--text-primary)",
+								}}
 							>
 								{planName.toUpperCase()}
 							</span>
 							{updatedAt && (
-								<span className="text-slate-400 text-sm">
+								<span className="font-mono text-xs text-[var(--text-muted)]">
 									since {new Date(updatedAt).toLocaleDateString()}
 								</span>
 							)}
 						</div>
 
 						{!isPaid && (
-							<div className="mt-6 p-4 bg-slate-700/50 rounded-lg">
-								<p className="text-slate-300 mb-3">
+							<div className="mt-6 border border-[var(--border-subtle)] border-t-2 border-t-[var(--brand-blue)] bg-[var(--bg-subtle)] p-4">
+								<p className="mb-3 text-sm text-[var(--text-light)]">
 									Upgrade to Pro for unlimited analysis
 								</p>
 								<a
 									href="/pyscn-bot/api/auth?plan=pro"
-									className="inline-block px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-lg font-medium hover:opacity-90 transition"
+									className="inline-flex border border-[var(--brand-blue)] bg-[var(--brand-blue)] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[var(--brand-blue-hover)]"
 								>
-									Upgrade to Pro
+									Upgrade to Pro →
 								</a>
 							</div>
 						)}
 
 						{hasStripeSubscription && (
-							<div className="mt-6 pt-6 border-t border-slate-700">
-								<h3 className="text-lg font-medium mb-4">Subscription</h3>
+							<div className="mt-6 border-t border-[var(--border-subtle)] pt-6">
+								<Silkscreen>Subscription</Silkscreen>
 								<a
 									href="/pyscn-bot/api/billing-portal"
-									className="inline-block px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded-lg font-medium transition"
+									className="mt-3 inline-flex border border-[var(--border-light)] bg-[var(--bg-card)] px-4 py-2 font-mono text-sm font-medium text-[var(--text-primary)] transition-colors hover:border-[var(--brand-blue)] hover:text-[var(--brand-blue)]"
 								>
-									Manage Subscription
+									Manage subscription →
 								</a>
-								<p className="text-slate-400 text-sm mt-2">
+								<p className="mt-2 text-xs text-[var(--text-muted)]">
 									Change plan, update payment method, or cancel
 								</p>
 							</div>
@@ -145,15 +152,15 @@ export default function AccountView() {
 					</div>
 				</div>
 
-				<div className="mt-8 text-center">
+				<div className="mt-8">
 					<a
 						href="/pyscn-bot/api/logout"
-						className="text-slate-400 hover:text-white transition"
+						className="font-mono text-xs uppercase tracking-[0.15em] text-[var(--text-muted)] transition-colors hover:text-[var(--text-primary)]"
 					>
 						Logout
 					</a>
 				</div>
 			</div>
-		</div>
+		</main>
 	);
 }

@@ -206,3 +206,43 @@ body {
 		animation: none;
 	}
 }
+
+/* Legal pages (polyscan privacy / terms): plain prose bound to the tokens. */
+.legal-body h2 {
+	margin: 2.5rem 0 0.75rem;
+	font-size: 1.25rem;
+	font-weight: 700;
+	color: var(--text-primary);
+}
+
+.legal-body p {
+	margin-bottom: 1rem;
+	line-height: 1.7;
+	color: var(--text-light);
+}
+
+.legal-body ul {
+	margin-bottom: 1rem;
+	padding-left: 1.25rem;
+	list-style: square;
+	color: var(--text-light);
+}
+
+.legal-body li {
+	margin-bottom: 0.5rem;
+	line-height: 1.7;
+}
+
+.legal-body li::marker {
+	color: var(--border-light);
+}
+
+.legal-body a {
+	color: var(--brand-blue);
+	text-decoration: underline;
+	text-underline-offset: 2px;
+}
+
+.legal-body a:hover {
+	color: var(--brand-blue-hover);
+}

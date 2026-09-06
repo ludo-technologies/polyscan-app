@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import AuditPanel from "@/components/pyscn-bot/AuditPanel";
+import ConfigYaml from "@/components/pyscn-bot/ConfigYaml";
 import { Link } from "@/i18n/navigation";
 import { pyscnBotAlternates } from "@/lib/pyscn-bot-metadata";
 import { isPyscnBotLoggedIn } from "@/lib/pyscn-bot-session";
@@ -244,48 +245,7 @@ export default async function PyscnBotLandingPage() {
 									)}
 								</ul>
 							</div>
-							<div className="bg-[var(--bg-ink)] p-6 sm:p-8">
-								<p className="mb-4 font-mono text-xs text-white/50">
-									.github/polyscan.yml
-								</p>
-								<pre className="overflow-x-auto font-mono text-sm leading-relaxed text-gray-300">
-									<code>
-										<span className="text-gray-500">
-											# {t("features.config.comment.language")}
-										</span>
-										{"\n"}
-										<span className="text-green-400">language</span>
-										<span className="text-gray-400">:</span>{" "}
-										<span className="text-amber-400">ja</span>
-										{"\n\n"}
-										<span className="text-gray-500">
-											# {t("features.config.comment.target")}
-										</span>
-										{"\n"}
-										<span className="text-green-400">target_directories</span>
-										<span className="text-gray-400">:</span>
-										{"\n  "}
-										<span className="text-gray-400">-</span>{" "}
-										<span className="text-amber-400">src/</span>
-										{"\n\n"}
-										<span className="text-gray-500">
-											# {t("features.config.comment.audit")}
-										</span>
-										{"\n"}
-										<span className="text-green-400">audit_interval</span>
-										<span className="text-gray-400">:</span>{" "}
-										<span className="text-amber-400">weekly</span>
-										{"\n\n"}
-										<span className="text-gray-500">
-											# {t("features.config.comment.pr")}
-										</span>
-										{"\n"}
-										<span className="text-green-400">pr_review</span>
-										<span className="text-gray-400">:</span>{" "}
-										<span className="text-amber-400">true</span>
-									</code>
-								</pre>
-							</div>
+							<ConfigYaml />
 						</div>
 					</div>
 				</div>

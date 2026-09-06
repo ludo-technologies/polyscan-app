@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import BotWordmark from "@/components/pyscn-bot/BotWordmark";
+import ConfigYaml from "@/components/pyscn-bot/ConfigYaml";
 import Logo from "@/components/pyscn-bot/icons/Logo";
 import LanguageSwitcher from "@/components/pyscn-bot/LanguageSwitcher";
 import { Link } from "@/i18n/navigation";
@@ -31,191 +32,99 @@ export default async function CheckoutSuccessPage() {
 	const t = await getTranslations();
 
 	return (
-		<div className="min-h-screen bg-gradient-to-b from-green-50 to-white">
-			<nav className="bg-white/80 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50">
-				<div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
-					<Link href="/pyscn-bot" className="flex items-center gap-2">
-						<Logo className="w-8 h-8" />
+		<div className="min-h-screen">
+			<nav className="border-b border-[var(--border-light)] bg-[var(--bg-body)]/90 backdrop-blur">
+				<div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
+					<Link href="/pyscn-bot" className="flex items-center gap-1">
+						<Logo className="h-10 w-10" />
 						<BotWordmark className="text-xl" />
 					</Link>
 					<LanguageSwitcher />
 				</div>
 			</nav>
 
-			<section className="py-20 px-6">
-				<div className="max-w-3xl mx-auto text-center">
-					<div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-						<svg
-							className="w-10 h-10 text-green-600"
-							fill="none"
-							stroke="currentColor"
-							viewBox="0 0 24 24"
-							aria-hidden="true"
-						>
-							<path
-								strokeLinecap="round"
-								strokeLinejoin="round"
-								strokeWidth="2"
-								d="M5 13l4 4L19 7"
-							/>
-						</svg>
-					</div>
-
-					<h1 className="text-4xl font-bold text-gray-900 mb-4">
-						{t("checkout.success.title")}
-					</h1>
-					<p className="text-xl text-gray-600 mb-2">
-						{t("checkout.success.subtitle")}
+			<main className="mx-auto max-w-3xl px-4 py-16 sm:px-6 sm:py-20">
+				<header className="mb-12">
+					<p className="font-mono text-[11px] uppercase tracking-[0.25em] text-[var(--reading-ok)]">
+						● {t("checkout.success.title")}
 					</p>
-					<p className="text-gray-500">{t("checkout.success.description")}</p>
-				</div>
-			</section>
+					<h1 className="type-display mt-3 mb-3 text-4xl font-bold text-[var(--text-primary)] sm:text-5xl">
+						{t("checkout.success.subtitle")}
+					</h1>
+					<p className="text-[var(--text-secondary)]">
+						{t("checkout.success.description")}
+					</p>
+				</header>
 
-			<section className="pb-20 px-6">
-				<div className="max-w-3xl mx-auto">
-					<div className="space-y-6">
-						{/* Step 1 */}
-						<div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-100">
-							<div className="flex items-start gap-4">
-								<div className="w-10 h-10 bg-bot-primary-100 rounded-full flex items-center justify-center flex-shrink-0">
-									<span className="text-bot-primary-600 font-bold">1</span>
-								</div>
-								<div className="flex-1">
-									<h3 className="text-xl font-bold text-gray-900 mb-2">
-										{t("checkout.success.step1.title")}
-									</h3>
-									<p className="text-gray-600 mb-4">
-										{t("checkout.success.step1.description")}
-									</p>
-									<a
-										href={GITHUB_APP_INSTALL_URL}
-										className="inline-block bg-bot-primary-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-bot-primary-700 transition-colors"
-									>
-										{t("checkout.success.step1.button")}
-									</a>
-								</div>
-							</div>
+				<ol className="border border-[var(--border-light)] bg-[var(--bg-card)]">
+					<li className="grid gap-x-5 gap-y-3 border-b border-[var(--border-subtle)] p-6 sm:grid-cols-[2.5rem_1fr]">
+						<span className="font-mono text-[11px] text-[var(--text-muted)]">
+							01
+						</span>
+						<div>
+							<h2 className="mb-2 text-lg font-semibold text-[var(--text-primary)]">
+								{t("checkout.success.step1.title")}
+							</h2>
+							<p className="mb-4 text-sm leading-relaxed text-[var(--text-light)]">
+								{t("checkout.success.step1.description")}
+							</p>
+							<a
+								href={GITHUB_APP_INSTALL_URL}
+								className="inline-flex border border-[var(--brand-blue)] bg-[var(--brand-blue)] px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[var(--brand-blue-hover)]"
+							>
+								{t("checkout.success.step1.button")} →
+							</a>
 						</div>
+					</li>
 
-						{/* Step 2 */}
-						<div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-100">
-							<div className="flex items-start gap-4">
-								<div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center flex-shrink-0">
-									<span className="text-gray-500 font-bold">2</span>
-								</div>
-								<div className="flex-1">
-									<h3 className="text-xl font-bold text-gray-900 mb-2">
-										{t("checkout.success.step2.title")}
-									</h3>
-									<p className="text-gray-600 mb-4">
-										{t("checkout.success.step2.description")}
-									</p>
-									<div className="bg-gray-900 rounded-xl p-4 font-mono text-sm mb-4">
-										<div className="flex items-center gap-2 mb-3">
-											<div className="w-2.5 h-2.5 rounded-full bg-red-500" />
-											<div className="w-2.5 h-2.5 rounded-full bg-yellow-500" />
-											<div className="w-2.5 h-2.5 rounded-full bg-green-500" />
-											<span className="text-gray-400 text-xs ml-2">
-												.github/polyscan.yml
-											</span>
-										</div>
-										<pre className="text-gray-300 leading-relaxed text-xs">
-											<code>
-												<span className="text-gray-500">
-													# {t("features.config.comment.language")}
-												</span>
-												{"\n"}
-												<span className="text-green-400">language</span>
-												<span className="text-gray-400">:</span>{" "}
-												<span className="text-amber-400">ja</span>
-												{"\n\n"}
-												<span className="text-gray-500">
-													# {t("features.config.comment.target")}
-												</span>
-												{"\n"}
-												<span className="text-green-400">
-													target_directories
-												</span>
-												<span className="text-gray-400">:</span>
-												{"\n  "}
-												<span className="text-gray-400">-</span>{" "}
-												<span className="text-amber-400">src/</span>
-												{"\n\n"}
-												<span className="text-gray-500">
-													# {t("features.config.comment.audit")}
-												</span>
-												{"\n"}
-												<span className="text-green-400">audit_interval</span>
-												<span className="text-gray-400">:</span>{" "}
-												<span className="text-amber-400">weekly</span>
-												{"\n\n"}
-												<span className="text-gray-500">
-													# {t("features.config.comment.pr")}
-												</span>
-												{"\n"}
-												<span className="text-green-400">pr_review</span>
-												<span className="text-gray-400">:</span>{" "}
-												<span className="text-amber-400">true</span>
-											</code>
-										</pre>
-									</div>
-								</div>
-							</div>
+					<li className="grid gap-x-5 gap-y-3 border-b border-[var(--border-subtle)] p-6 sm:grid-cols-[2.5rem_1fr]">
+						<span className="font-mono text-[11px] text-[var(--text-muted)]">
+							02
+						</span>
+						<div className="min-w-0">
+							<h2 className="mb-2 text-lg font-semibold text-[var(--text-primary)]">
+								{t("checkout.success.step2.title")}
+							</h2>
+							<p className="mb-4 text-sm leading-relaxed text-[var(--text-light)]">
+								{t("checkout.success.step2.description")}
+							</p>
+							<ConfigYaml className="border border-[var(--border-subtle)]" />
 						</div>
+					</li>
 
-						{/* Step 3 */}
-						<div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-100">
-							<div className="flex items-start gap-4">
-								<div className="w-10 h-10 bg-bot-primary-100 rounded-full flex items-center justify-center flex-shrink-0">
-									<span className="text-bot-primary-600 font-bold">3</span>
-								</div>
-								<div className="flex-1">
-									<h3 className="text-xl font-bold text-gray-900 mb-2">
-										{t("checkout.success.step3.title")}
-									</h3>
-									<p className="text-gray-600">
-										{t("checkout.success.step3.description")}
-									</p>
-								</div>
-							</div>
+					<li className="grid gap-x-5 gap-y-3 p-6 sm:grid-cols-[2.5rem_1fr]">
+						<span className="font-mono text-[11px] text-[var(--text-muted)]">
+							03
+						</span>
+						<div>
+							<h2 className="mb-2 text-lg font-semibold text-[var(--text-primary)]">
+								{t("checkout.success.step3.title")}
+							</h2>
+							<p className="text-sm leading-relaxed text-[var(--text-light)]">
+								{t("checkout.success.step3.description")}
+							</p>
 						</div>
-					</div>
-				</div>
-			</section>
+					</li>
+				</ol>
 
-			<footer className="py-8 px-6 border-t border-gray-100">
-				<div className="max-w-3xl mx-auto text-center space-y-4">
+				<footer className="mt-12 flex flex-col gap-3 border-t border-[var(--border-subtle)] pt-6 sm:flex-row sm:items-center sm:justify-between">
 					<Link
 						href="/pyscn-bot"
-						className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
+						className="font-mono text-xs uppercase tracking-[0.15em] text-[var(--text-secondary)] transition-colors hover:text-[var(--brand-blue)]"
 					>
-						<svg
-							className="w-4 h-4"
-							fill="none"
-							stroke="currentColor"
-							viewBox="0 0 24 24"
-							aria-hidden="true"
-						>
-							<path
-								strokeLinecap="round"
-								strokeLinejoin="round"
-								strokeWidth="2"
-								d="M10 19l-7-7m0 0l7-7m-7 7h18"
-							/>
-						</svg>
-						{t("checkout.success.backToHome")}
+						← {t("checkout.success.backToHome")}
 					</Link>
-					<p className="text-sm text-gray-500">
+					<p className="text-xs text-[var(--text-muted)]">
 						{t("checkout.success.support")}{" "}
 						<a
 							href="mailto:contact@ludo-tech.org"
-							className="text-bot-primary-600 hover:underline"
+							className="text-[var(--brand-blue)] hover:text-[var(--brand-blue-hover)]"
 						>
 							contact@ludo-tech.org
 						</a>
 					</p>
-				</div>
-			</footer>
+				</footer>
+			</main>
 		</div>
 	);
 }

@@ -39,7 +39,7 @@ export default function CommandBlock({ command, label }: Props) {
 					type="button"
 					onClick={copy}
 					aria-label={`Copy "${command}" to clipboard`}
-					className="shrink-0 rounded border border-white/20 px-2 py-1 font-mono text-xs text-white/70 transition-colors hover:border-white/50 hover:text-white"
+					className="shrink-0 border border-white/20 px-2 py-1 font-mono text-xs text-white/70 transition-colors hover:border-white/50 hover:text-white"
 				>
 					{copied ? "copied" : "copy"}
 				</button>
