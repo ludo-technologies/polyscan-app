@@ -69,13 +69,13 @@ export default async function PostPage({ params }: Props) {
 						{post.tags.map((tag) => (
 							<span
 								key={tag}
-								className="rounded border border-[var(--border-subtle)] px-1.5 py-0.5 font-medium"
+								className="border border-[var(--border-subtle)] px-1.5 py-0.5 font-medium"
 							>
 								{tag}
 							</span>
 						))}
 						{post.draft && (
-							<span className="rounded border border-[var(--color-error)] px-1.5 py-0.5 font-medium text-[var(--color-error)]">
+							<span className="border border-[var(--color-error)] px-1.5 py-0.5 font-medium text-[var(--color-error)]">
 								Draft
 							</span>
 						)}

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
-import { Link } from "@/i18n/navigation";
+import SubpageHeader from "@/components/pyscn-bot/SubpageHeader";
 import { pyscnBotAlternates } from "@/lib/pyscn-bot-metadata";
 
 const LAST_UPDATED = "2026-09-04";
@@ -538,36 +538,19 @@ export default async function TermsPage({
 
 	return (
 		<main className="pt-24 pb-16">
-			<div className="max-w-3xl mx-auto px-6">
-				<Link
-					href="/pyscn-bot"
-					className="inline-flex items-center gap-2 text-bot-primary-600 hover:text-bot-primary-700 mb-8"
-				>
-					<svg
-						className="w-4 h-4"
-						fill="none"
-						stroke="currentColor"
-						viewBox="0 0 24 24"
-						aria-hidden="true"
-					>
-						<path
-							strokeLinecap="round"
-							strokeLinejoin="round"
-							strokeWidth="2"
-							d="M15 19l-7-7 7-7"
-						/>
-					</svg>
-					{t("legal.backToHome")}
-				</Link>
+			<div className="mx-auto max-w-3xl px-4 sm:px-6">
+				<SubpageHeader
+					backLabel={t("legal.backToHome")}
+					eyebrow="Legal"
+					title={t("footer.terms")}
+					lede={
+						<span className="font-mono text-sm text-[var(--text-muted)]">
+							{t("legal.lastUpdated")}: {LAST_UPDATED}
+						</span>
+					}
+				/>
 
-				<h1 className="text-4xl font-bold text-gray-900 mb-4">
-					{t("footer.terms")}
-				</h1>
-				<p className="text-gray-500 mb-8">
-					{t("legal.lastUpdated")}: {LAST_UPDATED}
-				</p>
-
-				<div className="prose prose-gray max-w-none [&_h2]:text-xl [&_h2]:font-bold [&_h2]:text-gray-900 [&_h2]:mt-8 [&_h2]:mb-4 [&_p]:text-gray-600 [&_p]:mb-4 [&_p]:leading-relaxed [&_ul]:list-disc [&_ul]:list-inside [&_ul]:mb-4 [&_ul]:text-gray-600 [&_li]:mb-2 [&_a]:text-bot-primary-600 hover:[&_a]:text-bot-primary-700 [&_a]:underline">
+				<div className="legal-body">
 					{locale === "ja" ? (
 						<TermsJa />
 					) : locale === "zh" ? (

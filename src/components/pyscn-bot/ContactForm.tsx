@@ -6,6 +6,11 @@ import { CONTACT_VALIDATION } from "@/lib/pyscn-bot-contact";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
+const labelClass =
+	"mb-2 block font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--text-label)]";
+const fieldClass =
+	"w-full border border-[var(--border-light)] bg-[var(--bg-card)] px-4 py-3 text-[var(--text-primary)] outline-none transition-colors focus:border-[var(--brand-blue)]";
+
 export default function ContactForm() {
 	const t = useTranslations();
 	const [status, setStatus] = useState<Status>("idle");
@@ -46,11 +51,13 @@ export default function ContactForm() {
 
 	if (status === "success") {
 		return (
-			<div className="mt-8 p-6 bg-green-50 border border-green-200 rounded-lg">
-				<h2 className="text-lg font-semibold text-green-800 mb-2">
+			<div className="border border-[var(--border-light)] border-l-2 border-l-[var(--reading-ok)] bg-[var(--bg-card)] p-6">
+				<h2 className="mb-2 font-semibold text-[var(--text-primary)]">
 					{t("contact.success.title")}
 				</h2>
-				<p className="text-green-700">{t("contact.success.message")}</p>
+				<p className="text-sm text-[var(--text-light)]">
+					{t("contact.success.message")}
+				</p>
 			</div>
 		);
 	}
@@ -59,11 +66,9 @@ export default function ContactForm() {
 		<>
 			<form onSubmit={handleSubmit} className="space-y-6">
 				<div>
-					<label
-						htmlFor="name"
-						className="block text-sm font-medium text-gray-700 mb-2"
-					>
-						{t("contact.name")} <span className="text-red-500">*</span>
+					<label htmlFor="name" className={labelClass}>
+						{t("contact.name")}{" "}
+						<span className="text-[var(--reading-over)]">*</span>
 					</label>
 					<input
 						type="text"
@@ -71,16 +76,14 @@ export default function ContactForm() {
 						name="name"
 						required
 						maxLength={CONTACT_VALIDATION.NAME_MAX_LENGTH}
-						className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bot-primary-500 focus:border-bot-primary-500 transition-colors"
+						className={fieldClass}
 					/>
 				</div>
 
 				<div>
-					<label
-						htmlFor="email"
-						className="block text-sm font-medium text-gray-700 mb-2"
-					>
-						{t("contact.email")} <span className="text-red-500">*</span>
+					<label htmlFor="email" className={labelClass}>
+						{t("contact.email")}{" "}
+						<span className="text-[var(--reading-over)]">*</span>
 					</label>
 					<input
 						type="email"
@@ -88,16 +91,14 @@ export default function ContactForm() {
 						name="email"
 						required
 						maxLength={CONTACT_VALIDATION.EMAIL_MAX_LENGTH}
-						className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bot-primary-500 focus:border-bot-primary-500 transition-colors"
+						className={fieldClass}
 					/>
 				</div>
 
 				<div>
-					<label
-						htmlFor="message"
-						className="block text-sm font-medium text-gray-700 mb-2"
-					>
-						{t("contact.message")} <span className="text-red-500">*</span>
+					<label htmlFor="message" className={labelClass}>
+						{t("contact.message")}{" "}
+						<span className="text-[var(--reading-over)]">*</span>
 					</label>
 					<textarea
 						id="message"
@@ -106,25 +107,25 @@ export default function ContactForm() {
 						rows={6}
 						minLength={CONTACT_VALIDATION.MESSAGE_MIN_LENGTH}
 						maxLength={CONTACT_VALIDATION.MESSAGE_MAX_LENGTH}
-						className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bot-primary-500 focus:border-bot-primary-500 transition-colors resize-none"
+						className={`${fieldClass} resize-none`}
 					/>
 				</div>
 
 				<button
 					type="submit"
 					disabled={status === "submitting"}
-					className="w-full bg-bot-primary-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-bot-primary-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+					className="inline-flex border border-[var(--brand-blue)] bg-[var(--brand-blue)] px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[var(--brand-blue-hover)] disabled:cursor-not-allowed disabled:opacity-50"
 				>
-					{t("contact.submit")}
+					{t("contact.submit")} →
 				</button>
 			</form>
 
 			{status === "error" && (
-				<div className="mt-8 p-6 bg-red-50 border border-red-200 rounded-lg">
-					<h2 className="text-lg font-semibold text-red-800 mb-2">
+				<div className="mt-8 border border-[var(--border-light)] border-l-2 border-l-[var(--reading-over)] bg-[var(--bg-card)] p-6">
+					<h2 className="mb-2 font-semibold text-[var(--text-primary)]">
 						{t("contact.error.title")}
 					</h2>
-					<p className="text-red-700">{errorText}</p>
+					<p className="text-sm text-[var(--reading-over)]">{errorText}</p>
 				</div>
 			)}
 		</>

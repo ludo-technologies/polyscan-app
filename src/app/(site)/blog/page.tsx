@@ -17,10 +17,10 @@ export default function BlogIndex() {
 
 	return (
 		<main className="relative z-10 mx-auto w-full max-w-3xl px-4 py-16 sm:px-6 sm:py-20">
-			<p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-[var(--brand-blue)]">
+			<p className="font-mono text-[11px] uppercase tracking-[0.25em] text-[var(--text-muted)]">
 				Blog
 			</p>
-			<h1 className="mb-3 text-4xl font-black tracking-tight text-[var(--text-primary)] sm:text-5xl">
+			<h1 className="type-display mt-3 mb-3 text-4xl font-bold text-[var(--text-primary)] sm:text-5xl">
 				Writing
 			</h1>
 			<p className="mb-12 max-w-2xl text-[var(--text-secondary)]">
@@ -31,29 +31,32 @@ export default function BlogIndex() {
 			{posts.length === 0 ? (
 				<p className="text-[var(--text-muted)]">No posts yet.</p>
 			) : (
-				<ul className="space-y-4">
+				<ul className="border border-[var(--border-light)] bg-[var(--bg-card)]">
 					{posts.map((post) => (
-						<li key={post.slug}>
+						<li
+							key={post.slug}
+							className="border-b border-[var(--border-subtle)] last:border-b-0"
+						>
 							<Link
 								href={`/blog/${post.slug}`}
-								className="block rounded-lg border border-[var(--border-light)] bg-[var(--bg-card)] p-5 shadow-sm transition-colors hover:border-[var(--brand-blue)]"
+								className="group block p-5 transition-colors hover:bg-[var(--bg-subtle)]"
 							>
-								<div className="mb-2 flex flex-wrap items-center gap-2 text-xs text-[var(--text-muted)]">
+								<div className="mb-2 flex flex-wrap items-center gap-2 font-mono text-[11px] uppercase tracking-[0.15em] text-[var(--text-muted)]">
 									<time dateTime={post.date}>
 										{formatDate(post.date, post.lang)}
 									</time>
 									{post.lang === "ja" && (
-										<span className="rounded border border-[var(--border-subtle)] px-1.5 py-0.5 font-medium">
+										<span className="border border-[var(--border-subtle)] px-1.5 py-0.5 tracking-normal">
 											日本語
 										</span>
 									)}
 									{post.draft && (
-										<span className="rounded border border-[var(--color-error)] px-1.5 py-0.5 font-medium text-[var(--color-error)]">
+										<span className="border border-[var(--color-error)] px-1.5 py-0.5 text-[var(--color-error)]">
 											Draft
 										</span>
 									)}
 								</div>
-								<h2 className="mb-1 text-xl font-bold text-[var(--text-primary)]">
+								<h2 className="mb-1 text-xl font-bold text-[var(--text-primary)] transition-colors group-hover:text-[var(--brand-blue)]">
 									{post.title}
 								</h2>
 								<p className="text-sm leading-relaxed text-[var(--text-light)]">
@@ -68,9 +71,9 @@ export default function BlogIndex() {
 			<div className="mt-12 border-t border-[var(--border-subtle)] pt-6">
 				<a
 					href="/blog/feed.xml"
-					className="text-sm font-medium text-[var(--brand-blue)] transition-colors hover:text-[var(--brand-blue-hover)]"
+					className="font-mono text-sm font-medium text-[var(--brand-blue)] transition-colors hover:text-[var(--brand-blue-hover)]"
 				>
-					RSS feed
+					RSS feed →
 				</a>
 			</div>
 		</main>

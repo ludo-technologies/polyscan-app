@@ -3,57 +3,62 @@ import { Link } from "@/i18n/navigation";
 import BotWordmark from "./BotWordmark";
 import Logo from "./icons/Logo";
 
+const linkClass =
+	"text-[var(--text-secondary)] transition-colors hover:text-[var(--brand-blue)]";
+
 export default function BotFooter() {
 	const t = useTranslations();
 
 	return (
-		<footer className="py-12 bg-[var(--bg-ink)] font-mono text-sm text-gray-400">
-			<div className="max-w-6xl mx-auto px-6">
-				<div className="flex flex-col md:flex-row items-center justify-between gap-6">
-					<div className="flex items-center gap-2">
-						<Logo className="w-10 h-10 text-gray-500" />
-						<BotWordmark variant="dark" />
-					</div>
-					<div className="flex flex-wrap items-center justify-center gap-6 text-sm">
-						<a
-							href="https://github.com/ludo-technologies/pyscn"
-							target="_blank"
-							rel="noopener noreferrer"
-							className="hover:text-gray-200 transition-colors"
-						>
-							{t("footer.github")}
-						</a>
-						<Link
-							href="/pyscn-bot/privacy"
-							className="hover:text-gray-200 transition-colors"
-						>
-							{t("footer.privacy")}
-						</Link>
-						<Link
-							href="/pyscn-bot/terms"
-							className="hover:text-gray-200 transition-colors"
-						>
-							{t("footer.terms")}
-						</Link>
-						<Link
-							href="/pyscn-bot/contact"
-							className="hover:text-gray-200 transition-colors"
-						>
-							{t("nav.contact")}
-						</Link>
-						<a
-							href="https://www.ludo-tech.org/"
-							target="_blank"
-							rel="noopener noreferrer"
-							className="hover:text-gray-200 transition-colors"
-						>
-							{t("footer.company")}
-						</a>
-					</div>
+		<footer className="border-t border-[var(--border-light)] bg-[var(--bg-card)]">
+			<div className="ruler-ticks" aria-hidden="true" />
+			<div className="mx-auto w-full max-w-6xl px-4 py-12 sm:px-6">
+				<div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+					<Link href="/pyscn-bot" className="flex items-center gap-1">
+						<Logo className="h-8 w-8" />
+						<BotWordmark className="text-lg" />
+					</Link>
+					<ul className="flex flex-wrap items-center gap-x-6 gap-y-2 font-mono text-xs uppercase tracking-[0.15em]">
+						<li>
+							<a
+								href="https://github.com/ludo-technologies/pyscn"
+								target="_blank"
+								rel="noopener noreferrer"
+								className={linkClass}
+							>
+								{t("footer.github")}
+							</a>
+						</li>
+						<li>
+							<Link href="/pyscn-bot/privacy" className={linkClass}>
+								{t("footer.privacy")}
+							</Link>
+						</li>
+						<li>
+							<Link href="/pyscn-bot/terms" className={linkClass}>
+								{t("footer.terms")}
+							</Link>
+						</li>
+						<li>
+							<Link href="/pyscn-bot/contact" className={linkClass}>
+								{t("nav.contact")}
+							</Link>
+						</li>
+						<li>
+							<a
+								href="https://www.ludo-tech.org/"
+								target="_blank"
+								rel="noopener noreferrer"
+								className={linkClass}
+							>
+								{t("footer.company")}
+							</a>
+						</li>
+					</ul>
 				</div>
-				<div className="mt-8 pt-8 border-t border-gray-800 text-center text-sm">
-					<p className="text-gray-500">{t("footer.copyright")}</p>
-				</div>
+				<p className="mt-8 border-t border-[var(--border-subtle)] pt-6 text-xs text-[var(--text-muted)]">
+					{t("footer.copyright")}
+				</p>
 			</div>
 		</footer>
 	);
