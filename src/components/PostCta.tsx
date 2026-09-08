@@ -5,7 +5,7 @@ export default function PostCta() {
 	return (
 		<aside
 			aria-label="Try pyscn"
-			className="mt-14 border border-[var(--border-subtle)] p-6 sm:p-8"
+			className="mt-14 border border-[var(--border-subtle)] bg-[var(--bg-card)] p-6 sm:p-8"
 		>
 			<p className="mb-2 font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--text-muted)]">
 				Try it on your repository
@@ -19,8 +19,8 @@ export default function PostCta() {
 				call mid-session, and as a GitHub App that comments on every pull
 				request.
 			</p>
-			<pre className="mb-5 overflow-x-auto border border-[var(--border-subtle)] px-4 py-3 font-mono text-sm text-[var(--text-primary)]">
-				<code>pip install pyscn && pyscn check .</code>
+			<pre className="mb-5 overflow-x-auto border border-[var(--border-subtle)] bg-[var(--bg-subtle)] px-4 py-3 font-mono text-sm text-[var(--text-primary)]">
+				<code>uvx pyscn analyze .</code>
 			</pre>
 			<div className="flex flex-wrap gap-3">
 				<Link
