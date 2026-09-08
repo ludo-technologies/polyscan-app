@@ -21,6 +21,11 @@ const securityHeaders = [
 		: []),
 ];
 
+const pyscnBotApiOrigin = process.env.PYSCN_BOT_API_ORIGIN;
+if (!pyscnBotApiOrigin) {
+	throw new Error("PYSCN_BOT_API_ORIGIN is required");
+}
+
 const nextConfig: NextConfig = {
 	async headers() {
 		return [{ source: "/(.*)", headers: securityHeaders }];
@@ -29,7 +34,7 @@ const nextConfig: NextConfig = {
 		return [
 			{
 				source: "/pyscn-bot/api/:path*",
-				destination: `${process.env.PYSCN_BOT_API_ORIGIN ?? "https://pyscn-bot.fly.dev"}/pyscn-bot/api/:path*`,
+				destination: `${pyscnBotApiOrigin}/pyscn-bot/api/:path*`,
 			},
 		];
 	},
