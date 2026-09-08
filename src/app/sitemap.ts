@@ -21,7 +21,7 @@ function pyscnBotRoutes(siteUrl: string) {
 
 export default function sitemap(): MetadataRoute.Sitemap {
 	const siteUrl = getSiteUrl();
-	const routes = ["", "/blog", "/privacy", "/terms"];
+	const routes = ["", "/ja", "/zh", "/blog", "/privacy", "/terms"];
 
 	return [
 		...routes.map((route) => ({ url: `${siteUrl}${route}` })),

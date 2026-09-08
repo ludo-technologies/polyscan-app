@@ -1,61 +1,82 @@
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
+import { Link as LocaleLink } from "@/i18n/navigation";
 import { LINKS } from "@/lib/links";
 
-const productLinks = [
-	{ label: "What you get", href: "/#what-you-get" },
-	{ label: "Analyzers", href: "/#analyzers" },
-	{ label: "AI agents", href: "/#agents" },
-	{ label: "GitHub App", href: "/#bot" },
-	{ label: "Blog", href: "/blog" },
-	{ label: "FAQ", href: "/#faq" },
+type FooterLink =
+	| { key: string; kind: "home"; hash: string }
+	| { key: string; kind: "page"; href: string }
+	| { key: string; kind: "external"; href: string };
+
+const productLinks: FooterLink[] = [
+	{ key: "whatYouGet", kind: "home", hash: "what-you-get" },
+	{ key: "analyzers", kind: "home", hash: "analyzers" },
+	{ key: "aiAgents", kind: "home", hash: "agents" },
+	{ key: "githubApp", kind: "home", hash: "bot" },
+	{ key: "blog", kind: "page", href: "/blog" },
+	{ key: "faq", kind: "home", hash: "faq" },
 ];
 
-const resourceLinks = [
-	{ label: "Documentation", href: LINKS.docs },
-	{ label: "GitHub App", href: LINKS.pyscnBot },
-	{ label: "Polyscan on GitHub", href: LINKS.monorepo },
-	{ label: "pyscn on GitHub", href: LINKS.pyscn },
-	{ label: "Ludo Technologies", href: LINKS.org },
+const resourceLinks: FooterLink[] = [
+	{ key: "documentation", kind: "external", href: LINKS.docs },
+	{ key: "githubApp", kind: "external", href: LINKS.pyscnBot },
+	{ key: "polyscanOnGitHub", kind: "external", href: LINKS.monorepo },
+	{ key: "pyscnOnGitHub", kind: "external", href: LINKS.pyscn },
+	{ key: "ludoTechnologies", kind: "external", href: LINKS.org },
 ];
 
-const legalLinks = [
-	{ label: "Privacy Policy", href: "/privacy" },
-	{ label: "Terms of Service", href: "/terms" },
+const legalLinks: { key: string; href: string }[] = [
+	{ key: "privacy", href: "/privacy" },
+	{ key: "terms", href: "/terms" },
 ];
 
-export default function Footer() {
+export default async function Footer() {
+	const t = await getTranslations("siteFooter");
+
 	return (
 		<footer className="border-t border-[var(--border-light)] bg-[var(--bg-card)] [&_a]:rounded-sm [&_a]:focus-visible:outline-2 [&_a]:focus-visible:outline-offset-4 [&_a]:focus-visible:outline-[var(--brand-blue)] [&_li>a]:inline-block [&_li>a]:py-1">
 			<div className="ruler-ticks" aria-hidden="true" />
 			<div className="mx-auto w-full max-w-6xl px-4 pb-8 pt-14 sm:px-6 sm:pt-20">
 				<div className="mb-12 flex flex-col items-start justify-between gap-6 border-b border-[var(--border-subtle)] pb-10 sm:mb-14 sm:flex-row sm:gap-12 sm:pb-12">
-					<Link href="/" className="type-display inline-flex items-baseline">
+					<LocaleLink
+						href="/"
+						className="type-display inline-flex items-baseline"
+					>
 						<span className="text-3xl font-bold text-[var(--text-primary)] sm:text-4xl">
 							Poly
 						</span>
 						<span className="text-3xl font-bold text-[var(--brand-blue)] sm:text-4xl">
 							scan
 						</span>
-					</Link>
+					</LocaleLink>
 					<p className="max-w-sm text-xl leading-relaxed tracking-tight text-[var(--text-secondary)] sm:text-2xl">
-						Structural codebase health for AI-written code.
+						{t("tagline")}
 					</p>
 				</div>
 
 				<div className="mb-14 grid grid-cols-2 gap-x-6 gap-y-10 text-sm md:grid-cols-[1fr_1.4fr_1.4fr_1fr] md:gap-10 [&_h4]:text-[var(--text-secondary)]">
 					<div>
 						<h4 className="mb-4 font-mono text-[11px] uppercase tracking-[0.25em] text-[var(--text-muted)]">
-							Product
+							{t("product")}
 						</h4>
 						<ul className="space-y-2">
 							{productLinks.map((link) => (
-								<li key={link.href}>
-									<Link
-										href={link.href}
-										className="text-[var(--text-secondary)] transition-colors hover:text-[var(--brand-blue)]"
-									>
-										{link.label}
-									</Link>
+								<li key={link.key}>
+									{link.kind === "home" ? (
+										<LocaleLink
+											href={{ pathname: "/", hash: link.hash }}
+											className="text-[var(--text-secondary)] transition-colors hover:text-[var(--brand-blue)]"
+										>
+											{t(link.key)}
+										</LocaleLink>
+									) : link.kind === "page" ? (
+										<Link
+											href={link.href}
+											className="text-[var(--text-secondary)] transition-colors hover:text-[var(--brand-blue)]"
+										>
+											{t(link.key)}
+										</Link>
+									) : null}
 								</li>
 							))}
 						</ul>
@@ -63,30 +84,32 @@ export default function Footer() {
 
 					<div>
 						<h4 className="mb-4 font-mono text-[11px] uppercase tracking-[0.25em] text-[var(--text-muted)]">
-							Resources
+							{t("resources")}
 						</h4>
 						<ul className="space-y-2">
-							{resourceLinks.map((link) => (
-								<li key={link.href}>
-									<a
-										href={link.href}
-										target="_blank"
-										rel="noopener noreferrer"
-										className="text-[var(--text-secondary)] transition-colors hover:text-[var(--brand-blue)]"
-									>
-										{link.label}
-									</a>
-								</li>
-							))}
+							{resourceLinks.map((link) =>
+								link.kind === "external" ? (
+									<li key={link.key}>
+										<a
+											href={link.href}
+											target="_blank"
+											rel="noopener noreferrer"
+											className="text-[var(--text-secondary)] transition-colors hover:text-[var(--brand-blue)]"
+										>
+											{t(link.key)}
+										</a>
+									</li>
+								) : null,
+							)}
 						</ul>
 					</div>
 
 					<div className="min-w-0">
 						<h4 className="mb-4 font-mono text-[11px] uppercase tracking-[0.25em] text-[var(--text-muted)]">
-							Contact
+							{t("contact")}
 						</h4>
 						<ul className="space-y-2 text-[var(--text-secondary)]">
-							<li>Kanagawa, Japan</li>
+							<li>{t("location")}</li>
 							<li>
 								<a
 									href={`mailto:${LINKS.contactEmail}`}
@@ -100,16 +123,16 @@ export default function Footer() {
 
 					<div>
 						<h4 className="mb-4 font-mono text-[11px] uppercase tracking-[0.25em] text-[var(--text-muted)]">
-							Legal
+							{t("legal")}
 						</h4>
 						<ul className="space-y-2">
 							{legalLinks.map((link) => (
-								<li key={link.href}>
+								<li key={link.key}>
 									<Link
 										href={link.href}
 										className="text-[var(--text-secondary)] transition-colors hover:text-[var(--brand-blue)]"
 									>
-										{link.label}
+										{t(link.key)}
 									</Link>
 								</li>
 							))}
@@ -119,7 +142,7 @@ export default function Footer() {
 
 				<div className="flex flex-col items-start justify-between gap-3 border-t border-[var(--border-subtle)] pt-6 font-mono text-[11px] leading-relaxed text-[var(--text-secondary)] sm:flex-row sm:items-center">
 					<p>© {new Date().getFullYear()} Ludo Technologies Inc.</p>
-					<p>All rights reserved.</p>
+					<p>{t("allRightsReserved")}</p>
 				</div>
 			</div>
 		</footer>

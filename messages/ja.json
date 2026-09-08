@@ -99,6 +99,168 @@
 		"title": "そのコード、",
 		"titleHighlight": "静かに劣化しています。"
 	},
+	"home": {
+		"meta": {
+			"title": "Polyscan — AIが書いたコードの構造的な健全性を測定",
+			"description": "コードベース全体の複雑度・重複・デッドコード・依存関係・クラス設計を測定します。オープンソースのCLIで一度実行するか、GitHub Appで毎週構造の劣化を追跡できます。",
+			"ogDescription": "オープンソースのCLIでコードベース全体を一度測定し、GitHub Appで毎週構造の劣化を追跡できます。"
+		},
+		"softwareDescription": "Python、JavaScript/TypeScript、Go、Rust、C++向けのオープンソース・コード品質アナライザー。デッドコード・重複コード・複雑度・依存サイクル・クラス結合度を検出し、コードベースをスコア化して修正すべき箇所を優先度付きで報告します。",
+		"appCard": {
+			"ariaLabel": "Polyscan GitHub App",
+			"dismissAria": "GitHub Appの告知を閉じる",
+			"eyebrow": "GitHub App",
+			"title": "コード品質を継続追跡",
+			"body": "毎週、自動でコード品質レポートを取得。",
+			"cta": "無料で始める"
+		},
+		"commandBlock": {
+			"terminal": "ターミナル",
+			"copy": "コピー",
+			"copied": "コピー済み",
+			"copyAria": "「{command}」をクリップボードにコピー",
+			"copiedStatus": "コマンドをクリップボードにコピーしました。"
+		},
+		"readout": {
+			"sampleAria": "pyscn解析結果のサンプル表示",
+			"panelLabel": "pyscn / 構造レポート",
+			"sampleRun": "サンプル実行",
+			"healthScore": "ヘルススコア:",
+			"codebaseHealth": "コードベースの健全性",
+			"grade": "グレード {grade}",
+			"snapshot1": "構造のスナップショット。",
+			"snapshot2": "次に見るべき場所がわかります。",
+			"metricsOverThreshold": "{count} 個のメトリクスがしきい値超過",
+			"structuralMetrics": "構造メトリクス",
+			"checksCount": "{count} 項目",
+			"overThreshold": "しきい値超過",
+			"withinThreshold": "しきい値以内",
+			"runIt": "自分のコードベースで実行",
+			"readings": {
+				"CC": { "label": "循環的複雑度", "value": "最大 31" },
+				"DUP": { "label": "重複率", "value": "8.2%" },
+				"DEAD": { "label": "デッドコード", "value": "0 ブロック" },
+				"DEP": { "label": "依存サイクル", "value": "2 件" },
+				"CBO": { "label": "クラス結合度", "value": "最大 9" }
+			}
+		},
+		"hero": {
+			"eyebrow": "オープンソース。明確なシグナル。",
+			"title": "コード品質を、",
+			"titleHighlight": "測定する。",
+			"lead": "AIが書くコードの時代のための構造解析ツール。",
+			"body": "Claude、Cursor、Codexで開発していますか? エージェントはレビューが追いつかない速さでコードを書きます。Polyscanはコードベース全体を構造解析し、1コマンドでスコア化して修正すべき箇所を示します。",
+			"cta": "自分のアナライザーを見つける",
+			"source": "ソースコードを見る",
+			"noInstall": "インストール不要、登録不要、コードがマシンの外に出ることはありません。",
+			"instrumentCaption": "1つのコードベース。5つの視点。明確な次の一歩。"
+		},
+		"languageStrip": {
+			"label": "あなたのスタックもカバー"
+		},
+		"checks": {
+			"eyebrow": "測定結果",
+			"title": "推測を減らし、シグナルを増やす。",
+			"lede": "各アナライザーはコードベースを0〜100でスコア化し、A〜Fの評価付きHTMLレポートを生成します。5つの視点からコードを分析します。",
+			"items": [
+				{
+					"id": "DEAD",
+					"title": "デッドコード",
+					"body": "安全に削除できる到達不可能なコードを特定します。推測ではなく、制御フローグラフを辿って検出します。"
+				},
+				{
+					"id": "DUP",
+					"title": "重複コード",
+					"body": "コピペや構造が類似した、マージする価値のあるコードを検出します。ツリー編集距離によるType 1〜4クローン検出。"
+				},
+				{
+					"id": "CC",
+					"title": "複雑度",
+					"body": "読みにくくテストしにくい関数を循環的複雑度で順位付けし、どこから着手すべきかを示します。"
+				},
+				{
+					"id": "DEP",
+					"title": "依存関係",
+					"body": "循環インポートや不安定なモジュール依存に加えて、コードベースが実際に形成しているモジュールコミュニティを可視化します。"
+				},
+				{
+					"id": "CBO",
+					"title": "クラス設計",
+					"body": "責務が多すぎたり依存しすぎたりするクラスを、CBO結合度とLCOM凝集度で測定します。"
+				}
+			],
+			"summaryLabel": "全体像",
+			"summaryBig1": "測るのは",
+			"summaryBig2": "構造。",
+			"summaryCta": "アナライザーを見る"
+		},
+		"analyzers": {
+			"eyebrow": "計測器",
+			"title": "1つのエンジン、言語ごとのアナライザー",
+			"lede": "解析アルゴリズムは共有の言語非依存Goモジュールにあります。各アナライザーはパースと分類だけを実装するため、すべての言語が同じルールで評価されます。",
+			"items": [
+				{
+					"body": "オリジナルのアナライザー。CLI、MCPサーバー、Agent Skillsを同梱し、Polyscanの中核を担います。"
+				},
+				{
+					"body": "JavaScript、TypeScript、Go、Rust、C++を1つのCLIで解析。拡張子から各ファイルの言語を判定し、1つのヘルススコアとともに1つのレポートにまとめます。事前ビルド済みバイナリ付きでnpmで配布されるため、ツールチェーンのインストールは不要です。"
+				},
+				{
+					"body": "両アナライザーの背後にある言語非依存エンジン。APTEDツリー編集距離、LSH/MinHashクローンインデックス、CFG解析、結合度・凝集度メトリクス。"
+				}
+			],
+			"note": "複雑度と重複コードは全言語をカバーします。デッドコード、依存関係、クラス設計は現在PythonとJavaScript/TypeScriptで利用可能で、その言語が持たない指標はクリーンと数えずスコアから除外されます。"
+		},
+		"agents": {
+			"eyebrow": "エージェントスキル",
+			"title": "コーディングエージェントのために設計",
+			"lede": "アナライザーには、AIエージェントに各解析をいつ・どう実行するかを教えるAgent Skillsが同梱されています。ヘルスチェック、リファクタリング、アーキテクチャレビュー、CI向けレポートに対応し、Claude Code、Cursor、Codex、Gemini CLIなどで動作します。",
+			"ask": "あとは聞くだけ",
+			"steps": [
+				"src/ディレクトリのコード品質を分析して",
+				"重複コードを見つけて、リファクタリングを手伝って",
+				"複雑なコードを見せて、簡略化するのを手伝って"
+			]
+		},
+		"bot": {
+			"eyebrow": "継続モニタリング",
+			"title": "CLIで一度測り、Appで毎週追跡。",
+			"body": "GitHub Appは、リポジトリ全体の複雑度・重複・デッドコード・依存関係を毎週測定します。構造の劣化を継続的に追跡し、GitHub Issueで修正優先度を報告し、プルリクエストで新しい問題を検出します。週次測定はすべてのリポジトリで無料です。",
+			"cta": "週次測定を始める",
+			"source": "GitHubでソースを見る"
+		},
+		"faq": {
+			"eyebrow": "FAQ",
+			"title": "よくある質問",
+			"items": [
+				{
+					"q": "Polyscanは実際に何を測定しますか?",
+					"a": "スタイルではなく構造です。デッドコード、重複コード、循環的複雑度、モジュール依存の循環、クラスの結合度と凝集度——コードベースの変更コストを高める要素です。リンターやフォーマッタではありませんが、それらを補完します。"
+				},
+				{
+					"q": "AI生成コードになぜ重要なのですか?",
+					"a": "コーディングエージェントは動くコードを素早く作りますが、リファクタリングせずにロジックを重複させ、関数を肥大化させがちです。こうした問題は静かに積み重なります。Polyscanはあなたとエージェントが取り組むべき測定値を提供し、クリーンアップを曖昧な感覚ではなく具体的なタスクにします。"
+				},
+				{
+					"q": "何かインストールする必要がありますか?",
+					"a": "いいえ。uvxとnpxがアナライザーを直接実行します。どちらもtree-sitterで構築された単一のGoバイナリとして配布されるため、コミットごとに実行できるほど高速です。"
+				},
+				{
+					"q": "どの言語に対応していますか?",
+					"a": "Pythonはpyscn、JavaScript・TypeScript・Go・Rust・C++はpolyscanが対応します。複雑度と重複コードは全言語で測定します。デッドコード、依存関係、クラス設計は、現時点でPythonとJavaScript/TypeScriptのバックエンドだけが構築するインポートグラフとクラスモデルを必要とするため、Go・Rust・C++ではスコアに含めず、クリーンとも数えません。"
+				},
+				{
+					"q": "オープンソースですか?",
+					"a": "はい、MITライセンスです。アナライザー、共有コア、Agent SkillsはすべてGitHubで公開されています。"
+				}
+			]
+		},
+		"closing": {
+			"eyebrow": "今すぐ実行",
+			"title": "1つのコマンドでコードベースを採点",
+			"body": "今作業しているリポジトリで実行してください。数秒で終わり、インストールも不要です。"
+		}
+	},
 	"how": {
 		"clones": {
 			"desc": "重複コードを発見し、DRY原則を促進",
@@ -153,6 +315,39 @@
 		},
 		"subtitle": "無料で始めて、必要に応じてアップグレード",
 		"title": "シンプルな料金体系"
+	},
+	"siteFooter": {
+		"aiAgents": "AIエージェント",
+		"allRightsReserved": "All rights reserved.",
+		"analyzers": "アナライザー",
+		"blog": "ブログ",
+		"contact": "お問い合わせ",
+		"documentation": "ドキュメント",
+		"faq": "FAQ",
+		"githubApp": "GitHub App",
+		"legal": "法的情報",
+		"location": "日本・神奈川",
+		"ludoTechnologies": "Ludo Technologies",
+		"polyscanOnGitHub": "Polyscan (GitHub)",
+		"privacy": "プライバシーポリシー",
+		"product": "プロダクト",
+		"pyscnOnGitHub": "pyscn (GitHub)",
+		"resources": "リソース",
+		"tagline": "AIが書いたコードのための、構造から見たコードベース健全性。",
+		"terms": "利用規約",
+		"whatYouGet": "できること"
+	},
+	"siteHeader": {
+		"close": "閉じる",
+		"languagesAria": "言語",
+		"menu": "メニュー",
+		"nav": {
+			"analyzers": "アナライザー",
+			"blog": "ブログ",
+			"docs": "ドキュメント",
+			"github": "GitHub"
+		},
+		"primaryNav": "メインナビゲーション"
 	},
 	"tech": {
 		"agent": {

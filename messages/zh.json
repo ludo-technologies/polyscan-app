@@ -99,6 +99,168 @@
 		"title": "你的代码库，",
 		"titleHighlight": "正在悄悄劣化。"
 	},
+	"home": {
+		"meta": {
+			"title": "Polyscan — 为 AI 代码提供结构化的代码库健康度",
+			"description": "测量整个代码库的复杂度、重复代码、死代码、依赖关系和类设计。可用开源 CLI 运行一次，也可用 GitHub App 每周跟踪结构性劣化。",
+			"ogDescription": "用开源 CLI 一次性测量整个代码库，再用 GitHub App 每周跟踪结构性劣化。"
+		},
+		"softwareDescription": "面向 Python、JavaScript/TypeScript、Go、Rust 和 C++ 的开源代码质量分析器。检测死代码、重复代码、复杂度、依赖循环和类耦合度，为代码库评分并按优先级报告应优先修复的问题。",
+		"appCard": {
+			"ariaLabel": "Polyscan GitHub App",
+			"dismissAria": "关闭 GitHub App 推广",
+			"eyebrow": "GitHub App",
+			"title": "持续跟踪代码质量",
+			"body": "每周自动获得代码质量报告。",
+			"cta": "免费开始"
+		},
+		"commandBlock": {
+			"terminal": "终端",
+			"copy": "复制",
+			"copied": "已复制",
+			"copyAria": "将“{command}”复制到剪贴板",
+			"copiedStatus": "命令已复制到剪贴板。"
+		},
+		"readout": {
+			"sampleAria": "pyscn 分析读数示例",
+			"panelLabel": "pyscn / 结构读数",
+			"sampleRun": "示例运行",
+			"healthScore": "健康分:",
+			"codebaseHealth": "代码库健康度",
+			"grade": "{grade} 级",
+			"snapshot1": "一份结构快照。",
+			"snapshot2": "告诉你接下来看哪里。",
+			"metricsOverThreshold": "{count} 项指标超出阈值",
+			"structuralMetrics": "结构指标",
+			"checksCount": "{count} 项检查",
+			"overThreshold": "超出阈值",
+			"withinThreshold": "阈值以内",
+			"runIt": "在你的代码库上运行",
+			"readings": {
+				"CC": { "label": "圈复杂度", "value": "最大 31" },
+				"DUP": { "label": "重复率", "value": "8.2%" },
+				"DEAD": { "label": "死代码", "value": "0 处" },
+				"DEP": { "label": "依赖循环", "value": "2 个循环" },
+				"CBO": { "label": "类耦合度", "value": "最大 9" }
+			}
+		},
+		"hero": {
+			"eyebrow": "开源。清晰的信号。",
+			"title": "代码质量，",
+			"titleHighlight": "精确测量。",
+			"lead": "为 AI 编写代码的时代打造的结构分析工具。",
+			"body": "你在用 Claude、Cursor 或 Codex 开发吗？Agent 写代码的速度比任何人评审的速度都快。Polyscan 对整个代码库运行结构分析——一条命令即可评分，并指出应优先修复的问题。",
+			"cta": "找到你的分析器",
+			"source": "查看源码",
+			"noInstall": "无需安装、无需注册，代码不会离开你的机器。",
+			"instrumentCaption": "一个代码库。五个维度。明确的下一步。"
+		},
+		"languageStrip": {
+			"label": "你的技术栈，全覆盖"
+		},
+		"checks": {
+			"eyebrow": "测量结果",
+			"title": "更少猜测，更多信号。",
+			"lede": "每个分析器都会以 0-100 的分数和 A-F 等级为代码库评分，并生成 HTML 报告，从五个角度审视你的代码。",
+			"items": [
+				{
+					"id": "DEAD",
+					"title": "死代码",
+					"body": "通过遍历控制流图而非猜测，找出可以安全删除的不可达代码。"
+				},
+				{
+					"id": "DUP",
+					"title": "重复代码",
+					"body": "找出值得合并的复制粘贴和结构相似代码——基于树编辑距离的 Type 1-4 克隆检测。"
+				},
+				{
+					"id": "CC",
+					"title": "复杂度",
+					"body": "按圈复杂度对难以阅读、难以测试的函数排序，让你知道从哪里入手。"
+				},
+				{
+					"id": "DEP",
+					"title": "依赖关系",
+					"body": "循环导入和不稳定的模块依赖，以及代码库实际形成的模块社区。"
+				},
+				{
+					"id": "CBO",
+					"title": "类设计",
+					"body": "用 CBO 耦合度和 LCOM 内聚度衡量那些做得太多或依赖太多的类。"
+				}
+			],
+			"summaryLabel": "全局视角",
+			"summaryBig1": "测量的是",
+			"summaryBig2": "结构。",
+			"summaryCta": "了解你的分析器"
+		},
+		"analyzers": {
+			"eyebrow": "测量仪器",
+			"title": "一个引擎，每种语言一个分析器",
+			"lede": "分析算法位于一个共享的、与语言无关的 Go 模块中。每个分析器只实现解析和分类，因此所有语言都按同一套规则评分。",
+			"items": [
+				{
+					"body": "最早的分析器。提供 CLI、MCP 服务器和 Agent Skills，并驱动 Polyscan。"
+				},
+				{
+					"body": "一个 CLI 覆盖 JavaScript、TypeScript、Go、Rust 和 C++。按扩展名识别每个文件的语言，并将所有结果汇总到一份带健康评分的报告中。以预构建二进制形式通过 npm 分发——无需安装任何工具链。"
+				},
+				{
+					"body": "两个分析器背后与语言无关的引擎：APTED 树编辑距离、LSH/MinHash 克隆索引、CFG 分析、耦合度与内聚度指标。"
+				}
+			],
+			"note": "复杂度和重复代码覆盖所有语言。死代码、依赖关系和类设计目前仅适用于 Python 和 JavaScript/TypeScript；某种语言不具备的维度会从其评分中排除，而不是被计为干净。"
+		},
+		"agents": {
+			"eyebrow": "Agent 技能",
+			"title": "为编码 Agent 而建",
+			"lede": "分析器附带 Agent Skills，教 AI 代理何时以及如何运行每种分析——健康检查、重构、架构评审和 CI 友好报告。支持 Claude Code、Cursor、Codex、Gemini CLI 等。",
+			"ask": "然后直接提问",
+			"steps": [
+				"分析 src/ 目录的代码质量",
+				"找出重复代码并帮我重构",
+				"展示复杂的代码并帮我简化"
+			]
+		},
+		"bot": {
+			"eyebrow": "持续监控",
+			"title": "用 CLI 测一次。用 App 每周跟踪。",
+			"body": "GitHub App 每周测量整个仓库的复杂度、重复、死代码和依赖关系。它持续跟踪结构性劣化，在 GitHub Issue 中报告应优先修复的问题，并在 Pull Request 上发现新问题。每周测量对所有仓库免费。",
+			"cta": "开始每周测量",
+			"source": "在 GitHub 查看源码"
+		},
+		"faq": {
+			"eyebrow": "FAQ",
+			"title": "常见问题",
+			"items": [
+				{
+					"q": "Polyscan 到底测量什么?",
+					"a": "结构，而非风格。死代码、重复代码、圈复杂度、模块依赖循环以及类的耦合度和内聚度——正是这些让代码库的修改成本变高。它不是 linter 或格式化工具，而是与它们互补。"
+				},
+				{
+					"q": "为什么这对 AI 生成的代码很重要?",
+					"a": "编码 Agent 能快速产出可运行的代码，但它们倾向于重复逻辑、扩展函数而不是重构。这些问题会悄然累积。Polyscan 为你和你的 Agent 提供可对照的度量，让清理变成具体的任务，而不是模糊的感觉。"
+				},
+				{
+					"q": "需要安装什么吗?",
+					"a": "不需要。uvx 和 npx 直接运行分析器。两者都以基于 tree-sitter 构建的单个 Go 二进制文件分发，完整分析快到可以在每次提交时运行。"
+				},
+				{
+					"q": "支持哪些语言?",
+					"a": "Python 通过 pyscn，JavaScript、TypeScript、Go、Rust 和 C++ 通过 polyscan。复杂度和重复代码对所有语言都可测量。死代码、依赖关系和类设计需要目前只有 Python 和 JavaScript/TypeScript 后端才会构建的导入图和类模型，因此这些维度会从 Go、Rust 或 C++ 的评分中排除，而不是被计为干净。"
+				},
+				{
+					"q": "它是开源的吗?",
+					"a": "是，MIT 许可证。分析器、共享核心和 Agent Skills 都在 GitHub 上公开。"
+				}
+			]
+		},
+		"closing": {
+			"eyebrow": "立即运行",
+			"title": "一条命令为代码库评分",
+			"body": "在你正在工作的仓库上运行——只需几秒，无需安装任何东西。"
+		}
+	},
 	"how": {
 		"clones": {
 			"desc": "发现重复代码，推广 DRY 原则",
@@ -153,6 +315,39 @@
 		},
 		"subtitle": "免费开始，按需升级",
 		"title": "简单定价"
+	},
+	"siteFooter": {
+		"aiAgents": "AI 代理",
+		"allRightsReserved": "All rights reserved.",
+		"analyzers": "分析器",
+		"blog": "博客",
+		"contact": "联系",
+		"documentation": "文档",
+		"faq": "FAQ",
+		"githubApp": "GitHub App",
+		"legal": "法律信息",
+		"location": "日本 神奈川",
+		"ludoTechnologies": "Ludo Technologies",
+		"polyscanOnGitHub": "Polyscan (GitHub)",
+		"privacy": "隐私政策",
+		"product": "产品",
+		"pyscnOnGitHub": "pyscn (GitHub)",
+		"resources": "资源",
+		"tagline": "为 AI 代码提供结构化的代码库健康度。",
+		"terms": "服务条款",
+		"whatYouGet": "功能一览"
+	},
+	"siteHeader": {
+		"close": "关闭",
+		"languagesAria": "语言",
+		"menu": "菜单",
+		"nav": {
+			"analyzers": "分析器",
+			"blog": "博客",
+			"github": "GitHub",
+			"docs": "文档"
+		},
+		"primaryNav": "主导航"
 	},
 	"tech": {
 		"agent": {

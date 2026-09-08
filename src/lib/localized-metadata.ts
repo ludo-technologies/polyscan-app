@@ -1,23 +1,22 @@
+import { routing } from "@/i18n/routing";
 import { getSiteUrl } from "@/lib/site-url";
 
-const LOCALES = ["en", "ja", "zh"] as const;
-
 function localizedPath(locale: string, path: string): string {
-	return locale === "en" ? path : `/${locale}${path}`;
+	return locale === routing.defaultLocale ? path : `/${locale}${path}`;
 }
 
 /**
  * Builds `alternates.canonical` (self-referencing, per current locale) and
  * `alternates.languages` (hreflang, one entry per supported locale plus
- * x-default) for a Polyscan page. `path` is the unprefixed pathname, e.g.
- * "/pyscn-bot" or "/pyscn-bot/how-it-works".
+ * x-default) for a localized page. `path` is the unprefixed pathname, e.g.
+ * "/" or "/pyscn-bot".
  */
-export function pyscnBotAlternates(locale: string, path: string) {
+export function localizedAlternates(locale: string, path: string) {
 	const siteUrl = getSiteUrl();
 	const languages: Record<string, string> = {
 		"x-default": `${siteUrl}${path}`,
 	};
-	for (const l of LOCALES) {
+	for (const l of routing.locales) {
 		languages[l] = `${siteUrl}${localizedPath(l, path)}`;
 	}
 	return {

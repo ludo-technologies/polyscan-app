@@ -1,26 +1,64 @@
 "use client";
 
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { useRef, useState } from "react";
+import { Link as LocaleLink } from "@/i18n/navigation";
 import { LINKS } from "@/lib/links";
+import SiteLanguageSwitcher from "./SiteLanguageSwitcher";
 
-const navLinks = [
-	{ label: "Analyzers", href: "/#analyzers" },
-	{ label: "Blog", href: "/blog" },
-	{ label: "Docs", href: LINKS.docs, external: true },
-	{ label: "GitHub", href: LINKS.monorepo, external: true },
+type NavLink =
+	| { id: "analyzers"; kind: "home" }
+	| { id: "blog"; kind: "blog" }
+	| { id: "docs"; kind: "external"; href: string }
+	| { id: "github"; kind: "external"; href: string; accent: true };
+
+// "blog" intentionally uses the default locale prefix: the blog is
+// English-only, so a locale-prefixed path like /ja/blog would 404.
+const navLinks: NavLink[] = [
+	{ id: "analyzers", kind: "home" },
+	{ id: "blog", kind: "blog" },
+	{ id: "docs", kind: "external", href: LINKS.docs },
+	{ id: "github", kind: "external", href: LINKS.monorepo, accent: true },
 ];
 
-export default function Header() {
+const linkClass =
+	"inline-flex min-h-11 items-center rounded-md px-3 text-sm font-medium text-[var(--text-secondary)] transition-colors hover:bg-[var(--bg-subtle)] hover:text-[var(--brand-blue)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--brand-blue)]";
+
+export default function Header({
+	languageSwitcher = false,
+}: {
+	languageSwitcher?: boolean;
+}) {
+	const t = useTranslations("siteHeader");
 	const [menuOpen, setMenuOpen] = useState(false);
 	const menuButton = useRef<HTMLButtonElement>(null);
-	const linkClass =
-		"inline-flex min-h-11 items-center rounded-md px-3 text-sm font-medium text-[var(--text-secondary)] transition-colors hover:bg-[var(--bg-subtle)] hover:text-[var(--brand-blue)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--brand-blue)]";
+
+	function renderLinkLabel(link: NavLink) {
+		return (
+			<>
+				{t(`nav.${link.id}`)}
+				{link.kind === "external" && "accent" in link && (
+					<svg
+						aria-hidden="true"
+						width="14"
+						height="14"
+						viewBox="0 0 16 16"
+						fill="none"
+						stroke="currentColor"
+						strokeWidth="1.5"
+					>
+						<path d="M4 12l8-8M4 4h8v8" />
+					</svg>
+				)}
+			</>
+		);
+	}
 
 	return (
 		<header className="sticky top-0 z-50 border-b border-[var(--border-light)]/70 bg-[var(--bg-body)]/90 backdrop-blur-xl">
 			<div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-x-4 px-4 py-3 sm:px-6 md:py-4">
-				<Link
+				<LocaleLink
 					href="/"
 					onClick={() => setMenuOpen(false)}
 					className="type-display inline-flex min-h-11 items-center gap-3 rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--brand-blue)]"
@@ -51,7 +89,7 @@ export default function Header() {
 					<span className="text-xl font-bold tracking-tight text-[var(--text-primary)]">
 						Poly<span className="text-[var(--brand-blue)]">scan</span>
 					</span>
-				</Link>
+				</LocaleLink>
 				<button
 					ref={menuButton}
 					type="button"
@@ -60,7 +98,7 @@ export default function Header() {
 					onClick={() => setMenuOpen(!menuOpen)}
 					className="inline-flex min-h-11 items-center gap-2 rounded-md border border-[var(--border-subtle)] px-3 font-mono text-xs text-[var(--text-primary)] hover:bg-[var(--bg-subtle)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--brand-blue)] md:hidden"
 				>
-					{menuOpen ? "Close" : "Menu"}
+					{menuOpen ? t("close") : t("menu")}
 					<svg
 						aria-hidden="true"
 						width="16"
@@ -75,7 +113,7 @@ export default function Header() {
 				</button>
 				<nav
 					id="primary-navigation"
-					aria-label="Primary"
+					aria-label={t("primaryNav")}
 					onKeyDown={(event) => {
 						if (event.key === "Escape" && menuOpen) {
 							setMenuOpen(false);
@@ -86,45 +124,45 @@ export default function Header() {
 				>
 					<ul className="flex flex-col gap-1 md:flex-row md:items-center md:gap-2">
 						{navLinks.map((link) => (
-							<li key={link.href}>
-								{link.external ? (
+							<li key={link.id}>
+								{link.kind === "external" ? (
 									<a
 										href={link.href}
 										target="_blank"
 										rel="noopener noreferrer"
 										onClick={() => setMenuOpen(false)}
 										className={
-											link.label === "GitHub"
+											"accent" in link && link.accent
 												? "inline-flex min-h-11 w-full items-center justify-between gap-3 rounded-md bg-[var(--brand-blue)] px-4 text-sm font-medium text-white transition-colors hover:bg-[var(--brand-blue-hover)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--brand-blue)] md:ml-3 md:w-auto"
 												: linkClass
 										}
 									>
-										{link.label}
-										{link.label === "GitHub" && (
-											<svg
-												aria-hidden="true"
-												width="14"
-												height="14"
-												viewBox="0 0 16 16"
-												fill="none"
-												stroke="currentColor"
-												strokeWidth="1.5"
-											>
-												<path d="M4 12l8-8M4 4h8v8" />
-											</svg>
-										)}
+										{renderLinkLabel(link)}
 									</a>
-								) : (
-									<Link
-										href={link.href}
+								) : link.kind === "home" ? (
+									<LocaleLink
+										href={{ pathname: "/", hash: "analyzers" }}
 										onClick={() => setMenuOpen(false)}
 										className={linkClass}
 									>
-										{link.label}
+										{renderLinkLabel(link)}
+									</LocaleLink>
+								) : (
+									<Link
+										href="/blog"
+										onClick={() => setMenuOpen(false)}
+										className={linkClass}
+									>
+										{renderLinkLabel(link)}
 									</Link>
 								)}
 							</li>
 						))}
+						{languageSwitcher && (
+							<li className="md:ml-2">
+								<SiteLanguageSwitcher />
+							</li>
+						)}
 					</ul>
 				</nav>
 			</div>
