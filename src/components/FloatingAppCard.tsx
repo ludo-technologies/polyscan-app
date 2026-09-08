@@ -22,33 +22,38 @@ export default function FloatingAppCard() {
 	return (
 		<aside
 			aria-label="Polyscan GitHub App"
-			className="fixed inset-x-3 bottom-3 z-50 border border-[var(--border-light)] border-t-2 border-t-[var(--brand-blue)] bg-[var(--bg-card)] p-3 sm:inset-x-auto sm:right-5 sm:bottom-5 sm:w-80 sm:p-5"
+			className="fixed inset-x-3 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-40 overflow-hidden rounded-xl border border-white/15 bg-[radial-gradient(ellipse_at_top_right,#174b9c,transparent_75%)] bg-[#0b1629] p-4 text-white shadow-[0_16px_48px_-12px_#0b162966] motion-safe:animate-[surface-in_650ms_250ms_both] sm:inset-x-auto sm:right-6 sm:bottom-6 sm:w-80 sm:p-5"
 		>
 			<button
 				type="button"
 				onClick={dismiss}
-				aria-label="Dismiss"
-				className="absolute top-2 right-2 flex size-7 items-center justify-center font-mono text-lg leading-none text-[var(--text-muted)] transition-colors hover:text-[var(--text-primary)] sm:top-3 sm:right-3"
+				aria-label="Dismiss GitHub App promotion"
+				className="absolute top-1 right-1 flex size-11 items-center justify-center rounded-lg font-mono text-xl leading-none text-[#b7c6df] transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-white"
 			>
 				&times;
 			</button>
-			<div className="flex items-center gap-3 pr-7 sm:block sm:pr-5">
+			<div className="pr-6 sm:pr-5">
 				<div className="min-w-0 flex-1">
-					<p className="mb-1 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--brand-blue)] sm:mb-2 sm:text-[11px]">
+					<p className="mb-2 flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.18em] text-[#81b3ff] sm:mb-3 sm:text-[10px]">
+						<span
+							aria-hidden="true"
+							className="size-1.5 rounded-full bg-[#81b3ff] shadow-[0_0_0_4px_#81b3ff15]"
+						/>
 						GitHub App
 					</p>
-					<p className="type-display text-sm font-bold text-[var(--text-primary)] sm:text-lg">
-						Track structural decay
+					<p className="type-display text-base font-bold tracking-tight sm:text-xl">
+						Track code quality
 					</p>
-					<p className="mt-1 text-xs text-[var(--text-secondary)] sm:text-sm">
-						Measure your entire repository every week.
+					<p className="mt-2 hidden text-sm leading-relaxed text-[#b7c6df] sm:block">
+						Get a code quality report every week, automatically.
 					</p>
 				</div>
 				<a
 					href={LINKS.pyscnBot}
-					className="shrink-0 border border-[var(--brand-blue)] bg-[var(--brand-blue)] px-4 py-2 text-xs font-semibold whitespace-nowrap text-white transition-colors hover:bg-[var(--brand-blue-hover)] sm:mt-4 sm:inline-flex sm:text-sm"
+					className="mt-3 inline-flex min-h-11 w-full items-center justify-between gap-3 rounded-md bg-[var(--brand-blue)] px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-[var(--brand-blue-hover)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:mt-5 sm:text-sm"
 				>
-					Start free &rarr;
+					<span>Start for free</span>
+					<span aria-hidden="true">&rarr;</span>
 				</a>
 			</div>
 		</aside>
