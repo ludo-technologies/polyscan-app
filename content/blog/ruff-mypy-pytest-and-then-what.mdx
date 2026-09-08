@@ -32,6 +32,8 @@ What none of them do is look across functions. Ruff has no rule for "this block 
 
 I ran a structural analysis over one repository at five points in its history. It is a few thousand lines of NumPy and SciPy with a CLI and an MCP server, mostly agent-written, with the CI shown above. The tool was [pyscn](https://github.com/ludo-technologies/pyscn), which I maintain. For complexity and dead code you can get equivalent numbers from radon and vulture, and import-linter covers dependency rules. Clone detection is the piece that does not have an obvious standalone answer in the Python ecosystem, which is a large part of why pyscn exists.
 
+<PyscnCard />
+
 pyscn classifies a function's cyclomatic complexity as low at 9 or below, medium from 10 to 19, and high at 20 or above. The `check` command, the one meant for CI, fails by default on anything above 10.
 
 | Commit | Date | Source lines | Health | Avg. complexity | Functions ≥ 10 | Duplication | Cycles |
