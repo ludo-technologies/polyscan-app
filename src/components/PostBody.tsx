@@ -2,12 +2,14 @@ import Link from "next/link";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import rehypePrettyCode from "rehype-pretty-code";
 import remarkGfm from "remark-gfm";
+import PyscnCard from "@/components/PyscnCard";
 
 /**
  * Anchors are rewritten so internal links stay client-side and external ones
  * always open safely, without every post having to remember the attributes.
  */
 const components = {
+	PyscnCard,
 	a: ({ href = "", ...props }: React.ComponentProps<"a">) => {
 		if (href.startsWith("/")) {
 			return <Link href={href} {...props} />;
