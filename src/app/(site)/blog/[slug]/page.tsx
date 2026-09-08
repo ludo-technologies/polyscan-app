@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import PostBody from "@/components/PostBody";
+import PostCta from "@/components/PostCta";
 import { formatDate, getPost, getPosts } from "@/lib/posts";
 import { getSiteUrl } from "@/lib/site-url";
 
@@ -92,6 +93,8 @@ export default async function PostPage({ params }: Props) {
 
 				<PostBody source={post.content} />
 			</article>
+
+			<PostCta />
 		</main>
 	);
 }
