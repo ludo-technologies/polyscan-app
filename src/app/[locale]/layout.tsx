@@ -13,6 +13,10 @@ export const metadata: Metadata = {
 	metadataBase: new URL(getSiteUrl()),
 };
 
+// Unknown locales (e.g. /feed.xml, /nonexistent) 404 immediately instead of
+// rendering the tree and crashing with a static-to-dynamic error.
+export const dynamicParams = false;
+
 export function generateStaticParams() {
 	return routing.locales.map((locale) => ({ locale }));
 }
