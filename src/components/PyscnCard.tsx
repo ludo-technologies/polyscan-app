@@ -16,15 +16,14 @@ export default function PyscnCard() {
 			</p>
 			<p className="mb-3 text-sm leading-relaxed text-[var(--text-secondary)]">
 				An open-source structural analyzer for Python: duplicated code,
-				complexity, dead code, and dependency rules. Use it as a CLI, as an MCP
-				server your agent can call, or as a{" "}
+				complexity, dead code, and dependency rules. Use it as a CLI, or as a{" "}
 				<Link
 					href={LINKS.pyscnBot}
 					className="font-medium text-[var(--brand-blue)] hover:text-[var(--brand-blue-hover)]"
 				>
 					GitHub App
 				</Link>{" "}
-				that comments on pull requests.
+				that regularly audits your repository and reports in a GitHub issue.
 			</p>
 			<code className="block w-fit border border-[var(--border-subtle)] bg-[var(--bg-subtle)] px-3 py-1.5 font-mono text-sm text-[var(--text-primary)]">
 				uvx pyscn analyze .
