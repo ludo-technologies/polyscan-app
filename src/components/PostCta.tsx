@@ -15,9 +15,8 @@ export default function PostCta() {
 			</h2>
 			<p className="mb-4 leading-relaxed text-[var(--text-secondary)]">
 				pyscn reports duplicated code, complexity, dead code, and dependency
-				violations in Python. It runs as a CLI, as an MCP server your agent can
-				call mid-session, and as a GitHub App that comments on every pull
-				request.
+				violations in Python. Run it once as a CLI, or install the GitHub App to
+				audit your repository on a schedule and report in a GitHub issue.
 			</p>
 			<pre className="mb-5 overflow-x-auto border border-[var(--border-subtle)] bg-[var(--bg-subtle)] px-4 py-3 font-mono text-sm text-[var(--text-primary)]">
 				<code>uvx pyscn analyze .</code>
