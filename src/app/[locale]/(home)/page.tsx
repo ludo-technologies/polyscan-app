@@ -194,9 +194,9 @@ export default async function Home({
 							</p>
 
 							<div className="mb-8 flex flex-wrap items-center gap-5">
-								<a href="#analyzers" className="home-primary">
+								<LocaleLink href={LINKS.pyscnBot} className="home-primary">
 									{t("hero.cta")} <span aria-hidden="true">↗</span>
-								</a>
+								</LocaleLink>
 								<a
 									href={LINKS.monorepo}
 									target="_blank"
