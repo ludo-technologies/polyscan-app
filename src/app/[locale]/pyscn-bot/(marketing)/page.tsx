@@ -3,7 +3,7 @@ import { getTranslations } from "next-intl/server";
 import AuditPanel from "@/components/pyscn-bot/AuditPanel";
 import ConfigYaml from "@/components/pyscn-bot/ConfigYaml";
 import { Link } from "@/i18n/navigation";
-import { pyscnBotAlternates } from "@/lib/pyscn-bot-metadata";
+import { localizedAlternates } from "@/lib/localized-metadata";
 import { isPyscnBotLoggedIn } from "@/lib/pyscn-bot-session";
 
 const rich = { strong: (chunks: React.ReactNode) => <strong>{chunks}</strong> };
@@ -22,7 +22,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
 	const { locale } = await params;
 	const t = await getTranslations({ locale });
-	const { canonical, languages } = pyscnBotAlternates(locale, "/pyscn-bot");
+	const { canonical, languages } = localizedAlternates(locale, "/pyscn-bot");
 	return {
 		title: "Polyscan - Weekly Codebase Health Monitoring for GitHub",
 		description: t.markup("hero.description", { strong: (chunks) => chunks }),

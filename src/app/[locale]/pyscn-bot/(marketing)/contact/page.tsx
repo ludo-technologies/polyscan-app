@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import ContactForm from "@/components/pyscn-bot/ContactForm";
 import SubpageHeader from "@/components/pyscn-bot/SubpageHeader";
-import { pyscnBotAlternates } from "@/lib/pyscn-bot-metadata";
+import { localizedAlternates } from "@/lib/localized-metadata";
 
 export async function generateMetadata({
 	params,
@@ -11,7 +11,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
 	const { locale } = await params;
 	const t = await getTranslations({ locale });
-	const { canonical, languages } = pyscnBotAlternates(
+	const { canonical, languages } = localizedAlternates(
 		locale,
 		"/pyscn-bot/contact",
 	);

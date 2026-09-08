@@ -8,6 +8,13 @@ export default defineConfig({
 		environment: "jsdom",
 		setupFiles: ["./vitest.setup.ts"],
 		globals: true,
+		server: {
+			deps: {
+				// next-intl's ESM build imports "next/navigation"; inline it so
+				// Vite externalizes that import for Node's exports-map resolution.
+				inline: ["next-intl"],
+			},
+		},
 	},
 	resolve: {
 		alias: {

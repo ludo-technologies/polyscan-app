@@ -5,7 +5,7 @@ import ConfigYaml from "@/components/pyscn-bot/ConfigYaml";
 import Logo from "@/components/pyscn-bot/icons/Logo";
 import LanguageSwitcher from "@/components/pyscn-bot/LanguageSwitcher";
 import { Link } from "@/i18n/navigation";
-import { pyscnBotAlternates } from "@/lib/pyscn-bot-metadata";
+import { localizedAlternates } from "@/lib/localized-metadata";
 
 const GITHUB_APP_INSTALL_URL = "https://github.com/apps/polyscan-app";
 
@@ -16,7 +16,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
 	const { locale } = await params;
 	const t = await getTranslations({ locale });
-	const { canonical, languages } = pyscnBotAlternates(
+	const { canonical, languages } = localizedAlternates(
 		locale,
 		"/pyscn-bot/checkout/success",
 	);

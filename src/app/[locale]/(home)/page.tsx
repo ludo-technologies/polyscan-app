@@ -1,49 +1,21 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import CommandBlock from "@/components/CommandBlock";
 import FloatingAppCard from "@/components/FloatingAppCard";
 import Readout from "@/components/Readout";
 import Reveal from "@/components/Reveal";
+import { Link as LocaleLink } from "@/i18n/navigation";
 import { LINKS } from "@/lib/links";
+import { localizedAlternates } from "@/lib/localized-metadata";
+import { SITE_KEYWORDS } from "@/lib/seo";
 
-export const metadata: Metadata = {
-	alternates: {
-		canonical: "/",
-	},
-};
-
-const checks = [
-	{
-		id: "DEAD",
-		title: "Dead code",
-		body: "Unreachable code you can safely delete, found by walking the control flow graph rather than guessing.",
-	},
-	{
-		id: "DUP",
-		title: "Duplicate code",
-		body: "Copy-pasted and structurally similar code worth merging — Type 1-4 clone detection via tree edit distance.",
-	},
-	{
-		id: "CC",
-		title: "Complexity",
-		body: "Functions that are hard to read and hard to test, ranked by cyclomatic complexity so you know where to start.",
-	},
-	{
-		id: "DEP",
-		title: "Dependencies",
-		body: "Circular imports and unstable module dependencies, plus the module communities your codebase actually forms.",
-	},
-	{
-		id: "CBO",
-		title: "Class design",
-		body: "Classes that do too much or depend on too much, measured with CBO coupling and LCOM cohesion.",
-	},
-];
+type FaqItem = { q: string; a: string };
+type CheckItem = { id: string; title: string; body: string };
 
 const analyzers = [
 	{
 		name: "pyscn",
 		language: "Python",
-		body: "The original analyzer. Ships a CLI, an MCP server, and Agent Skills, and powers Polyscan.",
 		command: "uvx pyscn@latest analyze .",
 		links: [
 			{ label: "GitHub", href: LINKS.pyscn },
@@ -54,7 +26,6 @@ const analyzers = [
 	{
 		name: "polyscan",
 		language: "JS / TS · Go · Rust · C++",
-		body: "One CLI for JavaScript, TypeScript, Go, Rust, and C++. Detects each file's language by extension and lands everything in one report with one health score. Distributed on npm with prebuilt binaries — no toolchain to install.",
 		command: "npx polyscan analyze .",
 		links: [
 			{ label: "GitHub", href: LINKS.polyscanCli },
@@ -64,62 +35,60 @@ const analyzers = [
 	{
 		name: "core",
 		language: "Go module",
-		body: "The language-agnostic engine behind both analyzers: APTED tree edit distance, LSH/MinHash clone indexing, CFG analysis, coupling and cohesion metrics.",
 		command: "go get github.com/ludo-technologies/polyscan/core",
 		links: [{ label: "GitHub", href: LINKS.core }],
 	},
 ];
 
-const agentSteps = [
-	"Analyze the code quality of the src/ directory",
-	"Find duplicate code and help me refactor it",
-	"Show me complex code and help me simplify it",
-];
-
-const faqs = [
+const heroCommands = [
+	{ label: "Python", command: "uvx pyscn@latest analyze ." },
 	{
-		q: "What does Polyscan actually measure?",
-		a: "Structure, not style. Dead code, duplicate code, cyclomatic complexity, module dependency cycles, and class coupling and cohesion — the things that make a codebase expensive to change. It is not a linter or a formatter, and it complements rather than replaces them.",
-	},
-	{
-		q: "Why does this matter for AI-generated code?",
-		a: "Coding agents produce working code quickly, but they tend to duplicate logic and grow functions rather than refactor. Those problems compound silently. Polyscan gives you and your agent a measurement to work against, so cleanup becomes a concrete task instead of a vague feeling.",
-	},
-	{
-		q: "Do I need to install anything?",
-		a: "No. uvx and npx run the analyzers directly. Both ship as single Go binaries built with tree-sitter, so a full analysis is fast enough to run on every commit.",
-	},
-	{
-		q: "Which languages are supported?",
-		a: "Python via pyscn, and JavaScript, TypeScript, Go, Rust, and C++ via polyscan. Complexity and duplicate code are measured for every language. Dead code, dependencies, and class design need the import graph and class model that only the Python and JavaScript/TypeScript backends build today, so those dimensions are left out of a Go, Rust, or C++ score rather than counted as clean.",
-	},
-	{
-		q: "Is it open source?",
-		a: "Yes, MIT licensed. The analyzers, the shared core, and the Agent Skills are all public on GitHub.",
+		label: "JavaScript / TypeScript / Go / Rust / C++",
+		command: "npx polyscan analyze .",
 	},
 ];
 
-const FAQ_JSON_LD = JSON.stringify({
-	"@context": "https://schema.org",
-	"@type": "FAQPage",
-	mainEntity: faqs.map(({ q, a }) => ({
-		"@type": "Question",
-		name: q,
-		acceptedAnswer: { "@type": "Answer", text: a },
-	})),
-});
+const agentCommands = [
+	{ label: "pyscn Skills", command: "uvx add-skills ludo-technologies/pyscn" },
+	{
+		label: "polyscan Skills",
+		command: "npx skills add ludo-technologies/polyscan",
+	},
+	{
+		label: "Claude Code plugin",
+		command: "claude plugin marketplace add ludo-technologies/polyscan",
+	},
+];
 
-const SOFTWARE_JSON_LD = JSON.stringify({
-	"@context": "https://schema.org",
-	"@type": "SoftwareApplication",
-	name: "polyscan",
-	applicationCategory: "DeveloperApplication",
-	operatingSystem: "macOS, Linux, Windows",
-	description:
-		"Open source code quality analyzers for Python, JavaScript/TypeScript, Go, Rust, and C++. Detects dead code, duplicate code, complexity, dependency cycles, and class coupling, then scores the codebase and reports what to fix first.",
-	license: "https://opensource.org/licenses/MIT",
-	offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-});
+const coveredLanguages = [
+	"Python",
+	"TypeScript",
+	"JavaScript",
+	"Go",
+	"Rust",
+	"C++",
+];
+
+export async function generateMetadata({
+	params,
+}: {
+	params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+	const { locale } = await params;
+	const t = await getTranslations({ locale, namespace: "home" });
+	const { canonical, languages } = localizedAlternates(locale, "/");
+	return {
+		title: t("meta.title"),
+		description: t("meta.description"),
+		keywords: [...SITE_KEYWORDS],
+		openGraph: {
+			title: t("meta.title"),
+			description: t("meta.ogDescription"),
+			type: "website",
+		},
+		alternates: { canonical, languages },
+	};
+}
 
 function SectionHead({
 	id,
@@ -153,7 +122,39 @@ function SectionHead({
 	);
 }
 
-export default function Home() {
+export default async function Home({
+	params,
+}: {
+	params: Promise<{ locale: string }>;
+}) {
+	const { locale } = await params;
+	const t = await getTranslations({ locale, namespace: "home" });
+	const checks = t.raw("checks.items") as CheckItem[];
+	const analyzerBodies = t.raw("analyzers.items") as { body: string }[];
+	const agentSteps = t.raw("agents.steps") as string[];
+	const faqs = t.raw("faq.items") as FaqItem[];
+
+	const faqJsonLd = JSON.stringify({
+		"@context": "https://schema.org",
+		"@type": "FAQPage",
+		mainEntity: faqs.map(({ q, a }) => ({
+			"@type": "Question",
+			name: q,
+			acceptedAnswer: { "@type": "Answer", text: a },
+		})),
+	});
+
+	const softwareJsonLd = JSON.stringify({
+		"@context": "https://schema.org",
+		"@type": "SoftwareApplication",
+		name: "polyscan",
+		applicationCategory: "DeveloperApplication",
+		operatingSystem: "macOS, Linux, Windows",
+		description: t("softwareDescription"),
+		license: "https://opensource.org/licenses/MIT",
+		offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+	});
+
 	return (
 		<main className="home-page relative flex min-h-screen flex-col items-center">
 			<FloatingAppCard />
@@ -161,12 +162,12 @@ export default function Home() {
 				<script
 					type="application/ld+json"
 					// biome-ignore lint/security/noDangerouslySetInnerHtml: structured data
-					dangerouslySetInnerHTML={{ __html: SOFTWARE_JSON_LD }}
+					dangerouslySetInnerHTML={{ __html: softwareJsonLd }}
 				/>
 				<script
 					type="application/ld+json"
 					// biome-ignore lint/security/noDangerouslySetInnerHtml: structured data
-					dangerouslySetInnerHTML={{ __html: FAQ_JSON_LD }}
+					dangerouslySetInnerHTML={{ __html: faqJsonLd }}
 				/>
 
 				<section
@@ -176,26 +177,25 @@ export default function Home() {
 					<div className="grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-14">
 						<div className="hero-copy min-w-0">
 							<p className="hero-eyebrow">
-								<span /> Open source. Clear signals.
+								<span /> {t("hero.eyebrow")}
 							</p>
 							<h1 className="type-display mb-6 text-[3.5rem] leading-[0.98] font-bold text-[var(--text-primary)] sm:text-7xl lg:text-[5.25rem]">
-								Code quality,
+								{t("hero.title")}
 								<br />
-								<span className="text-[var(--brand-blue)]">measured.</span>
+								<span className="text-[var(--brand-blue)]">
+									{t("hero.titleHighlight")}
+								</span>
 							</h1>
 							<p className="mb-4 max-w-2xl text-lg font-semibold leading-relaxed text-[var(--text-primary)] sm:text-xl">
-								Structural analyzers for the age of AI-written code.
+								{t("hero.lead")}
 							</p>
 							<p className="mb-8 max-w-2xl leading-relaxed text-[var(--text-secondary)]">
-								Building with Claude, Cursor, or Codex? Your agent writes code
-								faster than anyone can review it. Polyscan runs structural
-								analysis over the whole codebase — one command scores it and
-								shows what to fix first.
+								{t("hero.body")}
 							</p>
 
 							<div className="mb-8 flex flex-wrap items-center gap-5">
 								<a href="#analyzers" className="home-primary">
-									Find your analyzer <span aria-hidden="true">↗</span>
+									{t("hero.cta")} <span aria-hidden="true">↗</span>
 								</a>
 								<a
 									href={LINKS.monorepo}
@@ -203,21 +203,16 @@ export default function Home() {
 									rel="noopener noreferrer"
 									className="home-text-link"
 								>
-									Explore the source <span aria-hidden="true">↗</span>
+									{t("hero.source")} <span aria-hidden="true">↗</span>
 								</a>
 							</div>
 							<div className="grid max-w-3xl gap-4">
-								<CommandBlock
-									label="Python"
-									command="uvx pyscn@latest analyze ."
-								/>
-								<CommandBlock
-									label="JavaScript / TypeScript / Go / Rust / C++"
-									command="npx polyscan analyze ."
-								/>
+								{heroCommands.map((c) => (
+									<CommandBlock key={c.command} {...c} />
+								))}
 							</div>
 							<p className="mt-3 font-mono text-xs text-[var(--text-muted)]">
-								No installation, no sign-up, no code leaves your machine.
+								{t("hero.noInstall")}
 							</p>
 						</div>
 
@@ -225,7 +220,7 @@ export default function Home() {
 							<div className="instrument-orbit" aria-hidden="true" />
 							<Readout />
 							<p className="mt-5 text-center font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--text-muted)]">
-								One codebase. Five dimensions. A clear next step.
+								{t("hero.instrumentCaption")}
 							</p>
 						</div>
 					</div>
@@ -234,18 +229,16 @@ export default function Home() {
 				<div className="language-strip relative z-10 w-full">
 					<div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-8 gap-y-4 px-4 py-6 sm:px-6">
 						<span className="font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--text-muted)]">
-							Your stack, covered
+							{t("languageStrip.label")}
 						</span>
-						{["Python", "TypeScript", "JavaScript", "Go", "Rust", "C++"].map(
-							(language) => (
-								<span
-									key={language}
-									className="text-sm font-semibold tracking-tight text-[var(--text-secondary)]"
-								>
-									{language}
-								</span>
-							),
-						)}
+						{coveredLanguages.map((language) => (
+							<span
+								key={language}
+								className="text-sm font-semibold tracking-tight text-[var(--text-secondary)]"
+							>
+								{language}
+							</span>
+						))}
 					</div>
 				</div>
 				<div className="relative z-10 w-full max-w-6xl px-4 pb-20 sm:px-6">
@@ -257,14 +250,14 @@ export default function Home() {
 					>
 						<SectionHead
 							id="what-you-get-title"
-							eyebrow="Readings"
-							title="Less guesswork. More signal."
-							lede="Every analyzer scores your codebase from 0-100 with an A-F grade and generates an HTML report, looking at your code from five angles."
+							eyebrow={t("checks.eyebrow")}
+							title={t("checks.title")}
+							lede={t("checks.lede")}
 						/>
 						<div className="checks-grid grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 							{checks.map((c, index) => (
 								<article
-									key={c.title}
+									key={c.id}
 									className="signal-card bg-[var(--bg-card)] p-7"
 								>
 									<div className="signal-visual" aria-hidden="true">
@@ -296,15 +289,15 @@ export default function Home() {
 								className="signal-summary flex flex-col justify-between p-7"
 							>
 								<span className="font-mono text-xs uppercase tracking-widest">
-									The whole picture
+									{t("checks.summaryLabel")}
 								</span>
 								<span className="my-6 text-4xl font-bold tracking-tight">
-									Structure.
+									{t("checks.summaryBig1")}
 									<br />
-									Not just style.
+									{t("checks.summaryBig2")}
 								</span>
 								<span className="text-sm">
-									Meet your analyzer <span aria-hidden="true">↗</span>
+									{t("checks.summaryCta")} <span aria-hidden="true">↗</span>
 								</span>
 							</a>
 						</div>
@@ -318,12 +311,12 @@ export default function Home() {
 					>
 						<SectionHead
 							id="analyzers-title"
-							eyebrow="Instruments"
-							title="One engine, one analyzer per language"
-							lede="The analysis algorithms live in a shared, language-agnostic Go module. Each analyzer only implements parsing and classification, so every language is graded by the same rules."
+							eyebrow={t("analyzers.eyebrow")}
+							title={t("analyzers.title")}
+							lede={t("analyzers.lede")}
 						/>
 						<div className="grid gap-4 lg:grid-cols-3">
-							{analyzers.map((a) => (
+							{analyzers.map((a, index) => (
 								<article
 									key={a.name}
 									className="analyzer-card flex min-w-0 flex-col border border-[var(--border-light)] bg-[var(--bg-card)] p-6"
@@ -337,7 +330,7 @@ export default function Home() {
 										</span>
 									</div>
 									<p className="mb-4 flex-1 text-sm leading-relaxed text-[var(--text-light)]">
-										{a.body}
+										{analyzerBodies[index]?.body}
 									</p>
 									<div className="mb-4 overflow-x-auto border border-[var(--border-subtle)] bg-[var(--bg-subtle)] px-3 py-2 font-mono text-xs text-[var(--text-primary)]">
 										{a.command}
@@ -360,10 +353,7 @@ export default function Home() {
 							))}
 						</div>
 						<p className="mt-6 max-w-3xl font-mono text-xs text-[var(--text-muted)]">
-							Complexity and duplicate code cover every language. Dead code,
-							dependencies, and class design are available for Python and
-							JavaScript/TypeScript today; a dimension a language does not have
-							is left out of its score rather than counted as clean.
+							{t("analyzers.note")}
 						</p>
 					</section>
 
@@ -375,28 +365,19 @@ export default function Home() {
 					>
 						<SectionHead
 							id="agents-title"
-							eyebrow="Agent skills"
-							title="Built for coding agents"
-							lede="The analyzers ship Agent Skills that teach an AI agent when and how to run each analysis — health checks, refactoring, architecture review, and CI-friendly reports. They work with Claude Code, Cursor, Codex, Gemini CLI, and others."
+							eyebrow={t("agents.eyebrow")}
+							title={t("agents.title")}
+							lede={t("agents.lede")}
 						/>
 						<div className="grid gap-6 lg:grid-cols-2">
 							<div className="space-y-4">
-								<CommandBlock
-									label="pyscn Skills"
-									command="uvx add-skills ludo-technologies/pyscn"
-								/>
-								<CommandBlock
-									label="polyscan Skills"
-									command="npx skills add ludo-technologies/polyscan"
-								/>
-								<CommandBlock
-									label="Claude Code plugin"
-									command="claude plugin marketplace add ludo-technologies/polyscan"
-								/>
+								{agentCommands.map((c) => (
+									<CommandBlock key={c.command} {...c} />
+								))}
 							</div>
 							<div className="border border-[var(--border-light)] bg-[var(--bg-card)] p-5">
 								<h3 className="mb-4 font-mono text-[11px] uppercase tracking-[0.25em] text-[var(--text-muted)]">
-									Then just ask
+									{t("agents.ask")}
 								</h3>
 								<ul className="space-y-3">
 									{agentSteps.map((s) => (
@@ -419,35 +400,31 @@ export default function Home() {
 						id="bot"
 					>
 						<p className="mb-3 font-mono text-[11px] uppercase tracking-[0.25em] text-[var(--brand-blue)]">
-							Continuous monitoring
+							{t("bot.eyebrow")}
 						</p>
 						<h2
 							id="bot-title"
 							className="type-display mb-3 text-2xl font-bold text-[var(--text-primary)] sm:text-3xl"
 						>
-							Measure it once with the CLI. Track it every week with the App.
+							{t("bot.title")}
 						</h2>
 						<p className="mb-6 max-w-3xl text-[var(--text-secondary)]">
-							The GitHub App measures complexity, duplication, dead code, and
-							dependencies across your entire repository every week. It tracks
-							structural decay over time, reports what to fix first in a GitHub
-							Issue, and catches new problems on pull requests. Weekly
-							measurement is free for every repository.
+							{t("bot.body")}
 						</p>
 						<div className="flex flex-wrap gap-3">
-							<a
+							<LocaleLink
 								href={LINKS.pyscnBot}
 								className="inline-flex border border-[var(--brand-blue)] bg-[var(--brand-blue)] px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[var(--brand-blue-hover)]"
 							>
-								Start weekly measurement →
-							</a>
+								{t("bot.cta")} →
+							</LocaleLink>
 							<a
 								href={LINKS.pyscnBotRepo}
 								target="_blank"
 								rel="noopener noreferrer"
 								className="inline-flex border border-[var(--brand-blue)] bg-white px-5 py-2.5 text-sm font-semibold text-[var(--brand-blue)] transition-colors hover:bg-[var(--brand-blue-light)]/40"
 							>
-								Source on GitHub
+								{t("bot.source")}
 							</a>
 						</div>
 					</section>
@@ -460,8 +437,8 @@ export default function Home() {
 					>
 						<SectionHead
 							id="faq-title"
-							eyebrow="FAQ"
-							title="Frequently asked questions"
+							eyebrow={t("faq.eyebrow")}
+							title={t("faq.title")}
 						/>
 						<div className="border border-[var(--border-light)] bg-[var(--bg-card)]">
 							{faqs.map(({ q, a }) => (
@@ -489,16 +466,15 @@ export default function Home() {
 					>
 						<div className="border-b border-[var(--border-subtle)] pb-4">
 							<p className="font-mono text-[11px] uppercase tracking-[0.25em] text-[var(--text-muted)]">
-								Run it now
+								{t("closing.eyebrow")}
 							</p>
 						</div>
 						<div className="pt-6">
 							<h2 className="type-display mb-3 text-2xl font-bold text-[var(--text-primary)] sm:text-3xl">
-								Score your codebase in one command
+								{t("closing.title")}
 							</h2>
 							<p className="mb-6 max-w-xl text-[var(--text-secondary)]">
-								Run it on the repository you are working in right now — it takes
-								seconds and installs nothing.
+								{t("closing.body")}
 							</p>
 							<div className="grid max-w-2xl gap-3 sm:grid-cols-2">
 								<CommandBlock command="uvx pyscn@latest analyze ." />

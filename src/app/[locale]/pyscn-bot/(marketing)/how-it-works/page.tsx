@@ -3,7 +3,7 @@ import { getTranslations } from "next-intl/server";
 import type { ReactNode } from "react";
 import SubpageHeader from "@/components/pyscn-bot/SubpageHeader";
 import { Link } from "@/i18n/navigation";
-import { pyscnBotAlternates } from "@/lib/pyscn-bot-metadata";
+import { localizedAlternates } from "@/lib/localized-metadata";
 
 const rich = { strong: (chunks: ReactNode) => <strong>{chunks}</strong> };
 const richCodeStrong = {
@@ -32,7 +32,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
 	const { locale } = await params;
 	const t = await getTranslations({ locale });
-	const { canonical, languages } = pyscnBotAlternates(
+	const { canonical, languages } = localizedAlternates(
 		locale,
 		"/pyscn-bot/how-it-works",
 	);

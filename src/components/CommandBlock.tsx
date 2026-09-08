@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 
 type Props = {
@@ -8,6 +9,7 @@ type Props = {
 };
 
 export default function CommandBlock({ command, label }: Props) {
+	const t = useTranslations("home.commandBlock");
 	const [copied, setCopied] = useState(false);
 
 	async function copy() {
@@ -31,13 +33,13 @@ export default function CommandBlock({ command, label }: Props) {
 						<span className="size-2 rounded-full bg-white/10" />
 					</span>
 					<p className="font-mono text-[10px] uppercase tracking-[0.16em] text-[var(--text-dimmed)]">
-						{label || "Terminal"}
+						{label || t("terminal")}
 					</p>
 				</div>
 				<button
 					type="button"
 					onClick={copy}
-					aria-label={`Copy "${command}" to clipboard`}
+					aria-label={t("copyAria", { command })}
 					className="inline-flex min-h-11 shrink-0 items-center gap-2 rounded-md px-2 font-mono text-xs text-white/70 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[var(--brand-blue-light)]"
 				>
 					<svg
@@ -58,7 +60,9 @@ export default function CommandBlock({ command, label }: Props) {
 							</>
 						)}
 					</svg>
-					<span className="min-w-[6ch]">{copied ? "Copied" : "Copy"}</span>
+					<span className="min-w-[6ch]">
+						{copied ? t("copied") : t("copy")}
+					</span>
 				</button>
 			</div>
 			<div className="flex items-start gap-3 px-4 py-5 sm:px-5 sm:py-6">
@@ -75,7 +79,7 @@ export default function CommandBlock({ command, label }: Props) {
 				</code>
 			</div>
 			<span role="status" className="sr-only">
-				{copied ? "Command copied to clipboard." : ""}
+				{copied ? t("copiedStatus") : ""}
 			</span>
 		</div>
 	);

@@ -1,50 +1,29 @@
+import { getTranslations } from "next-intl/server";
+
 type Reading = {
-	id: string;
-	label: string;
-	value: string;
+	id: "CC" | "DUP" | "DEAD" | "DEP" | "CBO";
 	/** Bar length as a fraction of the gauge, 0–1. */
 	level: number;
 	over: boolean;
 };
 
 const READINGS: Reading[] = [
-	{
-		id: "CC",
-		label: "Cyclomatic complexity",
-		value: "max 31",
-		level: 0.78,
-		over: true,
-	},
-	{ id: "DUP", label: "Duplication", value: "8.2%", level: 0.62, over: true },
-	{
-		id: "DEAD",
-		label: "Dead code",
-		value: "0 blocks",
-		level: 0.04,
-		over: false,
-	},
-	{
-		id: "DEP",
-		label: "Dependency cycles",
-		value: "2 cycles",
-		level: 0.4,
-		over: true,
-	},
-	{
-		id: "CBO",
-		label: "Class coupling",
-		value: "max 9",
-		level: 0.3,
-		over: false,
-	},
+	{ id: "CC", level: 0.78, over: true },
+	{ id: "DUP", level: 0.62, over: true },
+	{ id: "DEAD", level: 0.04, over: false },
+	{ id: "DEP", level: 0.4, over: true },
+	{ id: "CBO", level: 0.3, over: false },
 ];
 
 const HEALTH = 74;
+const GRADE = "B";
 
-export default function Readout() {
+export default async function Readout() {
+	const t = await getTranslations("home.readout");
+
 	return (
 		<figure
-			aria-label="Sample pyscn analysis readout"
+			aria-label={t("sampleAria")}
 			className="readout-panel relative isolate min-w-0 overflow-hidden rounded-2xl border border-white/15 bg-[var(--panel-bg)] text-[var(--panel-text)] shadow-[0_24px_64px_-20px_rgba(2,8,23,0.65),inset_0_1px_0_rgba(255,255,255,0.06)] [--panel-accent:#79b8ff] [--panel-bg:#0b1425] [--panel-muted:#9cacc3] [--panel-ok:#6ee7ba] [--panel-text:#edf4ff] [--panel-warn:#fbbf77]"
 		>
 			<figcaption className="flex min-w-0 flex-wrap items-center justify-between gap-3 border-b border-white/10 bg-white/[0.025] px-5 py-3.5">
@@ -55,11 +34,11 @@ export default function Readout() {
 						<span className="size-2 rounded-full bg-[#79baa3]" />
 					</div>
 					<span className="font-mono text-[10px] tracking-wider text-[var(--panel-muted)]">
-						pyscn / structural readout
+						{t("panelLabel")}
 					</span>
 				</div>
 				<span className="rounded border border-[var(--panel-accent)]/25 bg-[var(--panel-accent)]/10 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.16em] text-[var(--panel-accent)]">
-					Sample run
+					{t("sampleRun")}
 				</span>
 			</figcaption>
 
@@ -102,7 +81,7 @@ export default function Readout() {
 						/>
 					</svg>
 					<div className="text-center">
-						<span className="sr-only">Health score: </span>
+						<span className="sr-only">{t("healthScore")}</span>
 						<span className="block font-mono text-5xl font-medium tracking-[-0.06em]">
 							{HEALTH}
 						</span>
@@ -113,26 +92,34 @@ export default function Readout() {
 				</div>
 				<div className="min-w-0 flex-1 basis-36">
 					<p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--panel-muted)]">
-						Codebase health
+						{t("codebaseHealth")}
 					</p>
 					<div className="mt-2 flex items-center gap-3">
-						<p className="text-2xl font-semibold tracking-tight">Grade B</p>
+						<p className="text-2xl font-semibold tracking-tight">
+							{t("grade", { grade: GRADE })}
+						</p>
 						<span aria-hidden="true" className="h-px flex-1 bg-white/10" />
 					</div>
 					<p className="mt-2 text-xs leading-relaxed text-[var(--panel-muted)]">
-						A structural snapshot.
+						{t("snapshot1")}
 						<br />
-						See where to look next.
+						{t("snapshot2")}
 					</p>
 					<p className="mt-4 font-mono text-[10px] text-[var(--panel-warn)]">
-						{READINGS.filter((r) => r.over).length} metrics over threshold
+						{t("metricsOverThreshold", {
+							count: READINGS.filter((r) => r.over).length,
+						})}
 					</p>
 				</div>
 			</div>
 
 			<div className="flex items-center justify-between gap-3 px-5 pb-1 pt-4 font-mono text-[9px] uppercase tracking-[0.18em] text-[var(--panel-muted)] sm:px-6">
-				<span>Structural metrics</span>
-				<span>{String(READINGS.length).padStart(2, "0")} checks</span>
+				<span>{t("structuralMetrics")}</span>
+				<span>
+					{t("checksCount", {
+						count: String(READINGS.length).padStart(2, "0"),
+					})}
+				</span>
 			</div>
 			<dl className="px-5 pb-3 sm:px-6">
 				{READINGS.map((r, index) => (
@@ -144,9 +131,13 @@ export default function Readout() {
 							<span className="w-9 shrink-0 font-mono text-[9px] tracking-wide text-[var(--panel-muted)]">
 								{r.id}
 							</span>
-							<span className="min-w-0 text-xs leading-relaxed">{r.label}</span>
+							<span className="min-w-0 text-xs leading-relaxed">
+								{t(`readings.${r.id}.label`)}
+							</span>
 						</dt>
-						<dd className="font-mono text-xs tabular-nums">{r.value}</dd>
+						<dd className="font-mono text-xs tabular-nums">
+							{t(`readings.${r.id}.value`)}
+						</dd>
 						<dd
 							className="col-span-2 flex min-w-0 items-center gap-3"
 							style={{
@@ -166,7 +157,7 @@ export default function Readout() {
 								/>
 							</div>
 							<span className="w-28 shrink-0 text-right font-mono text-[9px]">
-								{r.over ? "Over threshold" : "Within threshold"}
+								{r.over ? t("overThreshold") : t("withinThreshold")}
 							</span>
 						</dd>
 					</div>
@@ -175,7 +166,7 @@ export default function Readout() {
 
 			<div className="min-w-0 border-t border-white/10 bg-black/20 px-5 py-4 sm:px-6">
 				<p className="mb-2 font-mono text-[9px] uppercase tracking-[0.16em] text-[var(--panel-muted)]">
-					Run it on your codebase
+					{t("runIt")}
 				</p>
 				<p className="flex min-w-0 items-start gap-2 font-mono text-[11px] leading-relaxed sm:text-xs">
 					<span

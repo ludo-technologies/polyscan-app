@@ -99,6 +99,168 @@
 		"title": "Your codebase is ",
 		"titleHighlight": "quietly decaying."
 	},
+	"home": {
+		"meta": {
+			"title": "Polyscan — Structural codebase health for AI-written code",
+			"description": "Measure complexity, duplication, dead code, dependencies, and class design across your entire codebase. Run it once with the open-source CLI or track structural decay every week with the GitHub App.",
+			"ogDescription": "Measure your whole codebase once with the open-source CLI, then track structural decay every week with the GitHub App."
+		},
+		"softwareDescription": "Open source code quality analyzers for Python, JavaScript/TypeScript, Go, Rust, and C++. Detects dead code, duplicate code, complexity, dependency cycles, and class coupling, then scores the codebase and reports what to fix first.",
+		"appCard": {
+			"ariaLabel": "Polyscan GitHub App",
+			"dismissAria": "Dismiss GitHub App promotion",
+			"eyebrow": "GitHub App",
+			"title": "Track code quality",
+			"body": "Get a code quality report every week, automatically.",
+			"cta": "Start for free"
+		},
+		"commandBlock": {
+			"terminal": "Terminal",
+			"copy": "Copy",
+			"copied": "Copied",
+			"copyAria": "Copy \"{command}\" to clipboard",
+			"copiedStatus": "Command copied to clipboard."
+		},
+		"readout": {
+			"sampleAria": "Sample pyscn analysis readout",
+			"panelLabel": "pyscn / structural readout",
+			"sampleRun": "Sample run",
+			"healthScore": "Health score:",
+			"codebaseHealth": "Codebase health",
+			"grade": "Grade {grade}",
+			"snapshot1": "A structural snapshot.",
+			"snapshot2": "See where to look next.",
+			"metricsOverThreshold": "{count} metrics over threshold",
+			"structuralMetrics": "Structural metrics",
+			"checksCount": "{count} checks",
+			"overThreshold": "Over threshold",
+			"withinThreshold": "Within threshold",
+			"runIt": "Run it on your codebase",
+			"readings": {
+				"CC": { "label": "Cyclomatic complexity", "value": "max 31" },
+				"DUP": { "label": "Duplication", "value": "8.2%" },
+				"DEAD": { "label": "Dead code", "value": "0 blocks" },
+				"DEP": { "label": "Dependency cycles", "value": "2 cycles" },
+				"CBO": { "label": "Class coupling", "value": "max 9" }
+			}
+		},
+		"hero": {
+			"eyebrow": "Open source. Clear signals.",
+			"title": "Code quality,",
+			"titleHighlight": "measured.",
+			"lead": "Structural analyzers for the age of AI-written code.",
+			"body": "Building with Claude, Cursor, or Codex? Your agent writes code faster than anyone can review it. Polyscan runs structural analysis over the whole codebase — one command scores it and shows what to fix first.",
+			"cta": "Find your analyzer",
+			"source": "Explore the source",
+			"noInstall": "No installation, no sign-up, no code leaves your machine.",
+			"instrumentCaption": "One codebase. Five dimensions. A clear next step."
+		},
+		"languageStrip": {
+			"label": "Your stack, covered"
+		},
+		"checks": {
+			"eyebrow": "Readings",
+			"title": "Less guesswork. More signal.",
+			"lede": "Every analyzer scores your codebase from 0-100 with an A-F grade and generates an HTML report, looking at your code from five angles.",
+			"items": [
+				{
+					"id": "DEAD",
+					"title": "Dead code",
+					"body": "Unreachable code you can safely delete, found by walking the control flow graph rather than guessing."
+				},
+				{
+					"id": "DUP",
+					"title": "Duplicate code",
+					"body": "Copy-pasted and structurally similar code worth merging — Type 1-4 clone detection via tree edit distance."
+				},
+				{
+					"id": "CC",
+					"title": "Complexity",
+					"body": "Functions that are hard to read and hard to test, ranked by cyclomatic complexity so you know where to start."
+				},
+				{
+					"id": "DEP",
+					"title": "Dependencies",
+					"body": "Circular imports and unstable module dependencies, plus the module communities your codebase actually forms."
+				},
+				{
+					"id": "CBO",
+					"title": "Class design",
+					"body": "Classes that do too much or depend on too much, measured with CBO coupling and LCOM cohesion."
+				}
+			],
+			"summaryLabel": "The whole picture",
+			"summaryBig1": "Structure.",
+			"summaryBig2": "Not just style.",
+			"summaryCta": "Meet your analyzer"
+		},
+		"analyzers": {
+			"eyebrow": "Instruments",
+			"title": "One engine, one analyzer per language",
+			"lede": "The analysis algorithms live in a shared, language-agnostic Go module. Each analyzer only implements parsing and classification, so every language is graded by the same rules.",
+			"items": [
+				{
+					"body": "The original analyzer. Ships a CLI, an MCP server, and Agent Skills, and powers Polyscan."
+				},
+				{
+					"body": "One CLI for JavaScript, TypeScript, Go, Rust, and C++. Detects each file's language by extension and lands everything in one report with one health score. Distributed on npm with prebuilt binaries — no toolchain to install."
+				},
+				{
+					"body": "The language-agnostic engine behind both analyzers: APTED tree edit distance, LSH/MinHash clone indexing, CFG analysis, coupling and cohesion metrics."
+				}
+			],
+			"note": "Complexity and duplicate code cover every language. Dead code, dependencies, and class design are available for Python and JavaScript/TypeScript today; a dimension a language does not have is left out of its score rather than counted as clean."
+		},
+		"agents": {
+			"eyebrow": "Agent skills",
+			"title": "Built for coding agents",
+			"lede": "The analyzers ship Agent Skills that teach an AI agent when and how to run each analysis — health checks, refactoring, architecture review, and CI-friendly reports. They work with Claude Code, Cursor, Codex, Gemini CLI, and others.",
+			"ask": "Then just ask",
+			"steps": [
+				"Analyze the code quality of the src/ directory",
+				"Find duplicate code and help me refactor it",
+				"Show me complex code and help me simplify it"
+			]
+		},
+		"bot": {
+			"eyebrow": "Continuous monitoring",
+			"title": "Measure it once with the CLI. Track it every week with the App.",
+			"body": "The GitHub App measures complexity, duplication, dead code, and dependencies across your entire repository every week. It tracks structural decay over time, reports what to fix first in a GitHub Issue, and catches new problems on pull requests. Weekly measurement is free for every repository.",
+			"cta": "Start weekly measurement",
+			"source": "Source on GitHub"
+		},
+		"faq": {
+			"eyebrow": "FAQ",
+			"title": "Frequently asked questions",
+			"items": [
+				{
+					"q": "What does Polyscan actually measure?",
+					"a": "Structure, not style. Dead code, duplicate code, cyclomatic complexity, module dependency cycles, and class coupling and cohesion — the things that make a codebase expensive to change. It is not a linter or a formatter, and it complements rather than replaces them."
+				},
+				{
+					"q": "Why does this matter for AI-generated code?",
+					"a": "Coding agents produce working code quickly, but they tend to duplicate logic and grow functions rather than refactor. Those problems compound silently. Polyscan gives you and your agent a measurement to work against, so cleanup becomes a concrete task instead of a vague feeling."
+				},
+				{
+					"q": "Do I need to install anything?",
+					"a": "No. uvx and npx run the analyzers directly. Both ship as single Go binaries built with tree-sitter, so a full analysis is fast enough to run on every commit."
+				},
+				{
+					"q": "Which languages are supported?",
+					"a": "Python via pyscn, and JavaScript, TypeScript, Go, Rust, and C++ via polyscan. Complexity and duplicate code are measured for every language. Dead code, dependencies, and class design need the import graph and class model that only the Python and JavaScript/TypeScript backends build today, so those dimensions are left out of a Go, Rust, or C++ score rather than counted as clean."
+				},
+				{
+					"q": "Is it open source?",
+					"a": "Yes, MIT licensed. The analyzers, the shared core, and the Agent Skills are all public on GitHub."
+				}
+			]
+		},
+		"closing": {
+			"eyebrow": "Run it now",
+			"title": "Score your codebase in one command",
+			"body": "Run it on the repository you are working in right now — it takes seconds and installs nothing."
+		}
+	},
 	"how": {
 		"clones": {
 			"desc": "Finds duplicate code and promotes DRY principle",
@@ -153,6 +315,39 @@
 		},
 		"subtitle": "Start free, upgrade when you need more",
 		"title": "Simple Pricing"
+	},
+	"siteFooter": {
+		"aiAgents": "AI agents",
+		"allRightsReserved": "All rights reserved.",
+		"analyzers": "Analyzers",
+		"blog": "Blog",
+		"contact": "Contact",
+		"documentation": "Documentation",
+		"faq": "FAQ",
+		"githubApp": "GitHub App",
+		"legal": "Legal",
+		"location": "Kanagawa, Japan",
+		"ludoTechnologies": "Ludo Technologies",
+		"polyscanOnGitHub": "Polyscan on GitHub",
+		"privacy": "Privacy Policy",
+		"product": "Product",
+		"pyscnOnGitHub": "pyscn on GitHub",
+		"resources": "Resources",
+		"tagline": "Structural codebase health for AI-written code.",
+		"terms": "Terms of Service",
+		"whatYouGet": "What you get"
+	},
+	"siteHeader": {
+		"close": "Close",
+		"languagesAria": "Languages",
+		"menu": "Menu",
+		"nav": {
+			"analyzers": "Analyzers",
+			"blog": "Blog",
+			"docs": "Docs",
+			"github": "GitHub"
+		},
+		"primaryNav": "Primary"
 	},
 	"tech": {
 		"agent": {
