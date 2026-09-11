@@ -108,9 +108,9 @@
 		"appCard": {
 			"ariaLabel": "Polyscan GitHub App",
 			"dismissAria": "GitHub Appの告知を閉じる",
-			"eyebrow": "GitHub App",
-			"title": "コード品質を継続追跡",
-			"body": "毎週、自動でコード品質レポートを取得。",
+			"eyebrow": "無料",
+			"title": "GitHub Appを入れる",
+			"body": "毎週、自動でコード品質レポートが届きます。",
 			"cta": "無料で始める"
 		},
 		"commandBlock": {

@@ -108,8 +108,8 @@
 		"appCard": {
 			"ariaLabel": "Polyscan GitHub App",
 			"dismissAria": "关闭 GitHub App 推广",
-			"eyebrow": "GitHub App",
-			"title": "持续跟踪代码质量",
+			"eyebrow": "免费",
+			"title": "安装 GitHub App",
 			"body": "每周自动获得代码质量报告。",
 			"cta": "免费开始"
 		},
