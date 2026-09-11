@@ -149,7 +149,7 @@
 			"titleHighlight": "精确测量。",
 			"lead": "为 AI 编写代码的时代打造的结构分析工具。",
 			"body": "你在用 Claude、Cursor 或 Codex 开发吗？Agent 写代码的速度比任何人评审的速度都快。Polyscan 对整个代码库运行结构分析——一条命令即可评分，并指出应优先修复的问题。",
-			"cta": "找到你的分析器",
+			"cta": "阅读文档",
 			"source": "查看源码",
 			"noInstall": "无需安装、无需注册，代码不会离开你的机器。",
 			"instrumentCaption": "一个代码库。五个维度。明确的下一步。"
@@ -191,12 +191,12 @@
 			"summaryLabel": "全局视角",
 			"summaryBig1": "测量的是",
 			"summaryBig2": "结构。",
-			"summaryCta": "了解你的分析器"
+			"summaryCta": "查看分析器"
 		},
 		"analyzers": {
 			"eyebrow": "测量仪器",
-			"title": "一个引擎，每种语言一个分析器",
-			"lede": "分析算法位于一个共享的、与语言无关的 Go 模块中。每个分析器只实现解析和分类，因此所有语言都按同一套规则评分。",
+			"title": "一条命令。任何语言。",
+			"lede": "无需配置，无需安装。",
 			"items": [
 				{
 					"body": "最早的分析器。提供 CLI、MCP 服务器和 Agent Skills，并驱动 Polyscan。"
@@ -223,9 +223,9 @@
 		},
 		"bot": {
 			"eyebrow": "持续监控",
-			"title": "用 CLI 测一次。用 App 每周跟踪。",
+			"title": "用 App 每周跟踪。",
 			"body": "GitHub App 每周测量整个仓库的复杂度、重复、死代码和依赖关系。它持续跟踪结构性劣化，在 GitHub Issue 中报告应优先修复的问题，并在 Pull Request 上发现新问题。每周测量对所有仓库免费。",
-			"cta": "开始每周测量",
+			"cta": "免费开始",
 			"source": "在 GitHub 查看源码"
 		},
 		"faq": {

@@ -194,7 +194,12 @@ export default async function Home({
 							</p>
 
 							<div className="mb-8 flex flex-wrap items-center gap-5">
-								<a href="#analyzers" className="home-primary">
+								<a
+									href={LINKS.docs}
+									target="_blank"
+									rel="noopener noreferrer"
+									className="home-primary"
+								>
 									{t("hero.cta")} <span aria-hidden="true">↗</span>
 								</a>
 								<a

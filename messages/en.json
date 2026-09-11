@@ -149,7 +149,7 @@
 			"titleHighlight": "measured.",
 			"lead": "Structural analyzers for the age of AI-written code.",
 			"body": "Building with Claude, Cursor, or Codex? Your agent writes code faster than anyone can review it. Polyscan runs structural analysis over the whole codebase — one command scores it and shows what to fix first.",
-			"cta": "Find your analyzer",
+			"cta": "Read the docs",
 			"source": "Explore the source",
 			"noInstall": "No installation, no sign-up, no code leaves your machine.",
 			"instrumentCaption": "One codebase. Five dimensions. A clear next step."
@@ -191,12 +191,12 @@
 			"summaryLabel": "The whole picture",
 			"summaryBig1": "Structure.",
 			"summaryBig2": "Not just style.",
-			"summaryCta": "Meet your analyzer"
+			"summaryCta": "See the analyzers"
 		},
 		"analyzers": {
 			"eyebrow": "Instruments",
-			"title": "One engine, one analyzer per language",
-			"lede": "The analysis algorithms live in a shared, language-agnostic Go module. Each analyzer only implements parsing and classification, so every language is graded by the same rules.",
+			"title": "One command. Any language.",
+			"lede": "Nothing to configure, nothing to install.",
 			"items": [
 				{
 					"body": "The original analyzer. Ships a CLI, an MCP server, and Agent Skills, and powers Polyscan."
@@ -223,9 +223,9 @@
 		},
 		"bot": {
 			"eyebrow": "Continuous monitoring",
-			"title": "Measure it once with the CLI. Track it every week with the App.",
+			"title": "Track it every week with the App.",
 			"body": "The GitHub App measures complexity, duplication, dead code, and dependencies across your entire repository every week. It tracks structural decay over time, reports what to fix first in a GitHub Issue, and catches new problems on pull requests. Weekly measurement is free for every repository.",
-			"cta": "Start weekly measurement",
+			"cta": "Start for free",
 			"source": "Source on GitHub"
 		},
 		"faq": {
