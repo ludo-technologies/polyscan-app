@@ -108,9 +108,9 @@
 		"appCard": {
 			"ariaLabel": "Polyscan GitHub App",
 			"dismissAria": "Dismiss GitHub App promotion",
-			"eyebrow": "GitHub App",
-			"title": "Track code quality",
-			"body": "Get a code quality report every week, automatically.",
+			"eyebrow": "Free",
+			"title": "Get the GitHub App",
+			"body": "A code quality report every week, automatically.",
 			"cta": "Start for free"
 		},
 		"commandBlock": {
@@ -148,7 +148,7 @@
 			"title": "Code quality,",
 			"titleHighlight": "measured.",
 			"lead": "Structural analyzers for the age of AI-written code.",
-			"body": "Building with Claude, Cursor, or Codex? Your agent writes code faster than anyone can review it. Polyscan runs structural analysis over the whole codebase — one command scores it and shows what to fix first.",
+			"body": "AI agents write code faster than anyone can review it. Polyscan measures the structure of your whole codebase — dead code, duplication, complexity, dependencies, class design — and tells you what to fix first.",
 			"cta": "Read the docs",
 			"source": "Explore the source",
 			"noInstall": "No installation, no sign-up, no code leaves your machine.",
@@ -160,7 +160,7 @@
 		"checks": {
 			"eyebrow": "Readings",
 			"title": "Less guesswork. More signal.",
-			"lede": "Every analyzer scores your codebase from 0-100 with an A-F grade and generates an HTML report, looking at your code from five angles.",
+			"lede": "Five structural readings, one 0-100 score with an A-F grade, and an HTML report you can share.",
 			"items": [
 				{
 					"id": "DEAD",
@@ -194,12 +194,12 @@
 			"summaryCta": "See the analyzers"
 		},
 		"analyzers": {
-			"eyebrow": "Instruments",
+			"eyebrow": "Analyzers",
 			"title": "One command. Any language.",
 			"lede": "Nothing to configure, nothing to install.",
 			"items": [
 				{
-					"body": "The original analyzer. Ships a CLI, an MCP server, and Agent Skills, and powers Polyscan."
+					"body": "The original analyzer. Ships a CLI, an MCP server, and Agent Skills, and is the engine behind the Polyscan GitHub App."
 				},
 				{
 					"body": "One CLI for JavaScript, TypeScript, Go, Rust, and C++. Detects each file's language by extension and lands everything in one report with one health score. Distributed on npm with prebuilt binaries — no toolchain to install."

@@ -10,7 +10,7 @@ const messages = {
 		appCard: {
 			ariaLabel: "Polyscan GitHub App",
 			dismissAria: "Dismiss GitHub App promotion",
-			eyebrow: "GitHub App",
+			eyebrow: "Free",
 			title: "Track code quality",
 			body: "Get a code quality report every week, automatically.",
 			cta: "Start for free",
