@@ -126,6 +126,8 @@ body {
 /* Article body: bind the typography plugin to the site's design tokens so posts
    inherit the same palette as the rest of the page. */
 .post-body {
+	font-size: 1.0625rem;
+	line-height: 1.85;
 	--tw-prose-body: var(--text-light);
 	--tw-prose-headings: var(--text-primary);
 	--tw-prose-lead: var(--text-secondary);
@@ -140,6 +142,12 @@ body {
 	--tw-prose-code: var(--text-primary);
 	--tw-prose-th-borders: var(--border-light);
 	--tw-prose-td-borders: var(--border-subtle);
+}
+
+@media (min-width: 640px) {
+	.post-body {
+		font-size: 1.125rem;
+	}
 }
 
 .post-body :where(a):hover {
