@@ -148,7 +148,7 @@
 			"title": "代码质量，",
 			"titleHighlight": "精确测量。",
 			"lead": "为 AI 编写代码的时代打造的结构分析工具。",
-			"body": "你在用 Claude、Cursor 或 Codex 开发吗？Agent 写代码的速度比任何人评审的速度都快。Polyscan 对整个代码库运行结构分析——一条命令即可评分，并指出应优先修复的问题。",
+			"body": "AI Agent 写代码的速度超过了任何人的评审速度。Polyscan 测量整个代码库的结构——死代码、重复、复杂度、依赖关系、类设计——并告诉你应优先修复什么。",
 			"cta": "阅读文档",
 			"source": "查看源码",
 			"noInstall": "无需安装、无需注册，代码不会离开你的机器。",
@@ -160,7 +160,7 @@
 		"checks": {
 			"eyebrow": "测量结果",
 			"title": "更少猜测，更多信号。",
-			"lede": "每个分析器都会以 0-100 的分数和 A-F 等级为代码库评分，并生成 HTML 报告，从五个角度审视你的代码。",
+			"lede": "五项结构读数、一个带 A-F 等级的 0-100 分数，以及一份可分享的 HTML 报告。",
 			"items": [
 				{
 					"id": "DEAD",
@@ -194,12 +194,12 @@
 			"summaryCta": "查看分析器"
 		},
 		"analyzers": {
-			"eyebrow": "测量仪器",
+			"eyebrow": "分析器",
 			"title": "一条命令。任何语言。",
 			"lede": "无需配置，无需安装。",
 			"items": [
 				{
-					"body": "最早的分析器。提供 CLI、MCP 服务器和 Agent Skills，并驱动 Polyscan。"
+					"body": "最早的分析器。提供 CLI、MCP 服务器和 Agent Skills，也是 Polyscan GitHub App 背后的引擎。"
 				},
 				{
 					"body": "一个 CLI 覆盖 JavaScript、TypeScript、Go、Rust 和 C++。按扩展名识别每个文件的语言，并将所有结果汇总到一份带健康评分的报告中。以预构建二进制形式通过 npm 分发——无需安装任何工具链。"
