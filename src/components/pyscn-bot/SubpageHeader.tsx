@@ -18,7 +18,7 @@ export default function SubpageHeader({
 		<header className="mb-12">
 			<Link
 				href="/pyscn-bot"
-				className="mb-8 inline-flex font-mono text-xs uppercase tracking-[0.15em] text-[var(--text-secondary)] transition-colors hover:text-[var(--brand-blue)]"
+				className="home-text-link mb-8 inline-flex text-[var(--text-secondary)] transition-colors hover:text-[var(--brand-blue)]"
 			>
 				← {backLabel}
 			</Link>

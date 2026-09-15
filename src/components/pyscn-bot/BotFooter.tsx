@@ -3,7 +3,6 @@ import FooterShell from "@/components/FooterShell";
 import { Link } from "@/i18n/navigation";
 import { LINKS } from "@/lib/links";
 import BotWordmark from "./BotWordmark";
-import Logo from "./icons/Logo";
 
 const linkClass =
 	"text-[var(--text-secondary)] transition-colors hover:text-[var(--brand-blue)]";
@@ -13,49 +12,51 @@ export default function BotFooter() {
 
 	return (
 		<FooterShell>
-			<div className="mb-8 flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-				<Link href="/pyscn-bot" className="flex items-center gap-1">
-					<Logo className="h-8 w-8" />
-					<BotWordmark className="text-lg" />
+			<div className="mb-12 flex flex-col items-start justify-between gap-6 border-b border-[var(--border-subtle)] pb-10 sm:mb-14 sm:flex-row sm:gap-12 sm:pb-12">
+				<Link href="/pyscn-bot" className="inline-flex">
+					<BotWordmark className="text-3xl sm:text-4xl" />
 				</Link>
-				<ul className="flex flex-wrap items-center gap-x-6 gap-y-2 font-mono text-xs uppercase tracking-[0.15em]">
-					<li>
-						<a
-							href={LINKS.pyscn}
-							target="_blank"
-							rel="noopener noreferrer"
-							className={linkClass}
-						>
-							{t("footer.github")}
-						</a>
-					</li>
-					<li>
-						<Link href="/pyscn-bot/privacy" className={linkClass}>
-							{t("footer.privacy")}
-						</Link>
-					</li>
-					<li>
-						<Link href="/pyscn-bot/terms" className={linkClass}>
-							{t("footer.terms")}
-						</Link>
-					</li>
-					<li>
-						<Link href="/pyscn-bot/contact" className={linkClass}>
-							{t("nav.contact")}
-						</Link>
-					</li>
-					<li>
-						<a
-							href={LINKS.org}
-							target="_blank"
-							rel="noopener noreferrer"
-							className={linkClass}
-						>
-							{t("footer.company")}
-						</a>
-					</li>
-				</ul>
+				<p className="max-w-sm text-xl leading-relaxed tracking-tight text-[var(--text-secondary)] sm:text-2xl">
+					{t("footer.tagline")}
+				</p>
 			</div>
+			<ul className="mb-14 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
+				<li>
+					<a
+						href={LINKS.pyscn}
+						target="_blank"
+						rel="noopener noreferrer"
+						className={linkClass}
+					>
+						{t("footer.github")}
+					</a>
+				</li>
+				<li>
+					<Link href="/pyscn-bot/privacy" className={linkClass}>
+						{t("footer.privacy")}
+					</Link>
+				</li>
+				<li>
+					<Link href="/pyscn-bot/terms" className={linkClass}>
+						{t("footer.terms")}
+					</Link>
+				</li>
+				<li>
+					<Link href="/pyscn-bot/contact" className={linkClass}>
+						{t("nav.contact")}
+					</Link>
+				</li>
+				<li>
+					<a
+						href={LINKS.org}
+						target="_blank"
+						rel="noopener noreferrer"
+						className={linkClass}
+					>
+						{t("footer.company")}
+					</a>
+				</li>
+			</ul>
 		</FooterShell>
 	);
 }

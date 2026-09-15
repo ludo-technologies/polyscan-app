@@ -1,5 +1,8 @@
-/* Weekly-audit readout: the bot's signature element. Report output is shown
-   in English in every locale, the same way the real GitHub Issue reads. */
+import ReadoutFrame from "@/components/ReadoutFrame";
+
+/* Weekly-audit readout: the bot's signature element, on the same ink surface
+   as the home page Readout. Report output is shown in English in every locale,
+   the same way the real GitHub Issue reads. */
 
 const WEEKS = [
 	{ id: "w1", score: 82 },
@@ -22,26 +25,23 @@ export default function AuditPanel() {
 	const last = WEEKS.length - 1;
 
 	return (
-		<figure
-			aria-label="Sample weekly audit report"
-			className="border border-[var(--border-light)] bg-[var(--bg-card)] text-left"
+		<ReadoutFrame
+			ariaLabel="Sample weekly audit report"
+			label="Weekly audit"
+			badge="report #12"
+			badgeHidden
 		>
-			<figcaption className="flex items-baseline justify-between gap-4 border-b border-[var(--border-subtle)] px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--text-muted)]">
-				<span>Weekly audit</span>
-				<span aria-hidden="true">report #12</span>
-			</figcaption>
-
-			<div className="border-b border-[var(--border-subtle)] px-4 py-4">
+			<div className="border-b border-white/10 bg-[radial-gradient(ellipse_at_top_right,rgba(70,131,221,0.15),transparent_75%)] px-5 py-6 sm:px-6">
 				<div className="flex items-end justify-between gap-6">
 					<div>
-						<span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--text-muted)]">
+						<span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--panel-muted)]">
 							Health
 						</span>
 						<div className="mt-1 flex items-baseline gap-3">
-							<span className="font-mono text-5xl font-bold leading-none text-[var(--text-primary)]">
+							<span className="font-mono text-5xl font-medium leading-none tracking-[-0.06em]">
 								{WEEKS[last].score}
 							</span>
-							<span className="font-mono text-xs text-[var(--reading-over)]">
+							<span className="font-mono text-xs text-[var(--panel-warn)]">
 								▼ {WEEKS[last - 1].score - WEEKS[last].score} this week
 							</span>
 						</div>
@@ -54,14 +54,12 @@ export default function AuditPanel() {
 						{WEEKS.map((w, i) => (
 							<div
 								key={w.id}
-								className="gauge-fill-y w-3"
+								className="gauge-fill-y w-3 rounded-t-sm"
 								style={{
 									height: `${w.score}%`,
 									animationDelay: `${i * 70}ms`,
 									backgroundColor:
-										i === last
-											? "var(--reading-over)"
-											: "var(--brand-blue-light)",
+										i === last ? "var(--panel-warn)" : "rgba(121,184,255,0.35)",
 								}}
 							/>
 						))}
@@ -69,17 +67,17 @@ export default function AuditPanel() {
 				</div>
 			</div>
 
-			<ul className="px-4 py-2">
+			<ul className="px-5 py-2 sm:px-6">
 				{FINDINGS.map((f) => (
 					<li
 						key={f.text}
-						className="flex items-center gap-3 border-b border-[var(--border-subtle)] py-2.5 font-mono text-xs text-[var(--text-secondary)] last:border-b-0"
+						className="flex items-center gap-3 border-b border-white/[0.07] py-3 font-mono text-xs last:border-b-0"
 					>
 						<span
 							aria-hidden="true"
 							className="text-[10px]"
 							style={{
-								color: f.over ? "var(--reading-over)" : "var(--reading-ok)",
+								color: f.over ? "var(--panel-warn)" : "var(--panel-ok)",
 							}}
 						>
 							{f.over ? "▲" : "●"}
@@ -92,9 +90,9 @@ export default function AuditPanel() {
 				))}
 			</ul>
 
-			<div className="border-t border-[var(--border-subtle)] bg-[var(--bg-ink)] px-4 py-2.5 font-mono text-xs text-white/80">
+			<div className="border-t border-white/10 bg-black/20 px-5 py-4 font-mono text-[11px] text-[var(--panel-muted)] sm:px-6">
 				filed as GitHub Issue · every monday
 			</div>
-		</figure>
+		</ReadoutFrame>
 	);
 }

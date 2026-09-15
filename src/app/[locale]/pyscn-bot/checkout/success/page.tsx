@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
+import { BrandTile, brandLinkClass } from "@/components/HeaderShell";
 import BotWordmark from "@/components/pyscn-bot/BotWordmark";
 import ConfigYaml from "@/components/pyscn-bot/ConfigYaml";
-import Logo from "@/components/pyscn-bot/icons/Logo";
 import LanguageSwitcher from "@/components/pyscn-bot/LanguageSwitcher";
 import { Link } from "@/i18n/navigation";
 import { localizedAlternates } from "@/lib/localized-metadata";
@@ -35,9 +35,9 @@ export default async function CheckoutSuccessPage() {
 		<div className="min-h-screen">
 			<nav className="border-b border-[var(--border-light)] bg-[var(--bg-body)]/90 backdrop-blur">
 				<div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
-					<Link href="/pyscn-bot" className="flex items-center gap-1">
-						<Logo className="h-10 w-10" />
-						<BotWordmark className="text-xl" />
+					<Link href="/pyscn-bot" className={brandLinkClass}>
+						<BrandTile />
+						<BotWordmark className="text-xl tracking-tight" />
 					</Link>
 					<LanguageSwitcher />
 				</div>
