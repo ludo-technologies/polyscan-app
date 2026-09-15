@@ -102,6 +102,27 @@ body {
 	);
 }
 
+/* Ink readout panel shared by the home Readout and the bot AuditPanel. */
+.readout-panel {
+	--panel-accent: #79b8ff;
+	--panel-bg: #0b1425;
+	--panel-muted: #9cacc3;
+	--panel-ok: #6ee7ba;
+	--panel-text: #edf4ff;
+	--panel-warn: #fbbf77;
+	position: relative;
+	isolation: isolate;
+	min-width: 0;
+	overflow: hidden;
+	border-radius: 1rem;
+	border: 1px solid rgba(255, 255, 255, 0.15);
+	background: var(--panel-bg);
+	color: var(--panel-text);
+	box-shadow:
+		0 24px 64px -20px rgba(2, 8, 23, 0.65),
+		inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
 /* Readout gauge fill: animates once on load. */
 .gauge-fill {
 	transform-origin: left center;
@@ -256,7 +277,7 @@ body {
 }
 
 /* The landing page keeps the instrument language on a quieter canvas. */
-.home-page {
+.landing-page {
 	background: #f8fafc;
 	isolation: isolate;
 	overflow-x: clip;
@@ -332,7 +353,7 @@ body {
 	text-decoration: underline;
 }
 
-.home-page :where(a, button, summary):focus-visible {
+.landing-page :where(a, button, summary):focus-visible {
 	outline: 2px solid var(--brand-blue);
 	outline-offset: 5px;
 }
@@ -377,7 +398,7 @@ body {
 	background: #fff;
 }
 
-.home-page .ruler-ticks {
+.landing-page .ruler-ticks {
 	width: 100px;
 	background-image: repeating-linear-gradient(
 		90deg,
@@ -388,13 +409,13 @@ body {
 	);
 }
 
-.home-page h2 {
+.landing-page h2 {
 	max-width: 780px;
 	letter-spacing: -0.045em;
 	line-height: 1.12;
 }
 
-.home-page section > p {
+.landing-page section > p {
 	line-height: 1.8;
 }
 
@@ -413,6 +434,12 @@ body {
 	transform: translateY(-5px);
 	border-color: #a9c8ff;
 	box-shadow: 0 16px 40px -18px #16356830;
+}
+
+/* Highlighted card: brand-blue top edge that survives the hover recolor. */
+.card-accent,
+.card-accent:hover {
+	border-top: 2px solid var(--brand-blue);
 }
 
 .signal-visual {
@@ -494,18 +521,18 @@ body {
 	background: linear-gradient(120deg, white 40%, #eaf1ff);
 }
 
-.home-page #faq > div:last-child {
+.landing-page #faq > div:last-child {
 	border-radius: 10px;
 	overflow: hidden;
 }
 
-.home-page summary {
+.landing-page summary {
 	display: flex;
 	align-items: baseline;
 	gap: 10px;
 }
 
-.home-page summary::after {
+.landing-page summary::after {
 	content: "+";
 	margin-left: auto;
 	font:
@@ -515,7 +542,7 @@ body {
 	transition: transform 200ms;
 }
 
-.home-page details[open] summary::after {
+.landing-page details[open] summary::after {
 	transform: rotate(45deg);
 }
 
@@ -576,8 +603,8 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-	.home-page.home-page *,
-	.home-page.home-page *::after {
+	.landing-page.landing-page *,
+	.landing-page.landing-page *::after {
 		animation: none;
 		transition: none;
 	}

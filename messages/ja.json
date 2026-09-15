@@ -2,7 +2,7 @@
 	"checkout": {
 		"success": {
 			"backToHome": "ホームに戻る",
-			"description": "サブスクリプションが有効になりました。以下のセットアップを完了して、すべてのPro機能をご利用ください。",
+			"description": "サブスクリプションが有効になりました。以下のセットアップを完了して、プライベートリポジトリで全機能をご利用ください。",
 			"step1": {
 				"button": "Polyscanをインストール",
 				"description": "Polyscanにリポジトリへのアクセスを許可してください。",
@@ -37,11 +37,13 @@
 		"title": "お問い合わせ"
 	},
 	"cta": {
+		"eyebrow": "インストール",
 		"button": "無料で週次測定を始める",
-		"description": "GitHubにインストールするだけ。リポジトリ全体を毎週無料で測定し、変化をIssueで報告します。",
+		"description": "GitHubにインストールするだけ。パブリックリポジトリは全機能無料で、毎週の変化をIssueで報告します。",
 		"title": "コードベースの劣化を、来週から見逃さない"
 	},
 	"diff": {
+		"eyebrow": "意見ではなく、測定値",
 		"pyscnBot": {
 			"1": "毎週<strong>リポジトリ全体</strong>を測定",
 			"2": "複雑度、重複、デッドコードを数値化",
@@ -62,6 +64,7 @@
 		}
 	},
 	"features": {
+		"eyebrow": "計測器",
 		"audit": {
 			"description": "リポジトリ全体の複雑度、重複、デッドコード、依存関係を毎週測定。前回からの変化と修正すべき箇所をGitHub Issueで報告します。",
 			"title": "コードベース全体を毎週測定"
@@ -70,14 +73,14 @@
 			"comment": {
 				"audit": "監査間隔 (デフォルト: weekly)",
 				"language": "レポート言語 (デフォルト: en)",
-				"pr": "PRレビュー (デフォルト: false、Proのみ)",
+				"pr": "PRレビュー (デフォルト: false、プライベートはPro)",
 				"target": "対象ディレクトリ (デフォルト: 全体)"
 			},
 			"description": "シンプルなYAMLファイルでPolyscanの動作をカスタマイズ。複雑なセットアップは不要です。",
 			"option1": "レポート言語: en, ja, zh, ko, es, fr, de, pt",
 			"option2": "解析対象ディレクトリ",
-			"option3": "監査間隔: daily (Pro), weekly, monthly",
-			"option4": "PRレビュー: pr_review: true (Pro、デフォルトはオフ)",
+			"option3": "監査間隔: daily, weekly, monthly（プライベートのdailyはPro）",
+			"option4": "PRレビュー: pr_review: true（デフォルトはオフ、プライベートはPro）",
 			"title": "シンプルなYAML設定"
 		},
 		"pr": {
@@ -87,14 +90,16 @@
 		"title": "コードベースを継続的に見守る"
 	},
 	"footer": {
+		"tagline": "GitHub リポジトリを毎週、構造から監査する。",
 		"company": "運営会社",
 		"github": "GitHub",
 		"privacy": "プライバシーポリシー",
 		"terms": "利用規約"
 	},
 	"hero": {
+		"eyebrow": "GitHub App · パブリックリポジトリは無料",
 		"description": "AIがコードを書く速度に、レビューは追いつけません。PolyscanはGitHubにインストールするだけで、リポジトリ全体の複雑度・重複・デッドコードを<strong>毎週測定</strong>。静かに進む劣化を、数値とGitHub Issueで知らせます。",
-		"freeNote": "Polyscan は現在ベータ版です。すべてのリポジトリで週次コード監査が無料でご利用いただけます。",
+		"freeNote": "パブリックリポジトリは全機能が無料。カード登録も不要です。Proはプライベートリポジトリにも同じ機能を提供します。",
 		"title": "そのコード、",
 		"titleHighlight": "静かに劣化しています。"
 	},
@@ -224,7 +229,7 @@
 		"bot": {
 			"eyebrow": "継続モニタリング",
 			"title": "Appで毎週追跡。",
-			"body": "GitHub Appは、リポジトリ全体の複雑度・重複・デッドコード・依存関係を毎週測定します。構造の劣化を継続的に追跡し、GitHub Issueで修正優先度を報告し、プルリクエストで新しい問題を検出します。週次測定はすべてのリポジトリで無料です。",
+			"body": "GitHub Appは、リポジトリ全体の複雑度・重複・デッドコード・依存関係を毎週測定します。構造の劣化を継続的に追跡し、GitHub Issueで修正優先度を報告し、プルリクエストで新しい問題を検出します。パブリックリポジトリは全機能無料です。",
 			"cta": "無料で始める",
 			"source": "GitHubでソースを見る"
 		},
@@ -261,6 +266,7 @@
 		}
 	},
 	"how": {
+		"eyebrow": "測定項目",
 		"clones": {
 			"desc": "重複コードを発見し、DRY原則を促進",
 			"title": "コードクローン"
@@ -292,12 +298,13 @@
 		"pricing": "料金"
 	},
 	"pricing": {
+		"eyebrow": "料金",
 		"free": {
 			"_": "Free",
 			"cta": "無料で始める",
-			"feature1": "リポジトリ数無制限",
-			"feature2": "週次コード監査",
-			"feature3": "基本分析モデル"
+			"feature1": "パブリックリポジトリ無制限・全機能",
+			"feature2": "パブリックリポジトリのPRレビューと日次監査",
+			"feature3": "プライベートリポジトリ2つまで（週次監査）"
 		},
 		"pro": {
 			"_": "Pro",
@@ -305,15 +312,15 @@
 				"_": "いつでもキャンセル可能",
 				"button": "14日間無料で試す"
 			},
-			"feature1": "リポジトリ5つまで",
-			"feature2": "Freeの全機能",
-			"feature3": "すべてのPRでコードレビュー",
-			"feature4": "高精度分析モデル",
+			"feature1": "Freeの全機能",
+			"feature2": "プライベートリポジトリ5つまで",
+			"feature3": "プライベートリポジトリのPRレビュー",
+			"feature4": "プライベートリポジトリの日次監査",
 			"price": "$10",
 			"unit": "/月"
 		},
-		"subtitle": "無料で始めて、必要に応じてアップグレード",
-		"title": "シンプルな料金体系"
+		"subtitle": "パブリックリポジトリは全機能を無料で。支払いはプライベートリポジトリの分だけ",
+		"title": "オープンソースは無料"
 	},
 	"siteFooter": {
 		"aiAgents": "AIエージェント",

@@ -2,7 +2,7 @@
 	"checkout": {
 		"success": {
 			"backToHome": "返回首页",
-			"description": "您的订阅已激活。完成以下设置以开始使用所有 Pro 功能。",
+			"description": "您的订阅已激活。完成以下设置，即可在私有仓库中使用全部功能。",
 			"step1": {
 				"button": "安装 Polyscan",
 				"description": "授权 Polyscan 访问您的仓库。",
@@ -37,11 +37,13 @@
 		"title": "联系我们"
 	},
 	"cta": {
+		"eyebrow": "安装",
 		"button": "免费开始每周测量",
-		"description": "只需安装到 GitHub。Polyscan 每周免费测量整个仓库，并通过 Issue 报告变化。",
+		"description": "只需安装到 GitHub。公开仓库免费使用全部功能，Polyscan 每周通过 Issue 报告变化。",
 		"title": "从下周起，不再错过代码库的劣化"
 	},
 	"diff": {
+		"eyebrow": "测量，而非观点",
 		"pyscnBot": {
 			"1": "每周测量<strong>整个仓库</strong>",
 			"2": "量化复杂度、重复和死代码",
@@ -62,6 +64,7 @@
 		}
 	},
 	"features": {
+		"eyebrow": "仪器",
 		"audit": {
 			"description": "每周测量整个仓库的复杂度、重复、死代码和依赖关系，并通过 GitHub Issue 报告变化与修复优先级。",
 			"title": "每周测量整个代码库"
@@ -70,14 +73,14 @@
 			"comment": {
 				"audit": "审计间隔 (默认: weekly)",
 				"language": "报告语言 (默认: en)",
-				"pr": "PR 审查 (默认: false，仅 Pro)",
+				"pr": "PR 审查 (默认: false，私有仓库需 Pro)",
 				"target": "目标目录 (默认: 全部)"
 			},
 			"description": "使用简单的 YAML 文件自定义 Polyscan 行为。无需复杂设置。",
 			"option1": "报告语言: en, ja, zh, ko, es, fr, de, pt",
 			"option2": "分析目标目录",
-			"option3": "审计间隔: daily (Pro), weekly, monthly",
-			"option4": "PR 审查: pr_review: true (Pro，默认关闭)",
+			"option3": "审计间隔: daily, weekly, monthly（私有仓库的 daily 需 Pro）",
+			"option4": "PR 审查: pr_review: true（默认关闭，私有仓库需 Pro）",
 			"title": "简单的 YAML 配置"
 		},
 		"pr": {
@@ -87,14 +90,16 @@
 		"title": "持续守护你的代码库"
 	},
 	"footer": {
+		"tagline": "每周对 GitHub 仓库进行结构审计。",
 		"company": "运营公司",
 		"github": "GitHub",
 		"privacy": "隐私政策",
 		"terms": "服务条款"
 	},
 	"hero": {
+		"eyebrow": "GitHub App · 公开仓库免费",
 		"description": "AI 编写代码的速度已经超过团队的审查速度。只需将 Polyscan 安装到 GitHub，它就会<strong>每周测量</strong>整个仓库的复杂度、重复和死代码，并通过数字和 GitHub Issue 告诉你悄然发生的结构劣化。",
-		"freeNote": "Polyscan 目前处于测试阶段。所有仓库可免费使用每周代码审计。",
+		"freeNote": "公开仓库可免费使用全部功能，无需绑卡。Pro 将同样的功能带到私有仓库。",
 		"title": "你的代码库，",
 		"titleHighlight": "正在悄悄劣化。"
 	},
@@ -224,7 +229,7 @@
 		"bot": {
 			"eyebrow": "持续监控",
 			"title": "用 App 每周跟踪。",
-			"body": "GitHub App 每周测量整个仓库的复杂度、重复、死代码和依赖关系。它持续跟踪结构性劣化，在 GitHub Issue 中报告应优先修复的问题，并在 Pull Request 上发现新问题。每周测量对所有仓库免费。",
+			"body": "GitHub App 每周测量整个仓库的复杂度、重复、死代码和依赖关系。它持续跟踪结构性劣化，在 GitHub Issue 中报告应优先修复的问题，并在 Pull Request 上发现新问题。公开仓库免费使用全部功能。",
 			"cta": "免费开始",
 			"source": "在 GitHub 查看源码"
 		},
@@ -261,6 +266,7 @@
 		}
 	},
 	"how": {
+		"eyebrow": "读数",
 		"clones": {
 			"desc": "发现重复代码，推广 DRY 原则",
 			"title": "代码克隆"
@@ -292,12 +298,13 @@
 		"pricing": "价格"
 	},
 	"pricing": {
+		"eyebrow": "价格",
 		"free": {
 			"_": "免费",
 			"cta": "免费开始",
-			"feature1": "仓库数量不限",
-			"feature2": "每周代码审计",
-			"feature3": "基础分析模型"
+			"feature1": "公开仓库数量不限，全部功能",
+			"feature2": "公开仓库的 PR 审查与每日审计",
+			"feature3": "最多 2 个私有仓库（每周审计）"
 		},
 		"pro": {
 			"_": "Pro",
@@ -305,15 +312,15 @@
 				"_": "随时取消",
 				"button": "开始14天免费试用"
 			},
-			"feature1": "最多5个仓库",
-			"feature2": "免费版全部功能",
-			"feature3": "每个 PR 自动代码审查",
-			"feature4": "高精度分析模型",
+			"feature1": "免费版全部功能",
+			"feature2": "最多 5 个私有仓库",
+			"feature3": "私有仓库的 PR 审查",
+			"feature4": "私有仓库的每日审计",
 			"price": "$10",
 			"unit": "/月"
 		},
-		"subtitle": "免费开始，按需升级",
-		"title": "简单定价"
+		"subtitle": "所有公开仓库免费使用全部功能，只为私有仓库付费",
+		"title": "开源项目免费"
 	},
 	"siteFooter": {
 		"aiAgents": "AI 代理",

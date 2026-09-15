@@ -2,7 +2,7 @@
 	"checkout": {
 		"success": {
 			"backToHome": "Back to Home",
-			"description": "Your subscription is now active. Complete the setup below to start using all Pro features.",
+			"description": "Your subscription is now active. Complete the setup below to use every feature on your private repositories.",
 			"step1": {
 				"button": "Install Polyscan",
 				"description": "Grant Polyscan access to your repositories.",
@@ -37,11 +37,13 @@
 		"title": "Contact Us"
 	},
 	"cta": {
+		"eyebrow": "Install",
 		"button": "Start weekly measurement free",
-		"description": "Just install it on GitHub. Polyscan measures your entire repository every week for free and reports changes in an Issue.",
+		"description": "Just install it on GitHub. Every feature is free for public repositories, and Polyscan reports changes in an Issue every week.",
 		"title": "Don't miss another week of codebase decay"
 	},
 	"diff": {
+		"eyebrow": "Measurements, not opinions",
 		"pyscnBot": {
 			"1": "Measures your <strong>entire repository</strong> every week",
 			"2": "Quantifies complexity, duplication, and dead code",
@@ -62,6 +64,7 @@
 		}
 	},
 	"features": {
+		"eyebrow": "Instruments",
 		"audit": {
 			"description": "Measures complexity, duplication, dead code, and dependencies across the entire repository every week, then reports changes and priorities in a GitHub Issue.",
 			"title": "Measure the whole codebase every week"
@@ -70,14 +73,14 @@
 			"comment": {
 				"audit": "Audit interval (default: weekly)",
 				"language": "Report language (default: en)",
-				"pr": "PR review (default: false, Pro only)",
+				"pr": "PR review (default: false; private repos need Pro)",
 				"target": "Target directories (default: all)"
 			},
 			"description": "Customize Polyscan behavior with a simple YAML file. No complex setup required.",
 			"option1": "Report language: en, ja, zh, ko, es, fr, de, pt",
 			"option2": "Target directories to analyze",
-			"option3": "Audit interval: daily (Pro), weekly, monthly",
-			"option4": "PR review: pr_review: true (Pro, off by default)",
+			"option3": "Audit interval: daily, weekly, monthly (daily on private repos: Pro)",
+			"option4": "PR review: pr_review: true (off by default; private repos: Pro)",
 			"title": "Simple YAML Configuration"
 		},
 		"pr": {
@@ -87,14 +90,16 @@
 		"title": "Keep watch over your codebase"
 	},
 	"footer": {
+		"tagline": "Weekly structural audits for every GitHub repository.",
 		"company": "Company",
 		"github": "GitHub",
 		"privacy": "Privacy Policy",
 		"terms": "Terms of Service"
 	},
 	"hero": {
+		"eyebrow": "GitHub App · Free for public repos",
 		"description": "AI writes code faster than teams can review it. Install Polyscan on GitHub to measure complexity, duplication, and dead code across your entire repository <strong>every week</strong>. See silent structural decay in numbers, delivered as a GitHub Issue.",
-		"freeNote": "Polyscan is currently in beta. Weekly code audits are free for all repositories.",
+		"freeNote": "Every feature is free on public repositories. No card required. Pro brings the same to private repositories.",
 		"title": "Your codebase is ",
 		"titleHighlight": "quietly decaying."
 	},
@@ -224,7 +229,7 @@
 		"bot": {
 			"eyebrow": "Continuous monitoring",
 			"title": "Track it every week with the App.",
-			"body": "The GitHub App measures complexity, duplication, dead code, and dependencies across your entire repository every week. It tracks structural decay over time, reports what to fix first in a GitHub Issue, and catches new problems on pull requests. Weekly measurement is free for every repository.",
+			"body": "The GitHub App measures complexity, duplication, dead code, and dependencies across your entire repository every week. It tracks structural decay over time, reports what to fix first in a GitHub Issue, and catches new problems on pull requests. Every feature is free for public repositories.",
 			"cta": "Start for free",
 			"source": "Source on GitHub"
 		},
@@ -261,6 +266,7 @@
 		}
 	},
 	"how": {
+		"eyebrow": "Readings",
 		"clones": {
 			"desc": "Finds duplicate code and promotes DRY principle",
 			"title": "Code Clones"
@@ -292,12 +298,13 @@
 		"pricing": "Pricing"
 	},
 	"pricing": {
+		"eyebrow": "Pricing",
 		"free": {
 			"_": "Free",
 			"cta": "Get Started Free",
-			"feature1": "Unlimited repositories",
-			"feature2": "Weekly code audit",
-			"feature3": "Basic analysis model"
+			"feature1": "Unlimited public repositories, every feature",
+			"feature2": "PR review and daily audits on public repos",
+			"feature3": "Up to 2 private repos with weekly audits"
 		},
 		"pro": {
 			"_": "Pro",
@@ -305,15 +312,15 @@
 				"_": "Cancel anytime",
 				"button": "Start 14-Day Free Trial"
 			},
-			"feature1": "Up to 5 repositories",
-			"feature2": "Everything in Free",
-			"feature3": "PR code review on every pull request",
-			"feature4": "Advanced analysis model",
+			"feature1": "Everything in Free",
+			"feature2": "Up to 5 private repositories",
+			"feature3": "PR review on private repositories",
+			"feature4": "Daily audits on private repositories",
 			"price": "$10",
 			"unit": "/month"
 		},
-		"subtitle": "Start free, upgrade when you need more",
-		"title": "Simple Pricing"
+		"subtitle": "Every feature on every public repository, at no cost. Pay only for private repositories.",
+		"title": "Free for open source"
 	},
 	"siteFooter": {
 		"aiAgents": "AI agents",

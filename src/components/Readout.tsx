@@ -1,4 +1,5 @@
 import { getTranslations } from "next-intl/server";
+import ReadoutFrame from "./ReadoutFrame";
 
 type Reading = {
 	id: "CC" | "DUP" | "DEAD" | "DEP" | "CBO";
@@ -22,26 +23,11 @@ export default async function Readout() {
 	const t = await getTranslations("home.readout");
 
 	return (
-		<figure
-			aria-label={t("sampleAria")}
-			className="readout-panel relative isolate min-w-0 overflow-hidden rounded-2xl border border-white/15 bg-[var(--panel-bg)] text-[var(--panel-text)] shadow-[0_24px_64px_-20px_rgba(2,8,23,0.65),inset_0_1px_0_rgba(255,255,255,0.06)] [--panel-accent:#79b8ff] [--panel-bg:#0b1425] [--panel-muted:#9cacc3] [--panel-ok:#6ee7ba] [--panel-text:#edf4ff] [--panel-warn:#fbbf77]"
+		<ReadoutFrame
+			ariaLabel={t("sampleAria")}
+			label={t("panelLabel")}
+			badge={t("sampleRun")}
 		>
-			<figcaption className="flex min-w-0 flex-wrap items-center justify-between gap-3 border-b border-white/10 bg-white/[0.025] px-5 py-3.5">
-				<div className="flex min-w-0 items-center gap-3">
-					<div aria-hidden="true" className="flex shrink-0 gap-1.5">
-						<span className="size-2 rounded-full bg-[#e98585]" />
-						<span className="size-2 rounded-full bg-[#e9c078]" />
-						<span className="size-2 rounded-full bg-[#79baa3]" />
-					</div>
-					<span className="font-mono text-[10px] tracking-wider text-[var(--panel-muted)]">
-						{t("panelLabel")}
-					</span>
-				</div>
-				<span className="rounded border border-[var(--panel-accent)]/25 bg-[var(--panel-accent)]/10 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.16em] text-[var(--panel-accent)]">
-					{t("sampleRun")}
-				</span>
-			</figcaption>
-
 			<div className="flex min-w-0 flex-wrap items-center gap-5 border-b border-white/10 bg-[radial-gradient(ellipse_at_top_right,rgba(70,131,221,0.15),transparent_75%)] px-5 py-6 sm:gap-7 sm:px-6">
 				<div className="relative grid size-36 shrink-0 place-items-center">
 					<svg
@@ -180,6 +166,6 @@ export default async function Readout() {
 					</code>
 				</p>
 			</div>
-		</figure>
+		</ReadoutFrame>
 	);
 }

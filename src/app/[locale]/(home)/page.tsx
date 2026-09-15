@@ -4,6 +4,7 @@ import CommandBlock from "@/components/CommandBlock";
 import FloatingAppCard from "@/components/FloatingAppCard";
 import Readout from "@/components/Readout";
 import Reveal from "@/components/Reveal";
+import SectionHead from "@/components/SectionHead";
 import { Link as LocaleLink } from "@/i18n/navigation";
 import { LINKS } from "@/lib/links";
 import { localizedAlternates } from "@/lib/localized-metadata";
@@ -90,38 +91,6 @@ export async function generateMetadata({
 	};
 }
 
-function SectionHead({
-	id,
-	eyebrow,
-	title,
-	lede,
-}: {
-	id: string;
-	eyebrow: string;
-	title: string;
-	lede?: string;
-}) {
-	return (
-		<>
-			<div className="border-t border-[var(--border-light)]">
-				<div className="ruler-ticks" aria-hidden="true" />
-			</div>
-			<p className="mt-4 font-mono text-[11px] uppercase tracking-[0.25em] text-[var(--text-muted)]">
-				{eyebrow}
-			</p>
-			<h2
-				id={id}
-				className="type-display mt-3 mb-3 text-3xl font-bold text-[var(--text-primary)] sm:text-4xl"
-			>
-				{title}
-			</h2>
-			{lede && (
-				<p className="mb-10 max-w-3xl text-[var(--text-secondary)]">{lede}</p>
-			)}
-		</>
-	);
-}
-
 export default async function Home({
 	params,
 }: {
@@ -156,7 +125,7 @@ export default async function Home({
 	});
 
 	return (
-		<main className="home-page relative flex min-h-screen flex-col items-center">
+		<main className="landing-page relative flex min-h-screen flex-col items-center">
 			<FloatingAppCard />
 			<Reveal>
 				<script

@@ -359,13 +359,18 @@ function TermsEn() {
 
 			<h2>4. Pricing Plans</h2>
 			<p>
-				<strong>Free Plan</strong>: Weekly code audit, basic analysis model,
-				health score and recommendations, free of charge.
+				<strong>Public repositories</strong>: every feature, including PR code
+				review and daily audits, is available free of charge on any number of
+				public repositories, regardless of plan.
+			</p>
+			<p>
+				<strong>Free Plan</strong>: weekly or monthly code audits, health score
+				and recommendations on up to 2 private repositories, free of charge.
 			</p>
 			<p>
 				<strong>Individual Plan</strong>: $10/month for personal repositories,
-				includes everything in Free, plus PR code review on every pull request,
-				advanced analysis model, and priority support. Includes a 14-day free
+				includes everything in Free, plus PR code review, daily audits, and
+				priority support on up to 5 private repositories. Includes a 14-day free
 				trial.
 			</p>
 			<p>
