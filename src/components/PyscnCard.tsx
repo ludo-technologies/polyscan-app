@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { LINKS } from "@/lib/links";
 
 /**
  * Mid-article aside for the first mention of pyscn. Deliberately quieter than
@@ -18,7 +17,7 @@ export default function PyscnCard() {
 				An open-source structural analyzer for Python: duplicated code,
 				complexity, dead code, and dependency rules. Use it as a CLI, or as a{" "}
 				<Link
-					href={LINKS.pyscnBot}
+					href="/"
 					className="font-medium text-[var(--brand-blue)] hover:text-[var(--brand-blue-hover)]"
 				>
 					GitHub App

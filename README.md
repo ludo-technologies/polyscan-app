@@ -6,7 +6,7 @@
 
 Polyscan measures your whole codebase every week, tracks structural decay, and reports what to fix first. It also catches new problems on pull requests, powered by the open-source analyzers [pyscn](https://github.com/ludo-technologies/pyscn) (Python) and [polyscan](https://github.com/ludo-technologies/polyscan) (JavaScript/TypeScript, Go, Rust, C++).
 
-**[Install the App →](https://github.com/apps/polyscan-app)** • **[Website](https://codescan.dev/pyscn-bot)** • **[Report an issue](../../issues)**
+**[Install the App →](https://github.com/apps/polyscan-app)** • **[Website](https://codescan.dev)** • **[Report an issue](../../issues)**
 
 </div>
 

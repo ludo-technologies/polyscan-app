@@ -23,7 +23,7 @@ export default function PostCta() {
 			</pre>
 			<div className="flex flex-wrap gap-3">
 				<Link
-					href={LINKS.pyscnBot}
+					href="/"
 					className="inline-flex min-h-11 items-center gap-2 bg-[var(--brand-blue)] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[var(--brand-blue-hover)]"
 				>
 					Install the GitHub App <span aria-hidden="true">&rarr;</span>

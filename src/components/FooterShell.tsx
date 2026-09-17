@@ -2,8 +2,7 @@ import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 
 /**
- * Shared frame for every footer: top rule, ruler ticks, container, and the
- * copyright row. The site and pyscn-bot footers supply their own link layouts.
+ * Footer frame: top rule, ruler ticks, container, and the copyright row.
  */
 export default function FooterShell({
 	children,

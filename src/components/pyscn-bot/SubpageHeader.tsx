@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { Link } from "@/i18n/navigation";
 
-/* Shared header for polyscan subpages (how-it-works, contact, legal):
+/* Shared header for Polyscan subpages (how-it-works, contact, legal):
    back link, silkscreen eyebrow, display title, optional lede. */
 export default function SubpageHeader({
 	backLabel,
@@ -17,7 +17,7 @@ export default function SubpageHeader({
 	return (
 		<header className="mb-12">
 			<Link
-				href="/pyscn-bot"
+				href="/"
 				className="home-text-link mb-8 inline-flex text-[var(--text-secondary)] transition-colors hover:text-[var(--brand-blue)]"
 			>
 				← {backLabel}

@@ -1,8 +1,8 @@
 import ReadoutFrame from "@/components/ReadoutFrame";
 
-/* Weekly-audit readout: the bot's signature element, on the same ink surface
-   as the home page Readout. Report output is shown in English in every locale,
-   the same way the real GitHub Issue reads. */
+/* Audit-agent readout, the landing page's signature element: the weekly
+   health trend, then the agent verifying analyzer findings by reading the
+   code. Shown in English in every locale, like a real agent log. */
 
 const WEEKS = [
 	{ id: "w1", score: 82 },
@@ -15,10 +15,22 @@ const WEEKS = [
 	{ id: "w8", score: 71 },
 ];
 
-const FINDINGS = [
-	{ over: true, text: "CC 31  api/handlers.py:214" },
-	{ over: true, text: "clone group +2  services/" },
-	{ over: false, text: "dead code cleared" },
+const TRACE = [
+	{
+		read: "api/handlers.py:190-262",
+		confirmed: true,
+		verdict: "CC 31, three jobs in one function",
+	},
+	{
+		read: "services/user.py:45-62 + admin.py:23-40",
+		confirmed: true,
+		verdict: "87% clone, same validation twice",
+	},
+	{
+		read: "core/plugins.py:1-44",
+		confirmed: false,
+		verdict: '"dead code" is a documented plugin hook',
+	},
 ];
 
 export default function AuditPanel() {
@@ -26,8 +38,8 @@ export default function AuditPanel() {
 
 	return (
 		<ReadoutFrame
-			ariaLabel="Sample weekly audit report"
-			label="Weekly audit"
+			ariaLabel="Sample run of the audit agent"
+			label="Audit agent"
 			badge="report #12"
 			badgeHidden
 		>
@@ -67,31 +79,39 @@ export default function AuditPanel() {
 				</div>
 			</div>
 
+			<p className="border-b border-white/[0.07] px-5 py-3 font-mono text-xs text-[var(--panel-muted)] sm:px-6">
+				<span aria-hidden="true">$ </span>polyscan analyze .{" "}
+				<span className="text-white/85">→ 142 findings</span>
+			</p>
+
 			<ul className="px-5 py-2 sm:px-6">
-				{FINDINGS.map((f) => (
+				{TRACE.map((step) => (
 					<li
-						key={f.text}
-						className="flex items-center gap-3 border-b border-white/[0.07] py-3 font-mono text-xs last:border-b-0"
+						key={step.read}
+						className="border-b border-white/[0.07] py-3 font-mono text-xs last:border-b-0"
 					>
-						<span
-							aria-hidden="true"
-							className="text-[10px]"
-							style={{
-								color: f.over ? "var(--panel-warn)" : "var(--panel-ok)",
-							}}
-						>
-							{f.over ? "▲" : "●"}
-						</span>
-						<span className="sr-only">
-							{f.over ? "over threshold:" : "resolved:"}
-						</span>
-						{f.text}
+						<p className="truncate text-[var(--panel-muted)]">
+							read_file {step.read}
+						</p>
+						<p className="mt-1.5 flex items-baseline gap-2">
+							<span
+								className="shrink-0 text-[10px] uppercase tracking-[0.12em]"
+								style={{
+									color: step.confirmed
+										? "var(--panel-warn)"
+										: "var(--panel-ok)",
+								}}
+							>
+								{step.confirmed ? "▲ confirmed" : "● dismissed"}
+							</span>
+							<span className="min-w-0">{step.verdict}</span>
+						</p>
 					</li>
 				))}
 			</ul>
 
 			<div className="border-t border-white/10 bg-black/20 px-5 py-4 font-mono text-[11px] text-[var(--panel-muted)] sm:px-6">
-				filed as GitHub Issue · every monday
+				142 findings → 6 recommendations · filed as GitHub Issue
 			</div>
 		</ReadoutFrame>
 	);

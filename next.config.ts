@@ -30,6 +30,17 @@ const nextConfig: NextConfig = {
 	async headers() {
 		return [{ source: "/(.*)", headers: securityHeaders }];
 	},
+	// The App landing page used to live at /pyscn-bot; it is now the home page.
+	async redirects() {
+		return [
+			{ source: "/pyscn-bot", destination: "/", permanent: true },
+			{
+				source: "/:locale(en|ja|zh)/pyscn-bot",
+				destination: "/:locale",
+				permanent: true,
+			},
+		];
+	},
 	async rewrites() {
 		return [
 			{

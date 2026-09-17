@@ -10,104 +10,101 @@ import HeaderShell, {
 	brandLinkClass,
 	linkClass,
 } from "./HeaderShell";
-import SiteLanguageSwitcher from "./SiteLanguageSwitcher";
+import BotWordmark from "./pyscn-bot/BotWordmark";
+import LanguageSwitcher from "./pyscn-bot/LanguageSwitcher";
 
-type NavLink =
-	| { id: "analyzers"; kind: "home" }
-	| { id: "blog"; kind: "blog" }
-	| { id: "docs"; kind: "external"; href: string }
-	| { id: "github"; kind: "external"; href: string; accent: true };
-
-// "blog" intentionally uses the default locale prefix: the blog is
-// English-only, so a locale-prefixed path like /ja/blog would 404.
-const navLinks: NavLink[] = [
-	{ id: "analyzers", kind: "home" },
-	{ id: "blog", kind: "blog" },
-	{ id: "docs", kind: "external", href: LINKS.docs },
-	{ id: "github", kind: "external", href: LINKS.monorepo, accent: true },
-];
-
+/**
+ * The one site header. `languageSwitcher` is off in the English-only tree
+ * (blog, site legal), where a locale-prefixed path would 404.
+ */
 export default function Header({
+	isLoggedIn,
 	languageSwitcher = false,
 }: {
+	isLoggedIn: boolean;
 	languageSwitcher?: boolean;
 }) {
-	const t = useTranslations("siteHeader");
-
-	function renderLinkLabel(link: NavLink) {
-		return (
-			<>
-				{t(`nav.${link.id}`)}
-				{link.kind === "external" && "accent" in link && (
-					<svg
-						aria-hidden="true"
-						width="14"
-						height="14"
-						viewBox="0 0 16 16"
-						fill="none"
-						stroke="currentColor"
-						strokeWidth="1.5"
-					>
-						<path d="M4 12l8-8M4 4h8v8" />
-					</svg>
-				)}
-			</>
-		);
-	}
+	const t = useTranslations();
 
 	return (
 		<HeaderShell
 			brand={(close) => (
-				<LocaleLink
-					href="/"
-					onClick={close}
-					className={`type-display ${brandLinkClass}`}
-				>
+				<LocaleLink href="/" onClick={close} className={brandLinkClass}>
 					<BrandTile />
-					<span className="text-xl font-bold tracking-tight text-[var(--text-primary)]">
-						Poly<span className="text-[var(--brand-blue)]">scan</span>
-					</span>
+					<BotWordmark className="text-xl tracking-tight" />
 				</LocaleLink>
 			)}
 		>
 			{(close) => (
 				<>
-					{navLinks.map((link) => (
-						<li key={link.id}>
-							{link.kind === "external" ? (
-								<a
-									href={link.href}
-									target="_blank"
-									rel="noopener noreferrer"
-									onClick={close}
-									className={
-										"accent" in link && link.accent
-											? accentLinkClass
-											: linkClass
-									}
-								>
-									{renderLinkLabel(link)}
-								</a>
-							) : link.kind === "home" ? (
-								<LocaleLink
-									href={{ pathname: "/", hash: "analyzers" }}
-									onClick={close}
-									className={linkClass}
-								>
-									{renderLinkLabel(link)}
-								</LocaleLink>
-							) : (
-								<Link href="/blog" onClick={close} className={linkClass}>
-									{renderLinkLabel(link)}
-								</Link>
-							)}
-						</li>
-					))}
+					<li>
+						<LocaleLink
+							href={{ pathname: "/", hash: "features" }}
+							onClick={close}
+							className={linkClass}
+						>
+							{t("nav.features")}
+						</LocaleLink>
+					</li>
+					<li>
+						<LocaleLink
+							href="/pyscn-bot/how-it-works"
+							onClick={close}
+							className={linkClass}
+						>
+							{t("nav.howItWorks")}
+						</LocaleLink>
+					</li>
+					<li>
+						<LocaleLink
+							href={{ pathname: "/", hash: "pricing" }}
+							onClick={close}
+							className={linkClass}
+						>
+							{t("nav.pricing")}
+						</LocaleLink>
+					</li>
+					<li>
+						{/* The blog is English-only, so it never takes a locale prefix. */}
+						<Link href="/blog" onClick={close} className={linkClass}>
+							{t("nav.blog")}
+						</Link>
+					</li>
+					<li>
+						<a
+							href={LINKS.docs}
+							target="_blank"
+							rel="noopener noreferrer"
+							onClick={close}
+							className={linkClass}
+						>
+							{t("nav.docs")}
+						</a>
+					</li>
 					{languageSwitcher && (
 						<li className="md:ml-2">
-							<SiteLanguageSwitcher />
+							<LanguageSwitcher />
 						</li>
 					)}
+					<li>
+						{isLoggedIn ? (
+							<LocaleLink
+								href="/pyscn-bot/account"
+								onClick={close}
+								className={accentLinkClass}
+							>
+								{t("nav.mypage")}
+							</LocaleLink>
+						) : (
+							<a
+								href="/pyscn-bot/api/auth?plan=free"
+								className={accentLinkClass}
+							>
+								{t("trial.hero")}
+								<span aria-hidden="true">→</span>
+							</a>
+						)}
+					</li>
 				</>
 			)}
 		</HeaderShell>

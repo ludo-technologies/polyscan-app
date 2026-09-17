@@ -4,7 +4,6 @@ import { getSiteUrl } from "@/lib/site-url";
 
 const PYSCN_BOT_LOCALES = ["en", "ja", "zh"] as const;
 const PYSCN_BOT_PATHS = [
-	"/pyscn-bot",
 	"/pyscn-bot/how-it-works",
 	"/pyscn-bot/contact",
 	"/pyscn-bot/privacy",
