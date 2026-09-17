@@ -1,4 +1,27 @@
 {
+	"agent": {
+		"eyebrow": "The audit agent",
+		"title": "polyscan measures. The agent judges.",
+		"lede": "Static analysis is exhaustive, but it flags false positives and deliberate design choices just as mechanically as real problems. Polyscan treats that output as a starting point and checks it against the code, the way a human reviewer would.",
+		"steps": [
+			{
+				"id": "MEASURE",
+				"title": "Measure the whole repository",
+				"body": "The open-source polyscan analyzers measure complexity, duplication, dead code, dependencies, and class design across the entire repository — the same yardstick on every run."
+			},
+			{
+				"id": "INVESTIGATE",
+				"title": "Read the code to verify",
+				"body": "The agent picks the findings that matter and opens the functions and classes behind them, across files. Before it recommends merging duplicates it reads every copy. Findings the code itself explains, or dependencies that follow the project's own design, are dropped."
+			},
+			{
+				"id": "REPORT",
+				"title": "Report only what is worth fixing",
+				"body": "Findings that survive verification become at most ten recommendations, each naming the file, function, and line, written to a GitHub Issue in one of eight languages."
+			}
+		],
+		"link": "See how it works in detail"
+	},
 	"checkout": {
 		"success": {
 			"backToHome": "Back to Home",
@@ -21,6 +44,49 @@
 			"title": "Payment Successful!"
 		}
 	},
+	"checks": {
+		"eyebrow": "Readings",
+		"title": "Start from measurements, not guesses.",
+		"lede": "Every investigation starts from these five structural readings, taken across the whole repository.",
+		"summaryLabel": "The whole picture",
+		"summaryBig1": "Structure.",
+		"summaryBig2": "Not just style.",
+		"summaryCta": "See the engine",
+		"items": [
+			{
+				"id": "DEAD",
+				"title": "Dead code",
+				"body": "Unreachable code you can safely delete, found by walking the control flow graph rather than guessing."
+			},
+			{
+				"id": "DUP",
+				"title": "Duplicate code",
+				"body": "Copy-pasted and structurally similar code worth merging — Type 1-4 clone detection via tree edit distance."
+			},
+			{
+				"id": "CC",
+				"title": "Complexity",
+				"body": "Functions that are hard to read and hard to test, ranked by cyclomatic complexity so you know where to start."
+			},
+			{
+				"id": "DEP",
+				"title": "Dependencies",
+				"body": "Circular imports and unstable module dependencies, plus the module communities your codebase actually forms."
+			},
+			{
+				"id": "CBO",
+				"title": "Class design",
+				"body": "Classes that do too much or depend on too much, measured with CBO coupling and LCOM cohesion."
+			}
+		]
+	},
+	"commandBlock": {
+		"terminal": "Terminal",
+		"copy": "Copy",
+		"copied": "Copied",
+		"copyAria": "Copy \"{command}\" to clipboard",
+		"copiedStatus": "Command copied to clipboard."
+	},
 	"contact": {
 		"description": "Have a question? We'd love to hear from you. Feel free to write in any language.",
 		"email": "Email",
@@ -38,36 +104,71 @@
 	},
 	"cta": {
 		"eyebrow": "Install",
-		"button": "Start weekly measurement free",
-		"description": "Just install it on GitHub. Every feature is free for public repositories, and Polyscan reports changes in an Issue every week.",
-		"title": "Don't miss another week of codebase decay"
+		"title": "Put an auditor on your repository",
+		"description": "Just install it on GitHub. Every feature is free for public repositories, and the agent reports to a GitHub Issue every week.",
+		"button": "Start auditing free"
 	},
 	"diff": {
-		"eyebrow": "Measurements, not opinions",
-		"pyscnBot": {
-			"1": "Measures your <strong>entire repository</strong> every week",
-			"2": "Quantifies complexity, duplication, and dead code",
-			"3": "Tracks quality changes from the previous scan",
-			"4": "Prioritizes the places that need attention",
-			"5": "Uses static analysis for consistent measurement",
-			"_": "Polyscan"
-		},
-		"subtitle": "Each pull request may be small, but complexity, duplication, and dead code accumulate across the repository.",
-		"title": "PR review alone can't see codebase decay",
+		"eyebrow": "Verified, not just detected",
+		"title": "An audit you can act on, not a list of warnings",
+		"subtitle": "Static analyzers print hundreds of warnings and leave it to you to decide which ones are real. Polyscan takes on that judgment too.",
 		"traditional": {
-			"1": "Sees only the lines that changed",
-			"2": "Misses duplication across the repository",
-			"3": "Can't track long-term quality changes",
-			"4": "Finds problems only after they accumulate",
-			"5": "Judgment varies from one review to the next",
-			"_": "PR review alone"
+			"1": "Hundreds of warnings, listed as-is",
+			"2": "Can't tell false positives from deliberate design",
+			"3": "No sense of what to fix first",
+			"4": "Eventually nobody reads the output",
+			"_": "Static analysis alone"
+		},
+		"pyscnBot": {
+			"1": "The agent <strong>reads the actual code</strong> to verify findings",
+			"2": "Drops findings the code already explains",
+			"3": "At most ten recommendations, with file, function, and line",
+			"4": "Updates the Issue every week and tracks what changed",
+			"_": "Polyscan"
 		}
 	},
+	"engine": {
+		"eyebrow": "Open source",
+		"title": "The engine is open source.",
+		"body": "The analyzers Polyscan uses are MIT licensed. Run them as a CLI on your own machine to see the same readings the agent starts from.",
+		"docs": "Read the docs",
+		"source": "View source"
+	},
+	"faq": {
+		"eyebrow": "FAQ",
+		"title": "Questions, answered",
+		"items": [
+			{
+				"q": "What is Polyscan?",
+				"a": "An AI agent that audits GitHub repositories on a schedule. It measures the whole repository with open-source static analyzers — pyscn for Python, polyscan for JavaScript, TypeScript, Go, Rust, and C++ — then reads the actual code to verify the findings and reports what is worth fixing in a GitHub Issue."
+			},
+			{
+				"q": "How is this different from running a static analyzer myself?",
+				"a": "An analyzer outputs every finding, including false positives and deliberate design choices, and leaves the triage to you. Polyscan's agent does that triage: it reads the flagged code across the repository, drops what the code already explains, and narrows the rest down to at most ten recommendations with file, function, and line."
+			},
+			{
+				"q": "How is this different from AI code review tools?",
+				"a": "Most AI reviewers look only at a pull request's diff. Polyscan measures the entire repository every week and investigates from those measurements, so its findings rest on numbers taken with the same yardstick each run rather than on impressions. PR review is available too, as an opt-in."
+			},
+			{
+				"q": "Where is my code processed?",
+				"a": "Your code is analyzed by a local LLM running in our on-premises environment and is never sent to external generative AI APIs. We do not store it: once the report is posted to GitHub, the code is discarded."
+			},
+			{
+				"q": "Which languages are supported?",
+				"a": "Python, JavaScript, TypeScript, Go, Rust, and C++. Complexity and duplicate code are measured for every language. Dead code, dependencies, and class design need the import graph and class model that only the Python and JavaScript/TypeScript backends build today, so those dimensions are left out of a Go, Rust, or C++ score rather than counted as clean."
+			},
+			{
+				"q": "Is it open source?",
+				"a": "The analysis engine — pyscn, polyscan, and the shared core — is MIT licensed and free to run as a CLI. The GitHub App, which adds the agent and runs it for you, is free with every feature on public repositories; Pro covers private repositories."
+			}
+		]
+	},
 	"features": {
-		"eyebrow": "Instruments",
+		"eyebrow": "Features",
 		"audit": {
-			"description": "Measures complexity, duplication, dead code, and dependencies across the entire repository every week, then reports changes and priorities in a GitHub Issue.",
-			"title": "Measure the whole codebase every week"
+			"description": "Measures complexity, duplication, dead code, and dependencies across the entire repository every week. The agent reads the code behind the findings, then reports what to fix and what changed in a GitHub Issue.",
+			"title": "A whole-repository audit every week"
 		},
 		"config": {
 			"comment": {
@@ -89,213 +190,34 @@
 		},
 		"title": "Keep watch over your codebase"
 	},
-	"footer": {
-		"tagline": "Weekly structural audits for every GitHub repository.",
-		"company": "Company",
-		"github": "GitHub",
-		"privacy": "Privacy Policy",
-		"terms": "Terms of Service"
-	},
 	"hero": {
 		"eyebrow": "GitHub App · Free for public repos",
-		"description": "AI writes code faster than teams can review it. Install Polyscan on GitHub to measure complexity, duplication, and dead code across your entire repository <strong>every week</strong>. See silent structural decay in numbers, delivered as a GitHub Issue.",
-		"freeNote": "Every feature is free on public repositories. No card required. Pro brings the same to private repositories.",
-		"title": "Your codebase is ",
-		"titleHighlight": "quietly decaying."
+		"title": "An AI agent that",
+		"titleHighlight": "audits your code.",
+		"description": "Polyscan is an AI agent whose instruments are the polyscan static analyzers. Instead of handing you a raw list of warnings, it <strong>reads the flagged code across your repository to verify each finding</strong>, then reports only what is worth fixing — every week, as a GitHub Issue.",
+		"freeNote": "Every feature is free on public repositories. No card required. Pro brings the same to private repositories."
 	},
-	"home": {
-		"meta": {
-			"title": "Polyscan — Structural codebase health for AI-written code",
-			"description": "Measure complexity, duplication, dead code, dependencies, and class design across your entire codebase. Run it once with the open-source CLI or track structural decay every week with the GitHub App.",
-			"ogDescription": "Measure your whole codebase once with the open-source CLI, then track structural decay every week with the GitHub App."
-		},
-		"softwareDescription": "Open source code quality analyzers for Python, JavaScript/TypeScript, Go, Rust, and C++. Detects dead code, duplicate code, complexity, dependency cycles, and class coupling, then scores the codebase and reports what to fix first.",
-		"appCard": {
-			"ariaLabel": "Polyscan GitHub App",
-			"dismissAria": "Dismiss GitHub App promotion",
-			"eyebrow": "Free",
-			"title": "Get the GitHub App",
-			"body": "A code quality report every week, automatically.",
-			"cta": "Start for free"
-		},
-		"commandBlock": {
-			"terminal": "Terminal",
-			"copy": "Copy",
-			"copied": "Copied",
-			"copyAria": "Copy \"{command}\" to clipboard",
-			"copiedStatus": "Command copied to clipboard."
-		},
-		"readout": {
-			"sampleAria": "Sample pyscn analysis readout",
-			"panelLabel": "pyscn / structural readout",
-			"sampleRun": "Sample run",
-			"healthScore": "Health score:",
-			"codebaseHealth": "Codebase health",
-			"grade": "Grade {grade}",
-			"snapshot1": "A structural snapshot.",
-			"snapshot2": "See where to look next.",
-			"metricsOverThreshold": "{count} metrics over threshold",
-			"structuralMetrics": "Structural metrics",
-			"checksCount": "{count} checks",
-			"overThreshold": "Over threshold",
-			"withinThreshold": "Within threshold",
-			"runIt": "Run it on your codebase",
-			"readings": {
-				"CC": { "label": "Cyclomatic complexity", "value": "max 31" },
-				"DUP": { "label": "Duplication", "value": "8.2%" },
-				"DEAD": { "label": "Dead code", "value": "0 blocks" },
-				"DEP": { "label": "Dependency cycles", "value": "2 cycles" },
-				"CBO": { "label": "Class coupling", "value": "max 9" }
-			}
-		},
-		"hero": {
-			"eyebrow": "Open source. Clear signals.",
-			"title": "Code quality,",
-			"titleHighlight": "measured.",
-			"lead": "Structural analyzers for the age of AI-written code.",
-			"body": "AI agents write code faster than anyone can review it. Polyscan measures the structure of your whole codebase — dead code, duplication, complexity, dependencies, class design — and tells you what to fix first.",
-			"cta": "Read the docs",
-			"source": "Explore the source",
-			"noInstall": "No installation, no sign-up, no code leaves your machine.",
-			"instrumentCaption": "One codebase. Five dimensions. A clear next step."
-		},
-		"languageStrip": {
-			"label": "Your stack, covered"
-		},
-		"checks": {
-			"eyebrow": "Readings",
-			"title": "Less guesswork. More signal.",
-			"lede": "Five structural readings, one 0-100 score with an A-F grade, and an HTML report you can share.",
-			"items": [
-				{
-					"id": "DEAD",
-					"title": "Dead code",
-					"body": "Unreachable code you can safely delete, found by walking the control flow graph rather than guessing."
-				},
-				{
-					"id": "DUP",
-					"title": "Duplicate code",
-					"body": "Copy-pasted and structurally similar code worth merging — Type 1-4 clone detection via tree edit distance."
-				},
-				{
-					"id": "CC",
-					"title": "Complexity",
-					"body": "Functions that are hard to read and hard to test, ranked by cyclomatic complexity so you know where to start."
-				},
-				{
-					"id": "DEP",
-					"title": "Dependencies",
-					"body": "Circular imports and unstable module dependencies, plus the module communities your codebase actually forms."
-				},
-				{
-					"id": "CBO",
-					"title": "Class design",
-					"body": "Classes that do too much or depend on too much, measured with CBO coupling and LCOM cohesion."
-				}
-			],
-			"summaryLabel": "The whole picture",
-			"summaryBig1": "Structure.",
-			"summaryBig2": "Not just style.",
-			"summaryCta": "See the analyzers"
-		},
-		"analyzers": {
-			"eyebrow": "Analyzers",
-			"title": "One command. Any language.",
-			"lede": "Nothing to configure, nothing to install.",
-			"items": [
-				{
-					"body": "The original analyzer. Ships a CLI, an MCP server, and Agent Skills, and is the engine behind the Polyscan GitHub App."
-				},
-				{
-					"body": "One CLI for JavaScript, TypeScript, Go, Rust, and C++. Detects each file's language by extension and lands everything in one report with one health score. Distributed on npm with prebuilt binaries — no toolchain to install."
-				},
-				{
-					"body": "The language-agnostic engine behind both analyzers: APTED tree edit distance, LSH/MinHash clone indexing, CFG analysis, coupling and cohesion metrics."
-				}
-			],
-			"note": "Complexity and duplicate code cover every language. Dead code, dependencies, and class design are available for Python and JavaScript/TypeScript today; a dimension a language does not have is left out of its score rather than counted as clean."
-		},
-		"agents": {
-			"eyebrow": "Agent skills",
-			"title": "Built for coding agents",
-			"lede": "The analyzers ship Agent Skills that teach an AI agent when and how to run each analysis — health checks, refactoring, architecture review, and CI-friendly reports. They work with Claude Code, Cursor, Codex, Gemini CLI, and others.",
-			"ask": "Then just ask",
-			"steps": [
-				"Analyze the code quality of the src/ directory",
-				"Find duplicate code and help me refactor it",
-				"Show me complex code and help me simplify it"
-			]
-		},
-		"bot": {
-			"eyebrow": "Continuous monitoring",
-			"title": "Track it every week with the App.",
-			"body": "The GitHub App measures complexity, duplication, dead code, and dependencies across your entire repository every week. It tracks structural decay over time, reports what to fix first in a GitHub Issue, and catches new problems on pull requests. Every feature is free for public repositories.",
-			"cta": "Start for free",
-			"source": "Source on GitHub"
-		},
-		"faq": {
-			"eyebrow": "FAQ",
-			"title": "Frequently asked questions",
-			"items": [
-				{
-					"q": "What does Polyscan actually measure?",
-					"a": "Structure, not style. Dead code, duplicate code, cyclomatic complexity, module dependency cycles, and class coupling and cohesion — the things that make a codebase expensive to change. It is not a linter or a formatter, and it complements rather than replaces them."
-				},
-				{
-					"q": "Why does this matter for AI-generated code?",
-					"a": "Coding agents produce working code quickly, but they tend to duplicate logic and grow functions rather than refactor. Those problems compound silently. Polyscan gives you and your agent a measurement to work against, so cleanup becomes a concrete task instead of a vague feeling."
-				},
-				{
-					"q": "Do I need to install anything?",
-					"a": "No. uvx and npx run the analyzers directly. Both ship as single Go binaries built with tree-sitter, so a full analysis is fast enough to run on every commit."
-				},
-				{
-					"q": "Which languages are supported?",
-					"a": "Python via pyscn, and JavaScript, TypeScript, Go, Rust, and C++ via polyscan. Complexity and duplicate code are measured for every language. Dead code, dependencies, and class design need the import graph and class model that only the Python and JavaScript/TypeScript backends build today, so those dimensions are left out of a Go, Rust, or C++ score rather than counted as clean."
-				},
-				{
-					"q": "Is it open source?",
-					"a": "Yes, MIT licensed. The analyzers, the shared core, and the Agent Skills are all public on GitHub."
-				}
-			]
-		},
-		"closing": {
-			"eyebrow": "Run it now",
-			"title": "Score your codebase in one command",
-			"body": "Run it on the repository you are working in right now — it takes seconds and installs nothing."
-		}
-	},
-	"how": {
-		"eyebrow": "Readings",
-		"clones": {
-			"desc": "Finds duplicate code and promotes DRY principle",
-			"title": "Code Clones"
-		},
-		"complexity": {
-			"desc": "Detects overly complex functions and recommends splitting",
-			"title": "Cyclomatic Complexity"
-		},
-		"coupling": {
-			"desc": "Visualizes dependencies between modules",
-			"title": "Coupling Analysis"
-		},
-		"deadcode": {
-			"desc": "Identifies unused functions and variables",
-			"title": "Dead Code"
-		},
-		"subtitle": "The AST-based analyzers pyscn and polyscan quantitatively detect code quality issues.",
-		"title": "What the analyzers detect"
+	"languageStrip": {
+		"label": "Your stack, covered"
 	},
 	"legal": {
 		"backToHome": "Back to Home",
 		"lastUpdated": "Last updated"
+	},
+	"meta": {
+		"title": "Polyscan — The AI agent that audits your codebase",
+		"description": "Polyscan is an AI audit agent for GitHub. It measures your whole repository with the open-source polyscan analyzers, reads the flagged code across the repo to verify each finding, and reports what is worth fixing in a GitHub Issue every week.",
+		"ogDescription": "An AI agent that measures your whole repository with static analysis, reads the code to verify each finding, and reports what to fix every week.",
+		"softwareDescription": "AI audit agent for GitHub repositories. It runs open-source static analyzers for Python, JavaScript/TypeScript, Go, Rust, and C++ across the whole repository, reads the flagged code to verify findings, and files prioritized recommendations as a GitHub Issue."
 	},
 	"nav": {
 		"contact": "Contact",
 		"features": "Features",
 		"howItWorks": "How it works",
 		"mypage": "My Account",
-		"pricing": "Pricing"
+		"pricing": "Pricing",
+		"blog": "Blog",
+		"docs": "Docs"
 	},
 	"pricing": {
 		"eyebrow": "Pricing",
@@ -323,14 +245,11 @@
 		"title": "Free for open source"
 	},
 	"siteFooter": {
-		"aiAgents": "AI agents",
 		"allRightsReserved": "All rights reserved.",
-		"analyzers": "Analyzers",
 		"blog": "Blog",
 		"contact": "Contact",
 		"documentation": "Documentation",
 		"faq": "FAQ",
-		"githubApp": "GitHub App",
 		"legal": "Legal",
 		"location": "Kanagawa, Japan",
 		"ludoTechnologies": "Ludo Technologies",
@@ -339,20 +258,19 @@
 		"product": "Product",
 		"pyscnOnGitHub": "pyscn on GitHub",
 		"resources": "Resources",
-		"tagline": "Structural codebase health for AI-written code.",
+		"tagline": "The AI agent that audits your codebase, every week.",
 		"terms": "Terms of Service",
-		"whatYouGet": "What you get"
+		"features": "Features",
+		"agent": "Audit agent",
+		"pricing": "Pricing",
+		"howItWorks": "How it works",
+		"contactForm": "Contact form",
+		"sitePrivacy": "Website Privacy",
+		"siteTerms": "Website Terms"
 	},
 	"siteHeader": {
 		"close": "Close",
-		"languagesAria": "Languages",
 		"menu": "Menu",
-		"nav": {
-			"analyzers": "Analyzers",
-			"blog": "Blog",
-			"docs": "Docs",
-			"github": "GitHub"
-		},
 		"primaryNav": "Primary"
 	},
 	"tech": {

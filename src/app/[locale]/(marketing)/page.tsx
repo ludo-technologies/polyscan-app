@@ -1,21 +1,37 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
+import CommandBlock from "@/components/CommandBlock";
 import AuditPanel from "@/components/pyscn-bot/AuditPanel";
 import ConfigYaml from "@/components/pyscn-bot/ConfigYaml";
 import Reveal from "@/components/Reveal";
 import SectionHead from "@/components/SectionHead";
 import { Link } from "@/i18n/navigation";
+import { LINKS } from "@/lib/links";
 import { localizedAlternates } from "@/lib/localized-metadata";
 import { isPyscnBotLoggedIn } from "@/lib/pyscn-bot-session";
+import { SITE_KEYWORDS } from "@/lib/seo";
+
+type FaqItem = { q: string; a: string };
+type CardItem = { id: string; title: string; body: string };
 
 const rich = { strong: (chunks: React.ReactNode) => <strong>{chunks}</strong> };
 
-const metrics = [
-	{ key: "complexity", id: "CC" },
-	{ key: "deadcode", id: "DEAD" },
-	{ key: "clones", id: "DUP" },
-	{ key: "coupling", id: "CBO" },
-] as const;
+const coveredLanguages = [
+	"Python",
+	"TypeScript",
+	"JavaScript",
+	"Go",
+	"Rust",
+	"C++",
+];
+
+const engineCommands = [
+	{ label: "Python", command: "uvx pyscn@latest analyze ." },
+	{
+		label: "JavaScript / TypeScript / Go / Rust / C++",
+		command: "npx polyscan analyze .",
+	},
+];
 
 const chipClass =
 	"mb-3 inline-flex border border-[var(--border-subtle)] bg-[var(--bg-subtle)] px-2 py-0.5 font-mono text-[11px] font-bold tracking-wide text-[var(--text-label)]";
@@ -29,18 +45,74 @@ export async function generateMetadata({
 	params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
 	const { locale } = await params;
-	const t = await getTranslations({ locale });
-	const { canonical, languages } = localizedAlternates(locale, "/pyscn-bot");
+	const t = await getTranslations({ locale, namespace: "meta" });
+	const { canonical, languages } = localizedAlternates(locale, "/");
 	return {
-		title: "Polyscan - Weekly Codebase Health Monitoring for GitHub",
-		description: t.markup("hero.description", { strong: (chunks) => chunks }),
+		title: t("title"),
+		description: t("description"),
+		keywords: [...SITE_KEYWORDS],
+		openGraph: {
+			title: t("title"),
+			description: t("ogDescription"),
+			type: "website",
+		},
 		alternates: { canonical, languages },
 	};
 }
 
-export default async function PyscnBotLandingPage() {
+function SignalCard({ index, item }: { index: number; item: CardItem }) {
+	return (
+		<article className="signal-card bg-[var(--bg-card)] p-7">
+			<div className="signal-visual" aria-hidden="true">
+				<span>{String(index + 1).padStart(2, "0")}</span>
+				<div className="signal-bars">
+					{[0, 1, 2, 3, 4, 5, 6, 7].map((bar) => (
+						<i
+							key={bar}
+							style={{
+								height: `${20 + ((bar * 19 + index * 13) % 70)}%`,
+							}}
+						/>
+					))}
+				</div>
+			</div>
+			<p className={chipClass}>{item.id}</p>
+			<h3 className="mb-1 text-lg font-semibold text-[var(--text-primary)]">
+				{item.title}
+			</h3>
+			<p className="text-sm leading-relaxed text-[var(--text-light)]">
+				{item.body}
+			</p>
+		</article>
+	);
+}
+
+export default async function Home() {
 	const t = await getTranslations();
 	const isLoggedIn = await isPyscnBotLoggedIn();
+	const agentSteps = t.raw("agent.steps") as CardItem[];
+	const checks = t.raw("checks.items") as CardItem[];
+	const faqs = t.raw("faq.items") as FaqItem[];
+
+	const faqJsonLd = JSON.stringify({
+		"@context": "https://schema.org",
+		"@type": "FAQPage",
+		mainEntity: faqs.map(({ q, a }) => ({
+			"@type": "Question",
+			name: q,
+			acceptedAnswer: { "@type": "Answer", text: a },
+		})),
+	});
+
+	const softwareJsonLd = JSON.stringify({
+		"@context": "https://schema.org",
+		"@type": "SoftwareApplication",
+		name: "Polyscan",
+		applicationCategory: "DeveloperApplication",
+		operatingSystem: "Web",
+		description: t("meta.softwareDescription"),
+		offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+	});
 
 	/* Unauthenticated CTAs must stay plain <a>: a locale prefix would break
 	   the /pyscn-bot/api rewrite. */
@@ -67,6 +139,17 @@ export default async function PyscnBotLandingPage() {
 	return (
 		<main className="landing-page relative flex min-h-screen flex-col items-center">
 			<Reveal>
+				<script
+					type="application/ld+json"
+					// biome-ignore lint/security/noDangerouslySetInnerHtml: structured data
+					dangerouslySetInnerHTML={{ __html: softwareJsonLd }}
+				/>
+				<script
+					type="application/ld+json"
+					// biome-ignore lint/security/noDangerouslySetInnerHtml: structured data
+					dangerouslySetInnerHTML={{ __html: faqJsonLd }}
+				/>
+
 				<section
 					id="top"
 					className="home-hero relative z-10 w-full max-w-6xl px-4 pt-14 pb-16 sm:px-6 sm:pt-24 sm:pb-20"
@@ -76,7 +159,7 @@ export default async function PyscnBotLandingPage() {
 							<p className="hero-eyebrow">
 								<span /> {t("hero.eyebrow")}
 							</p>
-							<h1 className="type-display mb-6 text-[3.5rem] leading-[0.98] font-bold text-[var(--text-primary)] sm:text-7xl lg:text-[5.25rem]">
+							<h1 className="type-display mb-6 text-[2.5rem] leading-[1.05] font-bold text-[var(--text-primary)] sm:text-6xl lg:text-[4rem]">
 								{t("hero.title")}
 								<br />
 								<span className="text-[var(--brand-blue)]">
@@ -89,11 +172,16 @@ export default async function PyscnBotLandingPage() {
 							<p className="mb-8 max-w-2xl leading-relaxed font-semibold text-[var(--text-primary)]">
 								{t("hero.freeNote")}
 							</p>
-							<Cta
-								label={t("trial.hero")}
-								plan="free"
-								className="home-primary"
-							/>
+							<div className="flex flex-wrap items-center gap-5">
+								<Cta
+									label={t("trial.hero")}
+									plan="free"
+									className="home-primary"
+								/>
+								<Link href="/pyscn-bot/how-it-works" className="home-text-link">
+									{t("nav.howItWorks")} <span aria-hidden="true">→</span>
+								</Link>
+							</div>
 						</div>
 
 						<div className="hero-instrument min-w-0">
@@ -103,11 +191,51 @@ export default async function PyscnBotLandingPage() {
 					</div>
 				</section>
 
+				<div className="language-strip relative z-10 w-full">
+					<div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-8 gap-y-4 px-4 py-6 sm:px-6">
+						<span className="font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--text-muted)]">
+							{t("languageStrip.label")}
+						</span>
+						{coveredLanguages.map((language) => (
+							<span
+								key={language}
+								className="text-sm font-semibold tracking-tight text-[var(--text-secondary)]"
+							>
+								{language}
+							</span>
+						))}
+					</div>
+				</div>
+
 				<div className="relative z-10 w-full max-w-6xl px-4 pb-20 sm:px-6">
 					<section
 						data-reveal
+						id="agent"
+						aria-labelledby="agent-title"
+						className="mt-24 scroll-mt-24"
+					>
+						<SectionHead
+							id="agent-title"
+							eyebrow={t("agent.eyebrow")}
+							title={t("agent.title")}
+							lede={t("agent.lede")}
+						/>
+						<div className="grid gap-4 lg:grid-cols-3">
+							{agentSteps.map((step, index) => (
+								<SignalCard key={step.id} index={index} item={step} />
+							))}
+						</div>
+						<p className="mt-8">
+							<Link href="/pyscn-bot/how-it-works" className="home-text-link">
+								{t("agent.link")} <span aria-hidden="true">→</span>
+							</Link>
+						</p>
+					</section>
+
+					<section
+						data-reveal
 						aria-labelledby="diff-title"
-						className="mt-16 scroll-mt-24"
+						className="mt-20 scroll-mt-24"
 					>
 						<SectionHead
 							id="diff-title"
@@ -121,7 +249,7 @@ export default async function PyscnBotLandingPage() {
 									{t("diff.traditional._")}
 								</h3>
 								<ul className="space-y-3 text-[var(--text-secondary)]">
-									{(["1", "2", "3", "4", "5"] as const).map((n) => (
+									{(["1", "2", "3", "4"] as const).map((n) => (
 										<li key={n} className="flex items-start gap-3 text-sm">
 											<span
 												aria-hidden="true"
@@ -141,7 +269,7 @@ export default async function PyscnBotLandingPage() {
 									{t("diff.pyscnBot._")}
 								</h3>
 								<ul className="space-y-3 text-[var(--text-primary)]">
-									{(["1", "2", "3", "4", "5"] as const).map((n) => (
+									{(["1", "2", "3", "4"] as const).map((n) => (
 										<li key={n} className="flex items-start gap-3 text-sm">
 											<span
 												aria-hidden="true"
@@ -245,50 +373,74 @@ export default async function PyscnBotLandingPage() {
 
 					<section
 						data-reveal
-						id="how-it-works"
-						aria-labelledby="how-title"
+						id="readings"
+						aria-labelledby="readings-title"
 						className="mt-20 scroll-mt-24"
 					>
 						<SectionHead
-							id="how-title"
-							eyebrow={t("how.eyebrow")}
-							title={t("how.title")}
-							lede={t("how.subtitle")}
+							id="readings-title"
+							eyebrow={t("checks.eyebrow")}
+							title={t("checks.title")}
+							lede={t("checks.lede")}
 						/>
-						<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-							{metrics.map((m, index) => (
-								<article
-									key={m.key}
-									className="signal-card bg-[var(--bg-card)] p-7"
-								>
-									<div className="signal-visual" aria-hidden="true">
-										<span>{String(index + 1).padStart(2, "0")}</span>
-										<div className="signal-bars">
-											{[0, 1, 2, 3, 4, 5, 6, 7].map((bar) => (
-												<i
-													key={bar}
-													style={{
-														height: `${20 + ((bar * 19 + index * 13) % 70)}%`,
-													}}
-												/>
-											))}
-										</div>
-									</div>
-									<p className={chipClass}>{m.id}</p>
-									<h3 className="mb-1 text-lg font-semibold text-[var(--text-primary)]">
-										{t(`how.${m.key}.title`)}
-									</h3>
-									<p className="text-sm leading-relaxed text-[var(--text-light)]">
-										{t(`how.${m.key}.desc`)}
-									</p>
-								</article>
+						<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+							{checks.map((c, index) => (
+								<SignalCard key={c.id} index={index} item={c} />
+							))}
+							<a
+								href="#engine"
+								className="signal-summary flex flex-col justify-between p-7"
+							>
+								<span className="font-mono text-xs uppercase tracking-widest">
+									{t("checks.summaryLabel")}
+								</span>
+								<span className="my-6 text-4xl font-bold tracking-tight">
+									{t("checks.summaryBig1")}
+									<br />
+									{t("checks.summaryBig2")}
+								</span>
+								<span className="text-sm">
+									{t("checks.summaryCta")} <span aria-hidden="true">↓</span>
+								</span>
+							</a>
+						</div>
+					</section>
+
+					<section
+						data-reveal
+						id="engine"
+						aria-labelledby="engine-title"
+						className="mt-20 scroll-mt-24"
+					>
+						<SectionHead
+							id="engine-title"
+							eyebrow={t("engine.eyebrow")}
+							title={t("engine.title")}
+							lede={t("engine.body")}
+						/>
+						<div className="grid gap-4 md:grid-cols-2">
+							{engineCommands.map((c) => (
+								<CommandBlock key={c.command} {...c} />
 							))}
 						</div>
-						<p className="mt-8">
-							<Link href="/pyscn-bot/how-it-works" className="home-text-link">
-								{t("tech.title")} <span aria-hidden="true">→</span>
-							</Link>
-						</p>
+						<div className="mt-8 flex flex-wrap gap-6">
+							<a
+								href={LINKS.docs}
+								target="_blank"
+								rel="noopener noreferrer"
+								className="home-text-link"
+							>
+								{t("engine.docs")} <span aria-hidden="true">↗</span>
+							</a>
+							<a
+								href={LINKS.monorepo}
+								target="_blank"
+								rel="noopener noreferrer"
+								className="home-text-link"
+							>
+								{t("engine.source")} <span aria-hidden="true">↗</span>
+							</a>
+						</div>
 					</section>
 
 					<section
@@ -387,6 +539,37 @@ export default async function PyscnBotLandingPage() {
 									</p>
 								)}
 							</div>
+						</div>
+					</section>
+
+					<section
+						data-reveal
+						id="faq"
+						aria-labelledby="faq-title"
+						className="mt-20 scroll-mt-24"
+					>
+						<SectionHead
+							id="faq-title"
+							eyebrow={t("faq.eyebrow")}
+							title={t("faq.title")}
+						/>
+						<div className="border border-[var(--border-light)] bg-[var(--bg-card)]">
+							{faqs.map(({ q, a }) => (
+								<details
+									key={q}
+									className="group border-b border-[var(--border-subtle)] p-5 last:border-b-0 open:bg-[var(--bg-subtle)]"
+								>
+									<summary className="cursor-pointer list-none text-base font-semibold text-[var(--text-primary)]">
+										<span className="mr-3 font-mono text-sm text-[var(--brand-blue)]">
+											Q
+										</span>
+										{q}
+									</summary>
+									<p className="mt-3 pl-6 text-sm leading-relaxed text-[var(--text-light)]">
+										{a}
+									</p>
+								</details>
+							))}
 						</div>
 					</section>
 

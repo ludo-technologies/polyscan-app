@@ -5,8 +5,9 @@ import type { ReactNode } from "react";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import { routing } from "@/i18n/routing";
+import { isPyscnBotLoggedIn } from "@/lib/pyscn-bot-session";
 
-export default async function HomeLayout({
+export default async function MarketingLayout({
 	children,
 	params,
 }: {
@@ -18,10 +19,11 @@ export default async function HomeLayout({
 		notFound();
 	}
 	setRequestLocale(locale);
+	const isLoggedIn = await isPyscnBotLoggedIn();
 
 	return (
 		<>
-			<Header languageSwitcher />
+			<Header isLoggedIn={isLoggedIn} languageSwitcher />
 			{children}
 			<Footer />
 		</>

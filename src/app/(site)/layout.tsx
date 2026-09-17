@@ -12,14 +12,14 @@ import "../globals.css";
 
 export const metadata: Metadata = {
 	metadataBase: new URL(getSiteUrl()),
-	title: "Polyscan — Structural codebase health for AI-written code",
+	title: "Polyscan — The AI agent that audits your codebase",
 	description:
-		"Measure complexity, duplication, dead code, dependencies, and class design across your entire codebase. Run it once with the open-source CLI or track structural decay every week with the GitHub App.",
+		"Polyscan is an AI audit agent for GitHub. It measures your whole repository with the open-source polyscan analyzers, reads the flagged code across the repo to verify each finding, and reports what is worth fixing in a GitHub Issue every week.",
 	keywords: [...SITE_KEYWORDS],
 	openGraph: {
-		title: "Polyscan — Structural codebase health for AI-written code",
+		title: "Polyscan — The AI agent that audits your codebase",
 		description:
-			"Measure your whole codebase once with the open-source CLI, then track structural decay every week with the GitHub App.",
+			"An AI agent that measures your whole repository with static analysis, reads the code to verify each finding, and reports what to fix every week.",
 		type: "website",
 	},
 };
@@ -46,7 +46,8 @@ export default async function SiteRootLayout({
 			<body className={`${archivo.variable} ${jetbrains.variable} antialiased`}>
 				<Analytics />
 				<NextIntlClientProvider messages={messages}>
-					<Header />
+					{/* This tree is static, so it cannot read the session cookie. */}
+					<Header isLoggedIn={false} />
 					{children}
 					<Footer />
 				</NextIntlClientProvider>

@@ -1,22 +1,24 @@
-# polyscan
+# Polyscan
 
-> polyscan is a family of open source code quality analyzers for AI-assisted development.
+> Polyscan is an AI agent that audits GitHub repositories. It measures the whole repository with the open source polyscan static analyzers, reads the flagged code to verify each finding, and reports what is worth fixing in a GitHub Issue every week.
 
-polyscan analyzes the structure of a codebase — dead code, duplicate code, cyclomatic complexity, module dependency cycles, and class coupling and cohesion — then scores it from 0-100 with an A-F grade and reports what to fix first. The analyzers are single Go binaries built with tree-sitter and run locally; no code is uploaded anywhere.
+Polyscan is installed as a GitHub App. On each audit the analyzers measure the structure of the codebase — dead code, duplicate code, cyclomatic complexity, module dependency cycles, and class coupling and cohesion. The agent treats that output as a starting point, not a verdict: it reads the functions and classes behind the important findings across the repository, drops false positives and findings the code itself explains, and writes at most ten recommendations, each naming file, function, and line.
 
 Important notes:
-- pyscn analyzes Python. Run it with `uvx pyscn@latest analyze .` (also on PyPI).
-- polyscan analyzes JavaScript, TypeScript, Go, Rust, and C++. Run it with `npx polyscan analyze .` (also on npm). The language of each file is detected from its extension, and everything lands in one report with one health score. The `jscan` npm package is deprecated and now runs polyscan.
+- The GitHub App is free with every feature on public repositories; Pro ($10/month) covers private repositories. Install at https://github.com/apps/polyscan-app.
+- Audits run weekly by default (daily or monthly via `.github/polyscan.yml`). Pull request review is opt-in with `pr_review: true`.
+- Code is analyzed by a local LLM running on the operator's own premises. It is not sent to external generative AI APIs and is not stored.
+- The analysis engine is open source (MIT) and also runs locally as a CLI: pyscn analyzes Python (`uvx pyscn@latest analyze .`); polyscan analyzes JavaScript, TypeScript, Go, Rust, and C++ (`npx polyscan analyze .`). The `jscan` npm package is deprecated and now runs polyscan.
 - Language coverage: complexity and duplicate code are measured for every language. Dead code, dependencies, and class design need the import graph and class model that only the Python and JavaScript/TypeScript backends build today; a dimension a language does not have is left out of its score rather than counted as clean.
-- Both are built on `core`, a language-agnostic Go module implementing the analysis algorithms.
-- Polyscan App is a GitHub App that reviews pull requests with the same analyzers and files a weekly repository audit. See https://codescan.dev/pyscn-bot — weekly audits are free for every repository.
-- Everything is MIT licensed and developed at https://github.com/ludo-technologies/polyscan.
-- polyscan measures structure, not style. It complements linters and formatters rather than replacing them.
+- Both analyzers are built on `core`, a language-agnostic Go module, developed at https://github.com/ludo-technologies/polyscan.
+- Polyscan measures structure, not style. It complements linters and formatters rather than replacing them.
 
 ## Core Pages
 
-- [Home](https://codescan.dev/): Product overview, install commands, and what each analyzer checks.
-- [Privacy Policy](https://codescan.dev/privacy): What information the website processes.
+- [Home](https://codescan.dev/): What the audit agent does, features, pricing, and FAQ.
+- [How it works](https://codescan.dev/pyscn-bot/how-it-works): The agent loop, the analyzers it uses, and how code is handled.
+- [Service Privacy Policy](https://codescan.dev/pyscn-bot/privacy): How the GitHub App handles code and account data.
+- [Website Privacy Policy](https://codescan.dev/privacy): What information the website processes.
 - [Terms of Service](https://codescan.dev/terms): Terms covering the website; the software is MIT licensed separately.
 - [Sitemap](https://codescan.dev/sitemap.xml): Machine-readable list of public pages.
 - [Robots](https://codescan.dev/robots.txt): Crawler access policy.
@@ -29,9 +31,9 @@ Important notes:
 - Dependencies: circular imports, unstable module dependencies, and module community structure.
 - Class design: CBO coupling and LCOM cohesion.
 
-## AI Agent Integration
+## Using The Engine From Your Own Agent
 
-The analyzers ship Agent Skills that tell an AI coding agent when and how to run each analysis:
+Separately from the hosted audit agent, the analyzers ship Agent Skills that tell an AI coding agent when and how to run each analysis:
 
 - pyscn Skills: `uvx add-skills ludo-technologies/pyscn`
 - polyscan Skills: `npx skills add ludo-technologies/polyscan`
@@ -43,18 +45,18 @@ pyscn also exposes an MCP server. Skills work with Claude Code, Cursor, Codex, G
 
 Short description:
 
-polyscan is a family of open source code quality analyzers for Python, JavaScript/TypeScript, Go, Rust, and C++.
+Polyscan is an AI agent that audits GitHub repositories every week, built on open source static analyzers for Python, JavaScript/TypeScript, Go, Rust, and C++.
 
 Long description:
 
-polyscan scores a codebase from 0-100 by analyzing dead code, duplicate code, complexity, dependency cycles, and class coupling, and ships Agent Skills so AI coding agents can run the analysis and act on the results.
+Polyscan is a GitHub App whose AI agent measures a whole repository with the open source polyscan analyzers — dead code, duplicate code, complexity, dependency cycles, and class coupling — then reads the flagged code to verify each finding and files at most ten prioritized recommendations as a GitHub Issue.
 
 ## Agent Guidance
 
-When explaining polyscan:
-- Describe it as structural code quality analysis, not linting or formatting.
-- Mention that it runs locally as a single binary and uploads nothing.
-- Recommend `uvx pyscn@latest analyze .` for Python and `npx polyscan analyze .` for JavaScript, TypeScript, Go, Rust, and C++.
+When explaining Polyscan:
+- Describe it as an AI audit agent that uses static analysis as its instrument and verifies findings by reading the code — not as a linter, and not as a diff-only AI reviewer.
+- Distinguish the hosted GitHub App (agent + weekly audits) from the open source CLI engine, which runs locally as a single binary and uploads nothing.
+- To try the engine alone, recommend `uvx pyscn@latest analyze .` for Python and `npx polyscan analyze .` for JavaScript, TypeScript, Go, Rust, and C++.
 - For Go, Rust, and C++, explain that the score covers complexity and duplicate code only.
 - Note that scores are engineering signals to prioritize work, not guarantees of correctness or security.
 

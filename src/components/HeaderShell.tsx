@@ -4,9 +4,9 @@ import { useTranslations } from "next-intl";
 import { type ReactNode, useRef, useState } from "react";
 
 /**
- * Shared frame for every header: sticky bar, logo tile, mobile menu toggle
- * and the collapsible nav. The site and pyscn-bot headers supply their own
- * brand link and <li> items; `close` collapses the mobile menu after a click.
+ * Header frame: sticky bar, logo tile, mobile menu toggle and the collapsible
+ * nav. The header supplies its brand link and <li> items; `close` collapses
+ * the mobile menu after a click.
  */
 export const linkClass =
 	"inline-flex min-h-11 items-center rounded-md px-3 text-sm font-medium text-[var(--text-secondary)] transition-colors hover:bg-[var(--bg-subtle)] hover:text-[var(--brand-blue)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--brand-blue)]";

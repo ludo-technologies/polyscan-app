@@ -9,7 +9,7 @@ type Props = {
 };
 
 export default function CommandBlock({ command, label }: Props) {
-	const t = useTranslations("home.commandBlock");
+	const t = useTranslations("commandBlock");
 	const [copied, setCopied] = useState(false);
 
 	async function copy() {

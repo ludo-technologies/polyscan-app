@@ -4,7 +4,7 @@ import { routing } from "./i18n/routing";
 export default createMiddleware(routing);
 
 export const config = {
-	// The localized home page (/, /en, /ja, /zh) and the Polyscan App section
+	// The localized home page (/, /en, /ja, /zh) and the /pyscn-bot subpages
 	// pass through next-intl's middleware. The rest of the site (/blog,
 	// /privacy, /terms, etc.) must never pass through it — those pages are
 	// English-only. /pyscn-bot/api/* is excluded because it's rewritten to the
@@ -15,9 +15,7 @@ export const config = {
 	matcher: [
 		"/",
 		"/(en|ja|zh)",
-		"/pyscn-bot",
 		"/pyscn-bot/((?!api/|.*\\..*).*)",
-		"/(ja|zh)/pyscn-bot",
 		"/(ja|zh)/pyscn-bot/((?!api/|.*\\..*).*)",
 	],
 };
