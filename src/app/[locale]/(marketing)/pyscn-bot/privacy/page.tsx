@@ -17,7 +17,7 @@ export async function generateMetadata({
 		"/pyscn-bot/privacy",
 	);
 	return {
-		title: `${t("footer.privacy")} - Polyscan`,
+		title: `${t("siteFooter.privacy")} - Polyscan`,
 		description: "Privacy Policy for Polyscan",
 		alternates: { canonical, languages },
 	};
@@ -501,7 +501,7 @@ export default async function PrivacyPage({
 				<SubpageHeader
 					backLabel={t("legal.backToHome")}
 					eyebrow="Legal"
-					title={t("footer.privacy")}
+					title={t("siteFooter.privacy")}
 					lede={
 						<span className="font-mono text-sm text-[var(--text-muted)]">
 							{t("legal.lastUpdated")}: {LAST_UPDATED}
