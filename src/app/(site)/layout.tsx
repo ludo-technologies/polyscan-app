@@ -12,14 +12,14 @@ import "../globals.css";
 
 export const metadata: Metadata = {
 	metadataBase: new URL(getSiteUrl()),
-	title: "Polyscan — The AI agent that audits your codebase",
+	title: "Polyscan — Your whole codebase, audited every week",
 	description:
-		"Polyscan is an AI audit agent for GitHub. It measures your whole repository with the open-source polyscan analyzers, reads the flagged code across the repo to verify each finding, and reports what is worth fixing in a GitHub Issue every week.",
+		"Polyscan audits your whole GitHub repository every week. Open-source static analysis finds candidate problems, an AI agent reads the actual code to check the important ones, and up to ten recommendations arrive as a GitHub Issue.",
 	keywords: [...SITE_KEYWORDS],
 	openGraph: {
-		title: "Polyscan — The AI agent that audits your codebase",
+		title: "Polyscan — Your whole codebase, audited every week",
 		description:
-			"An AI agent that measures your whole repository with static analysis, reads the code to verify each finding, and reports what to fix every week.",
+			"Static analysis finds candidate problems across the whole repository, an AI agent checks the important ones against the code, and up to ten recommendations arrive as a GitHub Issue every week.",
 		type: "website",
 	},
 };

@@ -159,7 +159,7 @@ export default async function Home() {
 							<p className="hero-eyebrow">
 								<span /> {t("hero.eyebrow")}
 							</p>
-							<h1 className="type-display mb-6 text-[2.5rem] leading-[1.05] font-bold text-[var(--text-primary)] sm:text-6xl lg:text-[4rem]">
+							<h1 className="type-display mb-6 text-[2rem] leading-[1.1] font-bold text-[var(--text-primary)] sm:text-5xl lg:text-[3.375rem]">
 								{t("hero.title")}
 								<br />
 								<span className="text-[var(--brand-blue)]">

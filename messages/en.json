@@ -1,23 +1,23 @@
 {
 	"agent": {
 		"eyebrow": "The audit agent",
-		"title": "polyscan measures. The agent judges.",
+		"title": "Static analysis measures. The agent judges.",
 		"lede": "Static analysis is exhaustive, but it flags false positives and deliberate design choices just as mechanically as real problems. Polyscan treats that output as a starting point and checks it against the code, the way a human reviewer would.",
 		"steps": [
 			{
 				"id": "MEASURE",
 				"title": "Measure the whole repository",
-				"body": "The open-source polyscan analyzers measure complexity, duplication, dead code, dependencies, and class design across the entire repository — the same yardstick on every run."
+				"body": "Open-source analyzers — pyscn for Python, polyscan for JavaScript, TypeScript, Go, Rust, and C++ — measure complexity, duplication, dead code, dependencies, and class design across the entire repository, with the same yardstick on every run."
 			},
 			{
 				"id": "INVESTIGATE",
 				"title": "Read the code to verify",
-				"body": "The agent picks the findings that matter and opens the functions and classes behind them, across files. Before it recommends merging duplicates it reads every copy. Findings the code itself explains, or dependencies that follow the project's own design, are dropped."
+				"body": "The agent picks the findings that matter most and opens the functions and classes behind them, across files. It is designed to read every copy before recommending a merge, and to set aside findings the code itself explains or that follow the project's own design."
 			},
 			{
 				"id": "REPORT",
-				"title": "Report only what is worth fixing",
-				"body": "Findings that survive verification become at most ten recommendations, each naming the file, function, and line, written to a GitHub Issue in one of eight languages."
+				"title": "Narrow down what to fix",
+				"body": "What holds up against the code becomes at most ten recommendations, each naming the file, function, and line, written to a GitHub Issue in one of eight languages."
 			}
 		],
 		"link": "See how it works in detail"
@@ -109,9 +109,9 @@
 		"button": "Start auditing free"
 	},
 	"diff": {
-		"eyebrow": "Verified, not just detected",
+		"eyebrow": "Checked against the code",
 		"title": "An audit you can act on, not a list of warnings",
-		"subtitle": "Static analyzers print hundreds of warnings and leave it to you to decide which ones are real. Polyscan takes on that judgment too.",
+		"subtitle": "Static analyzers print hundreds of warnings and leave it to you to decide which ones are real. Polyscan takes on the first pass of that judgment.",
 		"traditional": {
 			"1": "Hundreds of warnings, listed as-is",
 			"2": "Can't tell false positives from deliberate design",
@@ -120,8 +120,8 @@
 			"_": "Static analysis alone"
 		},
 		"pyscnBot": {
-			"1": "The agent <strong>reads the actual code</strong> to verify findings",
-			"2": "Drops findings the code already explains",
+			"1": "The agent <strong>reads the actual code</strong> behind the important findings",
+			"2": "Weighs false positives and deliberate design against what the code says",
 			"3": "At most ten recommendations, with file, function, and line",
 			"4": "Updates the Issue every week and tracks what changed",
 			"_": "Polyscan"
@@ -140,11 +140,11 @@
 		"items": [
 			{
 				"q": "What is Polyscan?",
-				"a": "An AI agent that audits GitHub repositories on a schedule. It measures the whole repository with open-source static analyzers — pyscn for Python, polyscan for JavaScript, TypeScript, Go, Rust, and C++ — then reads the actual code to verify the findings and reports what is worth fixing in a GitHub Issue."
+				"a": "An AI agent that audits GitHub repositories on a schedule. It measures the whole repository with open-source static analyzers — pyscn for Python, polyscan for JavaScript, TypeScript, Go, Rust, and C++ — then reads the actual code behind the important findings and recommends what to fix first in a GitHub Issue."
 			},
 			{
 				"q": "How is this different from running a static analyzer myself?",
-				"a": "An analyzer outputs every finding, including false positives and deliberate design choices, and leaves the triage to you. Polyscan's agent does that triage: it reads the flagged code across the repository, drops what the code already explains, and narrows the rest down to at most ten recommendations with file, function, and line."
+				"a": "An analyzer outputs every finding, including false positives and deliberate design choices, and leaves the triage to you. Polyscan's agent does a first pass of that triage: it reads the code behind the important findings across the repository, sets aside what the code already explains, and narrows the rest down to at most ten recommendations with file, function, and line. The recommendations are an AI's judgment, so treat them as a prioritized starting point rather than a verdict."
 			},
 			{
 				"q": "How is this different from AI code review tools?",
@@ -192,9 +192,9 @@
 	},
 	"hero": {
 		"eyebrow": "GitHub App · Free for public repos",
-		"title": "An AI agent that",
-		"titleHighlight": "audits your code.",
-		"description": "Polyscan is an AI agent whose instruments are the polyscan static analyzers. Instead of handing you a raw list of warnings, it <strong>reads the flagged code across your repository to verify each finding</strong>, then reports only what is worth fixing — every week, as a GitHub Issue.",
+		"title": "Your whole repo,",
+		"titleHighlight": "audited every week.",
+		"description": "Reviewing one pull request at a time can't show how the codebase as a whole is decaying. Open-source static analysis finds candidate problems across your repository, and an AI agent <strong>reads the actual code to check the important ones</strong>. The places it recommends fixing first arrive as a GitHub Issue, ten at most.",
 		"freeNote": "Every feature is free on public repositories. No card required. Pro brings the same to private repositories."
 	},
 	"languageStrip": {
@@ -205,10 +205,10 @@
 		"lastUpdated": "Last updated"
 	},
 	"meta": {
-		"title": "Polyscan — The AI agent that audits your codebase",
-		"description": "Polyscan is an AI audit agent for GitHub. It measures your whole repository with the open-source polyscan analyzers, reads the flagged code across the repo to verify each finding, and reports what is worth fixing in a GitHub Issue every week.",
-		"ogDescription": "An AI agent that measures your whole repository with static analysis, reads the code to verify each finding, and reports what to fix every week.",
-		"softwareDescription": "AI audit agent for GitHub repositories. It runs open-source static analyzers for Python, JavaScript/TypeScript, Go, Rust, and C++ across the whole repository, reads the flagged code to verify findings, and files prioritized recommendations as a GitHub Issue."
+		"title": "Polyscan — Your whole codebase, audited every week",
+		"description": "Polyscan audits your whole GitHub repository every week. Open-source static analysis finds candidate problems, an AI agent reads the actual code to check the important ones, and up to ten recommendations arrive as a GitHub Issue.",
+		"ogDescription": "Static analysis finds candidate problems across the whole repository, an AI agent checks the important ones against the code, and up to ten recommendations arrive as a GitHub Issue every week.",
+		"softwareDescription": "AI audit agent for GitHub repositories. It runs open-source static analyzers for Python, JavaScript/TypeScript, Go, Rust, and C++ across the whole repository, reads the code behind the important findings to check them, and files up to ten prioritized recommendations as a GitHub Issue."
 	},
 	"nav": {
 		"contact": "Contact",

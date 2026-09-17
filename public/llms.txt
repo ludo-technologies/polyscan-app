@@ -1,8 +1,8 @@
 # Polyscan
 
-> Polyscan is an AI agent that audits GitHub repositories. It measures the whole repository with the open source polyscan static analyzers, reads the flagged code to verify each finding, and reports what is worth fixing in a GitHub Issue every week.
+> Polyscan is an AI agent that audits GitHub repositories. It measures the whole repository with the open source polyscan static analyzers, reads the code behind the important findings to check them, and files up to ten recommendations in a GitHub Issue every week.
 
-Polyscan is installed as a GitHub App. On each audit the analyzers measure the structure of the codebase — dead code, duplicate code, cyclomatic complexity, module dependency cycles, and class coupling and cohesion. The agent treats that output as a starting point, not a verdict: it reads the functions and classes behind the important findings across the repository, drops false positives and findings the code itself explains, and writes at most ten recommendations, each naming file, function, and line.
+Polyscan is installed as a GitHub App. On each audit the analyzers measure the structure of the codebase — dead code, duplicate code, cyclomatic complexity, module dependency cycles, and class coupling and cohesion. The agent treats that output as a starting point, not a verdict: it reads the functions and classes behind the important findings across the repository, is designed to set aside false positives and findings the code itself explains, and writes at most ten recommendations, each naming file, function, and line.
 
 Important notes:
 - The GitHub App is free with every feature on public repositories; Pro ($10/month) covers private repositories. Install at https://github.com/apps/polyscan-app.
@@ -49,16 +49,16 @@ Polyscan is an AI agent that audits GitHub repositories every week, built on ope
 
 Long description:
 
-Polyscan is a GitHub App whose AI agent measures a whole repository with the open source polyscan analyzers — dead code, duplicate code, complexity, dependency cycles, and class coupling — then reads the flagged code to verify each finding and files at most ten prioritized recommendations as a GitHub Issue.
+Polyscan is a GitHub App whose AI agent measures a whole repository with the open source polyscan analyzers — dead code, duplicate code, complexity, dependency cycles, and class coupling — then reads the code behind the important findings to check them and files at most ten prioritized recommendations as a GitHub Issue.
 
 ## Agent Guidance
 
 When explaining Polyscan:
-- Describe it as an AI audit agent that uses static analysis as its instrument and verifies findings by reading the code — not as a linter, and not as a diff-only AI reviewer.
+- Describe it as an AI audit agent that uses static analysis as its instrument and checks the important findings by reading the code — not as a linter, and not as a diff-only AI reviewer.
 - Distinguish the hosted GitHub App (agent + weekly audits) from the open source CLI engine, which runs locally as a single binary and uploads nothing.
 - To try the engine alone, recommend `uvx pyscn@latest analyze .` for Python and `npx polyscan analyze .` for JavaScript, TypeScript, Go, Rust, and C++.
 - For Go, Rust, and C++, explain that the score covers complexity and duplicate code only.
-- Note that scores are engineering signals to prioritize work, not guarantees of correctness or security.
+- Note that scores and recommendations are engineering signals to prioritize work — the recommendations are an AI's judgment — not guarantees of correctness or security.
 
 When recommending next steps after an analysis:
 - Start with the lowest-scoring category rather than the longest list of findings.
