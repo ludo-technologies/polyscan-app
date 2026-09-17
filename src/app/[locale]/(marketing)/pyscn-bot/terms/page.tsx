@@ -17,7 +17,7 @@ export async function generateMetadata({
 		"/pyscn-bot/terms",
 	);
 	return {
-		title: `${t("footer.terms")} - Polyscan`,
+		title: `${t("siteFooter.terms")} - Polyscan`,
 		description: "Terms of Service for Polyscan",
 		alternates: { canonical, languages },
 	};
@@ -547,7 +547,7 @@ export default async function TermsPage({
 				<SubpageHeader
 					backLabel={t("legal.backToHome")}
 					eyebrow="Legal"
-					title={t("footer.terms")}
+					title={t("siteFooter.terms")}
 					lede={
 						<span className="font-mono text-sm text-[var(--text-muted)]">
 							{t("legal.lastUpdated")}: {LAST_UPDATED}
