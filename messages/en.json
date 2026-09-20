@@ -24,23 +24,13 @@
 	},
 	"checkout": {
 		"success": {
-			"backToHome": "Back to Home",
 			"description": "Your subscription is now active. Complete the setup below to use every feature on your private repositories.",
 			"step1": {
 				"button": "Install Polyscan",
 				"description": "Grant Polyscan access to your repositories.",
 				"title": "Install GitHub App"
 			},
-			"step2": {
-				"description": "Add .github/polyscan.yml with pr_review: true. PR review is off until you enable it per repository.",
-				"title": "Enable PR Review"
-			},
-			"step3": {
-				"description": "Create a pull request and Polyscan will automatically review.",
-				"title": "Start Reviewing"
-			},
 			"subtitle": "Thank you for subscribing to Polyscan Pro.",
-			"support": "Need help? Contact us at",
 			"title": "Payment Successful!"
 		}
 	},
@@ -197,6 +187,23 @@
 		"description": "Reviewing one pull request at a time can't show how the codebase as a whole is decaying. Open-source static analysis finds candidate problems across your repository, and an AI agent <strong>reads the actual code to check the important ones</strong>. The places it recommends fixing first arrive as a GitHub Issue, ten at most.",
 		"freeNote": "Every feature is free on public repositories. No card required. Pro brings the same to private repositories."
 	},
+	"installed": {
+		"eyebrow": "Installed",
+		"title": "Polyscan is installed.",
+		"description": "There is nothing else you have to do. Here is what happens next, and how to get more out of it.",
+		"requested": {
+			"eyebrow": "Requested",
+			"title": "Installation requested.",
+			"description": "An organization owner has to approve the request. Once they do, this is what happens next.",
+			"auditTitle": "Your first audit starts on approval"
+		},
+		"audit": {
+			"title": "Your first audit is already running",
+			"description": "A report arrives as a GitHub issue in each repository, usually within minutes; with many repositories, the rest follow over the next few hours. Polyscan then keeps that same issue up to date on your audit interval, whenever the repository has new pushes."
+		},
+		"privateNote": "Private repositories on the Free plan: up to 2 repositories with weekly audits. PR review and daily audits need Pro. Public repositories get everything for free.",
+		"pricingLink": "See pricing"
+	},
 	"languageStrip": {
 		"label": "Your stack, covered"
 	},
@@ -244,6 +251,18 @@
 		"subtitle": "Every feature on every public repository, at no cost. Pay only for private repositories.",
 		"title": "Free for open source"
 	},
+	"setup": {
+		"backToHome": "Back to Home",
+		"enablePrReview": {
+			"description": "Add .github/polyscan.yml with pr_review: true. PR review is off until you enable it per repository.",
+			"title": "Enable PR Review"
+		},
+		"startReviewing": {
+			"description": "Create a pull request and Polyscan will automatically review.",
+			"title": "Start Reviewing"
+		},
+		"support": "Need help? Contact us at"
+	},
 	"siteFooter": {
 		"allRightsReserved": "All rights reserved.",
 		"blog": "Blog",
@@ -272,6 +291,31 @@
 		"close": "Close",
 		"menu": "Menu",
 		"primaryNav": "Primary"
+	},
+	"subscribe": {
+		"title": "Get important updates by email",
+		"description": "Optional. Breaking changes, new languages and new features, nothing else. Unsubscribe anytime.",
+		"email": "Email",
+		"submit": "Subscribe",
+		"sent": {
+			"title": "Check your inbox",
+			"message": "We sent you a confirmation link. Your address is only kept once you click it."
+		},
+		"error": {
+			"title": "Error"
+		},
+		"confirmed": {
+			"title": "Subscription confirmed",
+			"message": "You will hear from us when something important changes."
+		},
+		"invalid": {
+			"title": "Link expired",
+			"message": "This confirmation link is invalid or has expired. Enter your address again to get a new one."
+		},
+		"failed": {
+			"title": "Could not confirm",
+			"message": "Something went wrong on our side. Please open the link again in a few minutes."
+		}
 	},
 	"tech": {
 		"agent": {

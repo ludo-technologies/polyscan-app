@@ -24,23 +24,13 @@
 	},
 	"checkout": {
 		"success": {
-			"backToHome": "ホームに戻る",
 			"description": "サブスクリプションが有効になりました。以下のセットアップを完了して、プライベートリポジトリで全機能をご利用ください。",
 			"step1": {
 				"button": "Polyscanをインストール",
 				"description": "Polyscanにリポジトリへのアクセスを許可してください。",
 				"title": "GitHub Appをインストール"
 			},
-			"step2": {
-				"description": ".github/polyscan.yml に pr_review: true を追加。PRレビューはリポジトリごとに有効化するまで動作しません。",
-				"title": "PRレビューを有効化"
-			},
-			"step3": {
-				"description": "プルリクエストを作成すると、Polyscanが自動でレビューします。",
-				"title": "レビュー開始"
-			},
 			"subtitle": "Polyscan Pro をご購入いただきありがとうございます。",
-			"support": "サポートが必要な場合はこちらへ",
 			"title": "お支払い完了！"
 		}
 	},
@@ -197,6 +187,23 @@
 		"description": "PR単位のレビューでは、コードベース全体の劣化は見えません。オープンソースの静的解析がリポジトリ全体から問題候補を見つけ、AIエージェントが重要な候補を<strong>実際のコードを読んで検証</strong>。優先して直すべき箇所を、最大10件の推奨事項としてGitHub Issueに届けます。",
 		"freeNote": "パブリックリポジトリは全機能が無料。カード登録も不要です。Proはプライベートリポジトリにも同じ機能を提供します。"
 	},
+	"installed": {
+		"eyebrow": "インストール完了",
+		"title": "Polyscanをインストールしました。",
+		"description": "必須の作業はこれで終わりです。このあと何が起きるかと、さらに活用する方法をご案内します。",
+		"requested": {
+			"eyebrow": "リクエスト送信済み",
+			"title": "インストールをリクエストしました。",
+			"description": "Organizationのオーナーによる承認が必要です。承認されると、以下の流れで動き始めます。",
+			"auditTitle": "承認されると最初の監査が始まります"
+		},
+		"audit": {
+			"title": "最初の監査はすでに始まっています",
+			"description": "結果は各リポジトリにGitHub Issueとして届きます。通常は数分、リポジトリが多い場合は残りが数時間以内に順次届きます。以降は設定した監査間隔ごとに、新しいpushがあったリポジトリの同じIssueを更新します。"
+		},
+		"privateNote": "Freeプランのプライベートリポジトリは2つまで、監査は週次です。PRレビューと日次監査にはProが必要です。パブリックリポジトリはすべての機能を無料で利用できます。",
+		"pricingLink": "料金を見る"
+	},
 	"languageStrip": {
 		"label": "あなたのスタックもカバー"
 	},
@@ -244,6 +251,18 @@
 		"subtitle": "パブリックリポジトリは全機能を無料で。支払いはプライベートリポジトリの分だけ",
 		"title": "オープンソースは無料"
 	},
+	"setup": {
+		"backToHome": "ホームに戻る",
+		"enablePrReview": {
+			"description": ".github/polyscan.yml に pr_review: true を追加。PRレビューはリポジトリごとに有効化するまで動作しません。",
+			"title": "PRレビューを有効化"
+		},
+		"startReviewing": {
+			"description": "プルリクエストを作成すると、Polyscanが自動でレビューします。",
+			"title": "レビュー開始"
+		},
+		"support": "サポートが必要な場合はこちらへ"
+	},
 	"siteFooter": {
 		"allRightsReserved": "All rights reserved.",
 		"blog": "ブログ",
@@ -272,6 +291,31 @@
 		"close": "閉じる",
 		"menu": "メニュー",
 		"primaryNav": "メインナビゲーション"
+	},
+	"subscribe": {
+		"title": "重要なお知らせをメールで受け取る",
+		"description": "任意です。破壊的変更、対応言語の追加、新機能のお知らせのみをお送りします。いつでも配信停止できます。",
+		"email": "メールアドレス",
+		"submit": "登録する",
+		"sent": {
+			"title": "メールをご確認ください",
+			"message": "確認用リンクをお送りしました。リンクをクリックするまで、メールアドレスは保存されません。"
+		},
+		"error": {
+			"title": "エラー"
+		},
+		"confirmed": {
+			"title": "登録が完了しました",
+			"message": "重要な変更があったときにお知らせします。"
+		},
+		"invalid": {
+			"title": "リンクの有効期限切れ",
+			"message": "この確認リンクは無効か、有効期限が切れています。もう一度メールアドレスを入力してください。"
+		},
+		"failed": {
+			"title": "確認できませんでした",
+			"message": "サーバー側で問題が発生しました。数分後にもう一度リンクを開いてください。"
+		}
 	},
 	"tech": {
 		"agent": {

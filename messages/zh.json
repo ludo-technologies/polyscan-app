@@ -24,23 +24,13 @@
 	},
 	"checkout": {
 		"success": {
-			"backToHome": "返回首页",
 			"description": "您的订阅已激活。完成以下设置，即可在私有仓库中使用全部功能。",
 			"step1": {
 				"button": "安装 Polyscan",
 				"description": "授权 Polyscan 访问您的仓库。",
 				"title": "安装 GitHub App"
 			},
-			"step2": {
-				"description": "在 .github/polyscan.yml 中添加 pr_review: true。PR 审查需按仓库启用，默认关闭。",
-				"title": "启用 PR 审查"
-			},
-			"step3": {
-				"description": "创建 Pull Request，Polyscan 将自动审查。",
-				"title": "开始审查"
-			},
 			"subtitle": "感谢您订阅 Polyscan Pro。",
-			"support": "需要帮助？请联系",
 			"title": "支付成功！"
 		}
 	},
@@ -197,6 +187,23 @@
 		"description": "逐个 PR 的审查看不到整个代码库的劣化。开源静态分析在整个仓库中找出候选问题，AI 智能体<strong>阅读实际代码来核实其中重要的部分</strong>，并把建议优先修复的地方整理为最多 10 条建议，提交到 GitHub Issue。",
 		"freeNote": "公开仓库可免费使用全部功能，无需绑定信用卡。Pro 为私有仓库提供同样的功能。"
 	},
+	"installed": {
+		"eyebrow": "安装完成",
+		"title": "Polyscan 已安装。",
+		"description": "您无需再做任何必要操作。以下是接下来会发生的事情，以及如何更好地使用它。",
+		"requested": {
+			"eyebrow": "已发送请求",
+			"title": "已请求安装。",
+			"description": "需要组织所有者批准该请求。批准后，将按以下流程开始运行。",
+			"auditTitle": "批准后将开始首次审计"
+		},
+		"audit": {
+			"title": "首次审计已经开始",
+			"description": "报告会以 GitHub Issue 的形式出现在每个仓库中，通常只需几分钟；仓库较多时，其余报告会在数小时内陆续送达。此后，Polyscan 会按照您设置的审计间隔，在仓库有新的推送时更新同一个 Issue。"
+		},
+		"privateNote": "Free 计划下的私有仓库：最多 2 个，每周审计。PR 审查和每日审计需要 Pro。公开仓库可免费使用全部功能。",
+		"pricingLink": "查看价格"
+	},
 	"languageStrip": {
 		"label": "覆盖你的技术栈"
 	},
@@ -244,6 +251,18 @@
 		"subtitle": "所有公开仓库免费使用全部功能，只为私有仓库付费",
 		"title": "开源项目免费"
 	},
+	"setup": {
+		"backToHome": "返回首页",
+		"enablePrReview": {
+			"description": "在 .github/polyscan.yml 中添加 pr_review: true。PR 审查需按仓库启用，默认关闭。",
+			"title": "启用 PR 审查"
+		},
+		"startReviewing": {
+			"description": "创建 Pull Request，Polyscan 将自动审查。",
+			"title": "开始审查"
+		},
+		"support": "需要帮助？请联系"
+	},
 	"siteFooter": {
 		"allRightsReserved": "All rights reserved.",
 		"blog": "博客",
@@ -272,6 +291,31 @@
 		"close": "关闭",
 		"menu": "菜单",
 		"primaryNav": "主导航"
+	},
+	"subscribe": {
+		"title": "通过邮件接收重要通知",
+		"description": "可选。仅发送破坏性变更、新增语言和新功能的通知，可随时退订。",
+		"email": "邮箱",
+		"submit": "订阅",
+		"sent": {
+			"title": "请查收邮件",
+			"message": "我们已向您发送确认链接。只有点击链接后，才会保存您的邮箱地址。"
+		},
+		"error": {
+			"title": "错误"
+		},
+		"confirmed": {
+			"title": "订阅已确认",
+			"message": "有重要变更时我们会通知您。"
+		},
+		"invalid": {
+			"title": "链接已失效",
+			"message": "该确认链接无效或已过期。请重新输入您的邮箱地址。"
+		},
+		"failed": {
+			"title": "无法确认",
+			"message": "服务器出现问题。请几分钟后再次打开该链接。"
+		}
 	},
 	"tech": {
 		"agent": {
