@@ -3,7 +3,7 @@ import { getTranslations } from "next-intl/server";
 import SubpageHeader from "@/components/pyscn-bot/SubpageHeader";
 import { localizedAlternates } from "@/lib/localized-metadata";
 
-const LAST_UPDATED = "2026-09-04";
+const LAST_UPDATED = "2026-09-21";
 
 export async function generateMetadata({
 	params,
@@ -49,6 +49,10 @@ function PrivacyJa() {
 					ユーザーID、ユーザー名、メールアドレス（課金管理・通知目的）
 				</li>
 				<li>
+					<strong>お知らせ配信用メールアドレス</strong>:
+					お客様が任意で登録し、確認メールのリンクで承認したメールアドレス（重要なお知らせ・新機能の案内の送信目的）
+				</li>
+				<li>
 					<strong>ログデータ</strong>:
 					IPアドレス、ブラウザ情報、アクセス日時などの技術情報（サービス運用・セキュリティ目的）
 				</li>
@@ -77,6 +81,18 @@ function PrivacyJa() {
 					決済処理のため、お支払い情報をStripeに送信します。
 					<a href="https://stripe.com/privacy" target="_blank" rel="noopener">
 						Stripe Privacy Policy
+					</a>
+					をご確認ください。
+				</li>
+				<li>
+					<strong>Resend社</strong>:
+					メール配信のため、お問い合わせ内容およびお知らせ配信用メールアドレスをResendに送信します。
+					<a
+						href="https://resend.com/legal/privacy-policy"
+						target="_blank"
+						rel="noopener"
+					>
+						Resend Privacy Policy
 					</a>
 					をご確認ください。
 				</li>
@@ -113,6 +129,10 @@ function PrivacyJa() {
 				</li>
 				<li>
 					<strong>インストール情報</strong>: サービス利用期間中保存されます。
+				</li>
+				<li>
+					<strong>お知らせ配信用メールアドレス</strong>:
+					配信停止されるまで保存されます。各メールのリンクからいつでも配信停止できます。
 				</li>
 				<li>
 					<strong>ログデータ</strong>:
@@ -197,6 +217,10 @@ function PrivacyZh() {
 					ID、用户名、电子邮件地址（用于计费管理和通知）
 				</li>
 				<li>
+					<strong>通知订阅邮箱</strong>
+					：您自愿登记并通过确认邮件中的链接确认的电子邮件地址（用于发送重要通知和新功能介绍）
+				</li>
+				<li>
 					<strong>日志数据</strong>：IP
 					地址、浏览器信息、访问时间等技术信息（用于服务运营和安全）
 				</li>
@@ -224,6 +248,18 @@ function PrivacyZh() {
 					<strong>Stripe</strong>：为处理支付，支付信息将发送至 Stripe。请参阅{" "}
 					<a href="https://stripe.com/privacy" target="_blank" rel="noopener">
 						Stripe Privacy Policy
+					</a>
+					。
+				</li>
+				<li>
+					<strong>Resend</strong>
+					：为发送邮件，我们会将咨询内容和通知订阅邮箱发送给 Resend。请参阅{" "}
+					<a
+						href="https://resend.com/legal/privacy-policy"
+						target="_blank"
+						rel="noopener"
+					>
+						Resend Privacy Policy
 					</a>
 					。
 				</li>
@@ -257,6 +293,10 @@ function PrivacyZh() {
 				</li>
 				<li>
 					<strong>安装信息</strong>：在服务使用期间保存。
+				</li>
+				<li>
+					<strong>通知订阅邮箱</strong>
+					：保存至您退订为止。您可随时通过每封邮件中的链接退订。
 				</li>
 				<li>
 					<strong>日志数据</strong>：出于安全和运营目的保存最多90天。
@@ -343,6 +383,11 @@ function PrivacyEn() {
 					address (for billing management and notifications)
 				</li>
 				<li>
+					<strong>Update Email Address</strong>: An email address you optionally
+					submit and confirm through an emailed link (to send important notices
+					and new feature announcements)
+				</li>
+				<li>
 					<strong>Log Data</strong>: Technical information such as IP address,
 					browser information, and access timestamps (for service operation and
 					security)
@@ -372,6 +417,18 @@ function PrivacyEn() {
 					payment processing. Please refer to the{" "}
 					<a href="https://stripe.com/privacy" target="_blank" rel="noopener">
 						Stripe Privacy Policy
+					</a>
+					.
+				</li>
+				<li>
+					<strong>Resend</strong>: To deliver email, we send contact form
+					submissions and update email addresses to Resend. Please refer to the{" "}
+					<a
+						href="https://resend.com/legal/privacy-policy"
+						target="_blank"
+						rel="noopener"
+					>
+						Resend Privacy Policy
 					</a>
 					.
 				</li>
@@ -414,6 +471,10 @@ function PrivacyEn() {
 				<li>
 					<strong>Installation Information</strong>: Retained during service
 					usage period.
+				</li>
+				<li>
+					<strong>Update Email Address</strong>: Retained until you unsubscribe,
+					which you can do at any time from the link in each email.
 				</li>
 				<li>
 					<strong>Log Data</strong>: Retained for up to 90 days for security and

@@ -24,23 +24,21 @@
 	},
 	"checkout": {
 		"success": {
-			"backToHome": "Back to Home",
-			"description": "Your subscription is now active. Complete the setup below to use every feature on your private repositories.",
+			"description": "Your subscription is active. Here is what your private repositories can do now.",
 			"step1": {
-				"button": "Install Polyscan",
-				"description": "Grant Polyscan access to your repositories.",
-				"title": "Install GitHub App"
+				"title": "Daily audits",
+				"description": "Set audit_interval: daily in .github/polyscan.yml and Polyscan audits your private repositories every day they have new pushes."
 			},
 			"step2": {
-				"description": "Add .github/polyscan.yml with pr_review: true. PR review is off until you enable it per repository.",
-				"title": "Enable PR Review"
+				"title": "PR review",
+				"description": "Set pr_review: true in the same file and Polyscan also reviews pull requests on private repositories. It is off by default."
 			},
 			"step3": {
-				"description": "Create a pull request and Polyscan will automatically review.",
-				"title": "Start Reviewing"
+				"title": "Up to 5 private repositories",
+				"description": "Repositories that were on hold over the Free limit are enabled automatically within the hour, and their first audit follows.",
+				"button": "Add repositories"
 			},
 			"subtitle": "Thank you for subscribing to Polyscan Pro.",
-			"support": "Need help? Contact us at",
 			"title": "Payment Successful!"
 		}
 	},
@@ -197,6 +195,30 @@
 		"description": "Reviewing one pull request at a time can't show how the codebase as a whole is decaying. Open-source static analysis finds candidate problems across your repository, and an AI agent <strong>reads the actual code to check the important ones</strong>. The places it recommends fixing first arrive as a GitHub Issue, ten at most.",
 		"freeNote": "Every feature is free on public repositories. No card required. Pro brings the same to private repositories."
 	},
+	"installed": {
+		"audit": {
+			"title": "Your first audit is already running",
+			"description": "A report arrives as a GitHub issue in each repository, usually within minutes; with many repositories, the rest follow over the next few hours. Polyscan then keeps that same issue up to date on your audit interval, whenever the repository has new pushes."
+		},
+		"config": {
+			"title": "Adjust it with a config file",
+			"description": "Add .github/polyscan.yml to choose the report language, the directories to audit and how often audits run. Without it, the defaults apply."
+		},
+		"eyebrow": "Installed",
+		"prReview": {
+			"title": "PR review is available too",
+			"description": "Set pr_review: true in the same file and Polyscan also reviews your pull requests. It is off by default."
+		},
+		"pricingLink": "See pricing",
+		"privateNote": "Private repositories on the Free plan: up to 2 repositories with weekly audits. PR review and daily audits need Pro. Public repositories get everything for free.",
+		"requested": {
+			"eyebrow": "Requested",
+			"title": "Installation requested.",
+			"description": "An organization owner has to approve the request. Once they do, this is what happens next.",
+			"auditTitle": "Your first audit starts on approval"
+		},
+		"title": "Thank you for installing the Polyscan App."
+	},
 	"languageStrip": {
 		"label": "Your stack, covered"
 	},
@@ -244,6 +266,11 @@
 		"subtitle": "Every feature on every public repository, at no cost. Pay only for private repositories.",
 		"title": "Free for open source"
 	},
+	"setup": {
+		"backToHome": "Back to Home",
+		"feedback": "Feature requests and bug reports are very welcome too.",
+		"support": "Need help? Contact us at"
+	},
 	"siteFooter": {
 		"allRightsReserved": "All rights reserved.",
 		"blog": "Blog",
@@ -272,6 +299,31 @@
 		"close": "Close",
 		"menu": "Menu",
 		"primaryNav": "Primary"
+	},
+	"subscribe": {
+		"title": "Get important updates by email",
+		"description": "Optional. Breaking changes, new languages and new features, nothing else. Unsubscribe anytime.",
+		"email": "Email",
+		"submit": "Subscribe",
+		"sent": {
+			"title": "Check your inbox",
+			"message": "We sent you a confirmation link. Your address is only kept once you click it."
+		},
+		"error": {
+			"title": "Error"
+		},
+		"confirmed": {
+			"title": "Subscription confirmed",
+			"message": "You will hear from us when something important changes."
+		},
+		"invalid": {
+			"title": "Link expired",
+			"message": "This confirmation link is invalid or has expired. Enter your address again to get a new one."
+		},
+		"failed": {
+			"title": "Could not confirm",
+			"message": "Something went wrong on our side. Please open the link again in a few minutes."
+		}
 	},
 	"tech": {
 		"agent": {
