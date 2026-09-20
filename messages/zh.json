@@ -24,19 +24,19 @@
 	},
 	"checkout": {
 		"success": {
-			"description": "您的订阅已激活。完成以下设置，即可在私有仓库中使用全部功能。",
+			"description": "您的订阅已激活。现在您的私有仓库可以使用以下功能。",
 			"step1": {
-				"button": "安装 Polyscan",
-				"description": "授权 Polyscan 访问您的仓库。",
-				"title": "安装 GitHub App"
+				"title": "每日审计",
+				"description": "在 .github/polyscan.yml 中设置 audit_interval: daily，Polyscan 会每天审计有新推送的私有仓库。"
 			},
 			"step2": {
-				"description": "在 .github/polyscan.yml 中添加 pr_review: true。PR 审查需按仓库启用，默认关闭。",
-				"title": "启用 PR 审查"
+				"title": "PR 审查",
+				"description": "在同一文件中设置 pr_review: true，Polyscan 也会审查私有仓库的 Pull Request。默认关闭。"
 			},
 			"step3": {
-				"description": "创建 Pull Request，Polyscan 将自动审查。",
-				"title": "开始审查"
+				"title": "最多 5 个私有仓库",
+				"description": "因超出 Free 上限而被搁置的仓库将在一小时内自动启用，并开始首次审计。",
+				"button": "添加仓库"
 			},
 			"subtitle": "感谢您订阅 Polyscan Pro。",
 			"title": "支付成功！"

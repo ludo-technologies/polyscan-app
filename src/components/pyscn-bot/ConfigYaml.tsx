@@ -2,7 +2,13 @@ import { useTranslations } from "next-intl";
 
 /* Sample .github/polyscan.yml on the ink surface. Shared by the LP's YAML
    feature panel and the checkout success page. */
-export default function ConfigYaml({ className }: { className?: string }) {
+export default function ConfigYaml({
+	className,
+	auditInterval = "weekly",
+}: {
+	className?: string;
+	auditInterval?: "daily" | "weekly" | "monthly";
+}) {
 	const t = useTranslations();
 	const comment = (text: string) => (
 		<span className="text-white/40"># {text}</span>
@@ -34,7 +40,8 @@ export default function ConfigYaml({ className }: { className?: string }) {
 					{"\n\n"}
 					{comment(t("features.config.comment.audit"))}
 					{"\n"}
-					{key("audit_interval")} <span className="text-amber-400">weekly</span>
+					{key("audit_interval")}{" "}
+					<span className="text-amber-400">{auditInterval}</span>
 					{"\n\n"}
 					{comment(t("features.config.comment.pr"))}
 					{"\n"}

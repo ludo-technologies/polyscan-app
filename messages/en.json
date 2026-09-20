@@ -24,19 +24,19 @@
 	},
 	"checkout": {
 		"success": {
-			"description": "Your subscription is now active. Complete the setup below to use every feature on your private repositories.",
+			"description": "Your subscription is active. Here is what your private repositories can do now.",
 			"step1": {
-				"button": "Install Polyscan",
-				"description": "Grant Polyscan access to your repositories.",
-				"title": "Install GitHub App"
+				"title": "Daily audits",
+				"description": "Set audit_interval: daily in .github/polyscan.yml and Polyscan audits your private repositories every day they have new pushes."
 			},
 			"step2": {
-				"description": "Add .github/polyscan.yml with pr_review: true. PR review is off until you enable it per repository.",
-				"title": "Enable PR Review"
+				"title": "PR review",
+				"description": "Set pr_review: true in the same file and Polyscan also reviews pull requests on private repositories. It is off by default."
 			},
 			"step3": {
-				"description": "Create a pull request and Polyscan will automatically review.",
-				"title": "Start Reviewing"
+				"title": "Up to 5 private repositories",
+				"description": "Repositories that were on hold over the Free limit are enabled automatically within the hour, and their first audit follows.",
+				"button": "Add repositories"
 			},
 			"subtitle": "Thank you for subscribing to Polyscan Pro.",
 			"title": "Payment Successful!"

@@ -24,19 +24,19 @@
 	},
 	"checkout": {
 		"success": {
-			"description": "サブスクリプションが有効になりました。以下のセットアップを完了して、プライベートリポジトリで全機能をご利用ください。",
+			"description": "サブスクリプションが有効になりました。プライベートリポジトリで次のことができるようになりました。",
 			"step1": {
-				"button": "Polyscanをインストール",
-				"description": "Polyscanにリポジトリへのアクセスを許可してください。",
-				"title": "GitHub Appをインストール"
+				"title": "日次監査",
+				"description": ".github/polyscan.yml で audit_interval: daily にすると、新しいpushがあったプライベートリポジトリを毎日監査します。"
 			},
 			"step2": {
-				"description": ".github/polyscan.yml に pr_review: true を追加。PRレビューはリポジトリごとに有効化するまで動作しません。",
-				"title": "PRレビューを有効化"
+				"title": "PRレビュー",
+				"description": "同じファイルで pr_review: true にすると、プライベートリポジトリのプルリクエストもレビューします。デフォルトではオフです。"
 			},
 			"step3": {
-				"description": "プルリクエストを作成すると、Polyscanが自動でレビューします。",
-				"title": "レビュー開始"
+				"title": "プライベートリポジトリ5つまで",
+				"description": "Freeの上限を超えて保留になっていたリポジトリは、1時間以内に自動で有効になり、最初の監査が始まります。",
+				"button": "リポジトリを追加する"
 			},
 			"subtitle": "Polyscan Pro をご購入いただきありがとうございます。",
 			"title": "お支払い完了！"

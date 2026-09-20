@@ -43,25 +43,28 @@ export default async function CheckoutSuccessPage() {
 					title={t("checkout.success.step1.title")}
 					description={t("checkout.success.step1.description")}
 				>
-					<a
-						href={GITHUB_APP_INSTALL_URL}
-						className="inline-flex border border-[var(--brand-blue)] bg-[var(--brand-blue)] px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[var(--brand-blue-hover)]"
-					>
-						{t("checkout.success.step1.button")} →
-					</a>
+					<ConfigYaml
+						className="border border-[var(--border-subtle)]"
+						auditInterval="daily"
+					/>
 				</SetupStep>
 				<SetupStep
 					number="02"
 					title={t("checkout.success.step2.title")}
 					description={t("checkout.success.step2.description")}
-				>
-					<ConfigYaml className="border border-[var(--border-subtle)]" />
-				</SetupStep>
+				/>
 				<SetupStep
 					number="03"
 					title={t("checkout.success.step3.title")}
 					description={t("checkout.success.step3.description")}
-				/>
+				>
+					<a
+						href={GITHUB_APP_INSTALL_URL}
+						className="text-sm text-[var(--brand-blue)] hover:text-[var(--brand-blue-hover)]"
+					>
+						{t("checkout.success.step3.button")} →
+					</a>
+				</SetupStep>
 			</SetupSteps>
 		</SetupPage>
 	);
