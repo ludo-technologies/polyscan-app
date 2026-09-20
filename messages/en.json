@@ -30,6 +30,14 @@
 				"description": "Grant Polyscan access to your repositories.",
 				"title": "Install GitHub App"
 			},
+			"step2": {
+				"description": "Add .github/polyscan.yml with pr_review: true. PR review is off until you enable it per repository.",
+				"title": "Enable PR Review"
+			},
+			"step3": {
+				"description": "Create a pull request and Polyscan will automatically review.",
+				"title": "Start Reviewing"
+			},
 			"subtitle": "Thank you for subscribing to Polyscan Pro.",
 			"title": "Payment Successful!"
 		}
@@ -188,21 +196,28 @@
 		"freeNote": "Every feature is free on public repositories. No card required. Pro brings the same to private repositories."
 	},
 	"installed": {
+		"audit": {
+			"title": "Your first audit is already running",
+			"description": "A report arrives as a GitHub issue in each repository, usually within minutes; with many repositories, the rest follow over the next few hours. Polyscan then keeps that same issue up to date on your audit interval, whenever the repository has new pushes."
+		},
+		"config": {
+			"title": "Adjust it with a config file",
+			"description": "Add .github/polyscan.yml to choose the report language, the directories to audit and how often audits run. Without it, the defaults apply."
+		},
 		"eyebrow": "Installed",
-		"title": "Polyscan is installed.",
-		"description": "There is nothing else you have to do. Here is what happens next, and how to get more out of it.",
+		"prReview": {
+			"title": "PR review is available too",
+			"description": "Set pr_review: true in the same file and Polyscan also reviews your pull requests. It is off by default."
+		},
+		"pricingLink": "See pricing",
+		"privateNote": "Private repositories on the Free plan: up to 2 repositories with weekly audits. PR review and daily audits need Pro. Public repositories get everything for free.",
 		"requested": {
 			"eyebrow": "Requested",
 			"title": "Installation requested.",
 			"description": "An organization owner has to approve the request. Once they do, this is what happens next.",
 			"auditTitle": "Your first audit starts on approval"
 		},
-		"audit": {
-			"title": "Your first audit is already running",
-			"description": "A report arrives as a GitHub issue in each repository, usually within minutes; with many repositories, the rest follow over the next few hours. Polyscan then keeps that same issue up to date on your audit interval, whenever the repository has new pushes."
-		},
-		"privateNote": "Private repositories on the Free plan: up to 2 repositories with weekly audits. PR review and daily audits need Pro. Public repositories get everything for free.",
-		"pricingLink": "See pricing"
+		"title": "Thank you for installing the Polyscan App."
 	},
 	"languageStrip": {
 		"label": "Your stack, covered"
@@ -253,14 +268,7 @@
 	},
 	"setup": {
 		"backToHome": "Back to Home",
-		"enablePrReview": {
-			"description": "Add .github/polyscan.yml with pr_review: true. PR review is off until you enable it per repository.",
-			"title": "Enable PR Review"
-		},
-		"startReviewing": {
-			"description": "Create a pull request and Polyscan will automatically review.",
-			"title": "Start Reviewing"
-		},
+		"feedback": "Feature requests and bug reports are very welcome too.",
 		"support": "Need help? Contact us at"
 	},
 	"siteFooter": {

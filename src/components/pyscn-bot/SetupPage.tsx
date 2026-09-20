@@ -2,9 +2,10 @@ import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 import { BrandTile, brandLinkClass } from "@/components/HeaderShell";
 import BotWordmark from "@/components/pyscn-bot/BotWordmark";
-import ConfigYaml from "@/components/pyscn-bot/ConfigYaml";
 import LanguageSwitcher from "@/components/pyscn-bot/LanguageSwitcher";
 import { Link } from "@/i18n/navigation";
+
+const SUPPORT_EMAIL = "pyscn@ludo-tech.org";
 
 /* Shell shared by the pages a visitor lands on mid-setup (after checkout,
    after installing the App): brand bar, status header, support footer. */
@@ -16,7 +17,7 @@ export default function SetupPage({
 }: {
 	eyebrow: string;
 	title: string;
-	lede: string;
+	lede?: string;
 	children: ReactNode;
 }) {
 	const t = useTranslations();
@@ -38,29 +39,31 @@ export default function SetupPage({
 					<p className="font-mono text-[11px] uppercase tracking-[0.25em] text-[var(--reading-ok)]">
 						● {eyebrow}
 					</p>
-					<h1 className="type-display mt-3 mb-3 text-4xl font-bold text-[var(--text-primary)] sm:text-5xl">
+					<h1 className="type-display mt-3 mb-3 text-balance text-4xl font-bold text-[var(--text-primary)] [word-break:auto-phrase] sm:text-5xl">
 						{title}
 					</h1>
-					<p className="text-[var(--text-secondary)]">{lede}</p>
+					{lede && <p className="text-[var(--text-secondary)]">{lede}</p>}
 				</header>
 
 				{children}
 
-				<footer className="mt-12 flex flex-col gap-3 border-t border-[var(--border-subtle)] pt-6 sm:flex-row sm:items-center sm:justify-between">
+				<footer className="mt-12 flex flex-col gap-3 border-t border-[var(--border-subtle)] pt-6 sm:flex-row sm:items-start sm:justify-between">
 					<Link
 						href="/pyscn-bot"
 						className="font-mono text-xs uppercase tracking-[0.15em] text-[var(--text-secondary)] transition-colors hover:text-[var(--brand-blue)]"
 					>
 						← {t("setup.backToHome")}
 					</Link>
-					<p className="text-xs text-[var(--text-muted)]">
+					<p className="text-xs leading-relaxed text-[var(--text-muted)] sm:text-right">
 						{t("setup.support")}{" "}
 						<a
-							href="mailto:contact@ludo-tech.org"
+							href={`mailto:${SUPPORT_EMAIL}`}
 							className="text-[var(--brand-blue)] hover:text-[var(--brand-blue-hover)]"
 						>
-							contact@ludo-tech.org
+							{SUPPORT_EMAIL}
 						</a>
+						<br />
+						{t("setup.feedback")}
 					</p>
 				</footer>
 			</main>
@@ -105,28 +108,5 @@ export function SetupStep({
 				{children}
 			</div>
 		</li>
-	);
-}
-
-/* The two steps every setup ends with: enable PR review, then open a PR */
-export function PrReviewSteps({ from }: { from: number }) {
-	const t = useTranslations();
-	const number = (n: number) => String(n).padStart(2, "0");
-
-	return (
-		<>
-			<SetupStep
-				number={number(from)}
-				title={t("setup.enablePrReview.title")}
-				description={t("setup.enablePrReview.description")}
-			>
-				<ConfigYaml className="border border-[var(--border-subtle)]" />
-			</SetupStep>
-			<SetupStep
-				number={number(from + 1)}
-				title={t("setup.startReviewing.title")}
-				description={t("setup.startReviewing.description")}
-			/>
-		</>
 	);
 }

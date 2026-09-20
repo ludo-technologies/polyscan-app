@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
+import ConfigYaml from "@/components/pyscn-bot/ConfigYaml";
 import SetupPage, {
-	PrReviewSteps,
 	SetupStep,
 	SetupSteps,
 } from "@/components/pyscn-bot/SetupPage";
@@ -50,7 +50,18 @@ export default async function CheckoutSuccessPage() {
 						{t("checkout.success.step1.button")} →
 					</a>
 				</SetupStep>
-				<PrReviewSteps from={2} />
+				<SetupStep
+					number="02"
+					title={t("checkout.success.step2.title")}
+					description={t("checkout.success.step2.description")}
+				>
+					<ConfigYaml className="border border-[var(--border-subtle)]" />
+				</SetupStep>
+				<SetupStep
+					number="03"
+					title={t("checkout.success.step3.title")}
+					description={t("checkout.success.step3.description")}
+				/>
 			</SetupSteps>
 		</SetupPage>
 	);

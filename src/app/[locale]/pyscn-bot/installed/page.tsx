@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
+import ConfigYaml from "@/components/pyscn-bot/ConfigYaml";
 import SetupPage, {
-	PrReviewSteps,
 	SetupStep,
 	SetupSteps,
 } from "@/components/pyscn-bot/SetupPage";
@@ -26,7 +26,6 @@ export async function generateMetadata({
 	);
 	return {
 		title: `${t("installed.title")} | Polyscan`,
-		description: t("installed.description"),
 		alternates: { canonical, languages },
 		robots: { index: false, follow: false },
 	};
@@ -48,7 +47,7 @@ export default async function InstalledPage({
 		<SetupPage
 			eyebrow={t(`${header}.eyebrow`)}
 			title={t(`${header}.title`)}
-			lede={t(`${header}.description`)}
+			lede={requested ? t("installed.requested.description") : undefined}
 		>
 			<SetupSteps>
 				<SetupStep
@@ -60,7 +59,18 @@ export default async function InstalledPage({
 					)}
 					description={t("installed.audit.description")}
 				/>
-				<PrReviewSteps from={2} />
+				<SetupStep
+					number="02"
+					title={t("installed.config.title")}
+					description={t("installed.config.description")}
+				>
+					<ConfigYaml className="border border-[var(--border-subtle)]" />
+				</SetupStep>
+				<SetupStep
+					number="03"
+					title={t("installed.prReview.title")}
+					description={t("installed.prReview.description")}
+				/>
 			</SetupSteps>
 
 			<p className="mt-6 text-sm leading-relaxed text-[var(--text-light)]">

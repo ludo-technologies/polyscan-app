@@ -30,6 +30,14 @@
 				"description": "Polyscanにリポジトリへのアクセスを許可してください。",
 				"title": "GitHub Appをインストール"
 			},
+			"step2": {
+				"description": ".github/polyscan.yml に pr_review: true を追加。PRレビューはリポジトリごとに有効化するまで動作しません。",
+				"title": "PRレビューを有効化"
+			},
+			"step3": {
+				"description": "プルリクエストを作成すると、Polyscanが自動でレビューします。",
+				"title": "レビュー開始"
+			},
 			"subtitle": "Polyscan Pro をご購入いただきありがとうございます。",
 			"title": "お支払い完了！"
 		}
@@ -188,21 +196,28 @@
 		"freeNote": "パブリックリポジトリは全機能が無料。カード登録も不要です。Proはプライベートリポジトリにも同じ機能を提供します。"
 	},
 	"installed": {
+		"audit": {
+			"title": "最初の監査はすでに始まっています",
+			"description": "結果は各リポジトリにGitHub Issueとして届きます。通常は数分、リポジトリが多い場合は残りが数時間以内に順次届きます。以降は設定した監査間隔ごとに、新しいpushがあったリポジトリの同じIssueを更新します。"
+		},
+		"config": {
+			"title": "設定ファイルで調整できます",
+			"description": ".github/polyscan.yml を置くと、レポートの言語、監査対象のディレクトリ、監査の間隔を設定できます。置かない場合はデフォルト設定で動作します。"
+		},
 		"eyebrow": "インストール完了",
-		"title": "Polyscanをインストールしました。",
-		"description": "必須の作業はこれで終わりです。このあと何が起きるかと、さらに活用する方法をご案内します。",
+		"prReview": {
+			"title": "PRレビュー機能も使えます",
+			"description": "同じファイルで pr_review: true にすると、プルリクエストのレビューも行います。デフォルトではオフです。"
+		},
+		"pricingLink": "料金を見る",
+		"privateNote": "Freeプランのプライベートリポジトリは2つまで、監査は週次です。PRレビューと日次監査にはProが必要です。パブリックリポジトリはすべての機能を無料で利用できます。",
 		"requested": {
 			"eyebrow": "リクエスト送信済み",
 			"title": "インストールをリクエストしました。",
 			"description": "Organizationのオーナーによる承認が必要です。承認されると、以下の流れで動き始めます。",
 			"auditTitle": "承認されると最初の監査が始まります"
 		},
-		"audit": {
-			"title": "最初の監査はすでに始まっています",
-			"description": "結果は各リポジトリにGitHub Issueとして届きます。通常は数分、リポジトリが多い場合は残りが数時間以内に順次届きます。以降は設定した監査間隔ごとに、新しいpushがあったリポジトリの同じIssueを更新します。"
-		},
-		"privateNote": "Freeプランのプライベートリポジトリは2つまで、監査は週次です。PRレビューと日次監査にはProが必要です。パブリックリポジトリはすべての機能を無料で利用できます。",
-		"pricingLink": "料金を見る"
+		"title": "Polyscan Appのインストールありがとうございます。"
 	},
 	"languageStrip": {
 		"label": "あなたのスタックもカバー"
@@ -253,14 +268,7 @@
 	},
 	"setup": {
 		"backToHome": "ホームに戻る",
-		"enablePrReview": {
-			"description": ".github/polyscan.yml に pr_review: true を追加。PRレビューはリポジトリごとに有効化するまで動作しません。",
-			"title": "PRレビューを有効化"
-		},
-		"startReviewing": {
-			"description": "プルリクエストを作成すると、Polyscanが自動でレビューします。",
-			"title": "レビュー開始"
-		},
+		"feedback": "機能改善のご要望やバグ報告などもいただけると助かります。",
 		"support": "サポートが必要な場合はこちらへ"
 	},
 	"siteFooter": {
