@@ -1,0 +1,183 @@
+---
+title: "How Do You Find the Same Code Twice?"
+description: "Copy-pasted code is the easy case. Renamed, reshuffled and slightly edited copies are the hard one. How duplicate-code detectors work, in plain language, with real examples from our own code and from projects we admire."
+date: "2026-09-21"
+tags: ["code-quality", "static-analysis", "clone-detection", "polyscan"]
+lang: "en"
+draft: false
+---
+
+We build a tool that finds duplicated code. This week I pointed it at itself.
+
+The function at the heart of [polyscan](https://github.com/ludo-technologies/polyscan) is the one that compares two pieces of code and says how alike they are. It turns out that function exists twice in our repository. One version stops early when the two pieces are clearly different; the other runs to the end. Twenty lines each, all but two of them identical. A few files over, two small helpers that measure "how close are these two numbers" sit back to back, one for whole numbers and one for decimals, differing in a single line. Our duplicate-code detector reported its own comparison routine as a duplicate, and it was right.
+
+If you have been coding with an AI assistant this past year, you have probably had the same experience without a tool to point it out. The code works, the tests pass, and somewhere along the way it quietly got messier. [GitClear analyzed 211 million changed lines](https://www.gitclear.com/ai_assistant_code_quality_2025_research) from 2020 to 2024 and found that the share of lines classified as copy/pasted rose from 8.3% to 12.3%, while the share classified as *moved*, which is what refactoring looks like, fell from 25% to under 10%. Coding agents write the helper they need right now. Checking whether the same helper already exists three files over is not something they do unless asked.
+
+The trouble with a copy is not the copy. It is what happens later, when one of them gets a bug fix and the other does not. That is why "where else does this logic exist?" is a question worth answering by machine. This post is about how the machine answers it.
+
+## Four kinds of "the same"
+
+The problem starts with the word "same." Two pieces of code can be the same in several different senses, and each sense needs a different technique to find. The people who study this (the field is called *clone detection*, and a duplicated fragment is a *clone*) use four levels.
+
+The examples come from two popular, carefully maintained open-source projects: [axios](https://github.com/axios/axios), the most downloaded HTTP library for JavaScript, and [gin](https://github.com/gin-gonic/gin), one of the most used web frameworks for Go. If this shows up in code that thousands of people have read, it shows up everywhere.
+
+**Level 1: identical, apart from spacing and comments.** In axios, an eleven-line helper that safely decodes a URL-encoded string appears in `lib/adapters/fetch.js`:
+
+```js
+const decodeURIComponentSafe = (value) => {
+  if (!utils.isString(value)) {
+    return value;
+  }
+
+  try {
+    return decodeURIComponent(value);
+  } catch (error) {
+    return value;
+  }
+};
+```
+
+and again, with the same comment above it, in `lib/adapters/http.js`. Two adapters needed the same thing, so it was written twice.
+
+**Level 2: identical, apart from the names.** Also in axios. A function called `trimOWS` in one file strips tabs and spaces from both ends of a header value:
+
+```js
+function trimOWS(value) {
+  let start = 0;
+  let end = value.length;
+
+  while (start < end) {
+    const code = value.charCodeAt(start);
+    if (code !== 0x09 && code !== 0x20) {
+      break;
+    }
+    start += 1;
+  }
+  // ... the same again from the end, then:
+  return start === 0 && end === value.length ? value : value.slice(start, end);
+}
+```
+
+In another file, a function called `trimSPorHTAB` does exactly the same, with the argument called `str` instead of `value`. If you compare them line by line, nine lines differ. If you read them, they are one function with two names.
+
+gin has a four-way version of this. A helper that parses a string into an integer field:
+
+```go
+func setIntField(val string, bitSize int, field reflect.Value) error {
+	if val == "" {
+		val = "0"
+	}
+	intVal, err := strconv.ParseInt(val, 10, bitSize)
+	if err == nil {
+		field.SetInt(intVal)
+	}
+	return err
+}
+```
+
+is followed by `setUintField`, `setBoolField` and `setFloatField`, each one swapping the parsing call, the setter, and the default value. Same skeleton, four times in a row.
+
+**Level 3: the same, with some lines added, removed or changed.** This is our comparison routine from the opening: same twenty lines, plus one extra check in one of them. It is the level that matters most in practice, because it is what "copy, paste, then adjust" produces, and it is where the simple techniques start to fail.
+
+**Level 4: the same behavior, written differently.** A loop that adds up a list, and a call to a built-in `sum` function. Two sorting routines using different algorithms. No amount of comparing the text or the shape connects these. You would have to understand what the code *does*. We will come back to why polyscan deliberately does not try.
+
+## Three ways to compare code
+
+Every detector is an answer to one question: what exactly do you compare?
+
+### Compare the text
+
+The oldest approach: remove comments, squash the spacing, and check whether two blocks are letter-for-letter equal (in practice, by comparing a short fingerprint of each block rather than the whole text). It is extremely fast and it finds Level 1 perfectly.
+
+It finds nothing else. Rename one variable and the two blocks stop matching. For axios's `trimOWS` pair it would shrug.
+
+### Compare the words
+
+The second generation, starting with a tool called CCFinder in 2002, first breaks the code into its words (keywords, punctuation, names, numbers) and then *blanks out the names*. The line `intVal, err := strconv.ParseInt(val, 10, bitSize)` and the line `uintVal, err := strconv.ParseUint(val, 10, bitSize)` both become something like `NAME, NAME := NAME.NAME(NAME, NUMBER, NAME)`. Now gin's four setters look the same, and you just search for long stretches of matching words.
+
+This is how [SourcererCC](https://arxiv.org/abs/1603.01661) (2016) works, and it remains the reference point for sheer scale: 250 million lines of code on an ordinary workstation, finding essentially every Level 1 and Level 2 clone and most of Level 3 in the standard benchmark.
+
+What a list of words cannot see is *structure*. Wrap ten lines in an extra `if`, and every word inside them shifts by one; two functions that are one change apart now look quite different. Two functions with the same words in a different order look identical when they should not.
+
+### Compare the shape
+
+The third generation looks at the code the way a compiler does: as a nested outline, where a function contains statements, an `if` contains a condition and a body, a loop contains the lines it repeats. Names disappear; only the shape remains.
+
+Then it asks: how many single edits — add one piece, remove one piece, relabel one piece — would it take to turn this outline into that one? Two functions that are three edits apart are near-copies. Two that are three hundred apart are not. (This is the same idea a spell-checker uses to decide that "recieve" is one edit from "receive," applied to outlines instead of words. The technical name is *tree edit distance*.)
+
+The catch is speed. The classic method from 1989 slows down badly on deep or lopsided code, and even the best current method, published by Pawlik and Augsten in 2015 as [APTED](https://tree-edit-distance.dbresearch.uni-salzburg.at/), takes time that grows with the *cube* of the code size. Their contribution was not to make that go away but to pick the smartest order of work for each pair of outlines, so the bad cases that made older methods unusable on real code disappear. It is still far too slow to run on every pair of functions in a large project. So every shape-based detector, including ours, spends most of its cleverness on deciding which pairs are worth the expensive comparison at all.
+
+### And after that?
+
+Research did not stop there. There are detectors that compare how data flows through the code rather than its shape, neural networks trained on labelled pairs, and since 2023 a steady run of papers asking whether a large language model can simply read two functions and say whether they do the same thing.
+
+The short version of the last three years:
+
+- Language models are genuinely good at Level 4 on some test sets. An [empirical study from November 2025](https://arxiv.org/abs/2511.01176) found one model scoring 0.94 out of 1 on pairs drawn from a programming-contest archive. On pairs drawn from the standard clone benchmark, the same models fell sharply. The authors' conclusion is that the answer depends heavily on which test set you ask.
+- The neural detectors trained specifically for this task struggle with anything unlike their training data. A [study from October 2025](https://arxiv.org/abs/2510.04143) tested them on clones of functionality they had never seen: accuracy dropped by up to 48%, while general-purpose language models dropped by only 3–5%.
+- In June 2026, a team [tested eleven "semantic" detectors](https://arxiv.org/abs/2606.25272) on code that had been rewritten to mean the same thing while looking different. All eleven dropped substantially. The detectors had learned surface cues that happened to line up with the benchmark, not meaning.
+
+I read all of that as good news for research and a caution for tools. A detector that runs on every pull request needs to be fast, free, and give the same answer twice. Comparing shapes is all three, and it can show its work: "these two outlines are four edits apart" is something a developer can check by eye. A model's verdict is a probability you cannot reproduce. For Levels 1 through 3, which is where nearly all real-world duplication lives, shape comparison is still the right tool. Level 4 is, for now, a research frontier, and polyscan does not report it: below a certain similarity, shape alone mostly finds functions that merely share a skeleton, and reporting those would bury the real findings.
+
+## How polyscan does it
+
+polyscan is our open-source analyzer for Go, Rust, C++ and JavaScript/TypeScript ([pyscn](https://github.com/ludo-technologies/pyscn) is the Python one, built on the same core). It measures a few things about a codebase — complexity, dead code, dependencies — and duplicated code is one of them. This is how that part works. Think of a funnel. Each step lets fewer pairs through and costs more per pair.
+
+**1. Cut the code into functions.** Each function becomes one candidate, along with its outline. Anything under 10 lines or with too little structure is dropped. Two three-line getters that look alike are not a finding anyone wants to see.
+
+**2. Fingerprint each function.** From the outline we pull a few hundred small features: the shapes of every little sub-branch, every run of four consecutive pieces, a rough count of how many of each kind of piece there are. Names and literal values are blanked out first, like the word-based detectors do. The fingerprint is a cheap stand-in for the outline.
+
+**3. Throw away obvious non-matches.** Two functions whose sizes differ by more than half are never compared. Two whose fingerprints barely overlap are never compared. On a big project, where the number of possible pairs runs into the millions, we stop listing pairs altogether and use the trick search engines use to find near-duplicate web pages: squash each fingerprint into a short signature, and only compare two functions when their signatures collide. The expensive step never sees a pair that did not already look similar.
+
+**4. Compare the shapes of what is left.** Now the edit-counting from the previous section runs, with one refinement: not every edit costs the same. Adding or removing a big structural piece (a whole block, a loop) costs more than adding an expression. Relabelling a piece with a similar piece — `ParseInt` to `ParseUint`, `value` to `str` — costs a fifth of a full edit. That is how gin's four setters score as near-identical despite four different parsing calls.
+
+**5. Sort into levels.** The edit count becomes a similarity from 0 to 1. At 0.85 or above with letter-for-letter identical text, it is Level 1. At 0.80 or above with a matching blanked-out outline, Level 2. At 0.80 or above otherwise, Level 3. Below that, nothing is reported.
+
+**6. Group.** Pairs are merged into groups, so gin's four setters show up once as a group of four rather than as six separate pairs. A function that sits *inside* another reported function is dropped, because "this contains that" is not duplication.
+
+The whole run over axios's `lib/` directory, 69 files and about 8,800 lines, took 77 milliseconds. gin took just under a second. On a laptop.
+
+<PyscnCard />
+
+## What to do with the answer
+
+Here is what polyscan reported on the three codebases in this post: a couple of groups in axios, a handful in gin, and 38 in polyscan itself. Yes, we are the worst of the three. Most of our groups are inside the shape-comparison code, which is symmetric by nature — whatever it does from the left it also does from the right, and the code says so in mirrored pairs of functions. I have not decided whether to merge them.
+
+That last sentence is the important one. A detector can tell you where the copies are. It cannot tell you whether they should become one, and the answer is often no.
+
+- axios's `decodeURIComponentSafe`: yes. Move it to the shared `utils` module both adapters already import. Ten minutes.
+- gin's `set*Field` family: probably not. Four ten-line functions are readable at a glance. Folding them into one generic function would save thirty lines and cost every future reader a puzzle.
+- Our mirrored comparison functions: undecided. Merging would mean one function with a flag that changes its behaviour, which is its own kind of hard to read.
+
+A finding is a reason to look, not a verdict.
+
+## Using it without hating it
+
+Three things we learned from running this on our own code and on other people's.
+
+**Do not aim for zero.** The first run on a project that has never been checked turns up dozens of groups, most of them old and harmless, and trying to clear the list is how people give up on the tool. Read it once, fix the two or three where a future bug fix would have to land twice, and leave the rest. What matters is whether the number goes up next month.
+
+**Give the coding agent the tool.** This is the one that actually moved the needle for us. When the agent can run the detector itself, in the same session, it merges the copy while it still remembers why it wrote both. By the time a human reviewer sees it, that context is gone and the fix is a chore. polyscan and pyscn both offer the detector as a tool agents can call for exactly this reason.
+
+**Exclude what is duplicated on purpose.** Generated files, test fixtures, vendored libraries. Our own count above is after excluding our test data. Before that, the detector proudly reported the sample files we wrote *to test the detector* as clones. Correct, and useless.
+
+## Try it
+
+```bash
+npx polyscan analyze --select clone .     # JS/TS, Go, Rust, C++
+uvx pyscn analyze .                        # Python
+```
+
+Both print every group with file and line numbers. Both will find things you did not know were there. Whether to do anything about them is still up to you.
+
+---
+
+Sources and further reading:
+
+- Pawlik & Augsten, [Efficient Computation of the Tree Edit Distance](https://tree-edit-distance.dbresearch.uni-salzburg.at/), ACM TODS 40(1), 2015; *Tree edit distance: Robust and memory-efficient*, Information Systems 56, 2016.
+- Sajnani et al., [SourcererCC: Scaling Code Clone Detection to Big Code](https://arxiv.org/abs/1603.01661), ICSE 2016.
+- Zhu et al., [An Empirical Study of LLM-Based Code Clone Detection](https://arxiv.org/abs/2511.01176), 2025.
+- Kitsios et al., [Detecting Semantic Clones of Unseen Functionality](https://arxiv.org/abs/2510.04143), 2025.
+- Xu et al., [Semantic Code Clone Detection: Are We There Yet?](https://arxiv.org/abs/2606.25272), 2026.
+- GitClear, [AI Copilot Code Quality: 2025 Data Suggests 4x Growth in Code Clones](https://www.gitclear.com/ai_assistant_code_quality_2025_research), 2025.
+- Measurements in this post: axios at `56a5f1a` (2026-09-16), gin at `3b08cd7` (2026-09-19), polyscan at `e767a21` (0.4.1), all with default settings. The quoted code is shortened; the comments and blank lines are in the originals.
