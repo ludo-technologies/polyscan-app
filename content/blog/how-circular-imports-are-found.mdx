@@ -1,0 +1,125 @@
+---
+title: "How Tools Find Circular Imports"
+description: "Finding a loop in a graph is a solved problem. Deciding which imports belong in the graph is not. What we learned when our own dependency checker got three popular Python projects wrong."
+date: "2026-10-03"
+tags: ["code-quality", "static-analysis", "dependencies", "polyscan", "pyscn"]
+lang: "en"
+draft: false
+---
+
+Last week I ran our dependency checker on six well-known Python projects. It reported a circular dependency involving 35 modules in [rich](https://github.com/Textualize/rich), the terminal formatting library. It found two circular dependencies in [pydantic](https://github.com/pydantic/pydantic) and none in [FastAPI](https://github.com/fastapi/fastapi).
+
+All three answers were wrong. rich and pydantic have no such loops. FastAPI has one, and it is the kind that breaks if you move a single line.
+
+Checking our own code never exposed these mistakes. polyscan and pyscn are written in Go, which refuses to compile a program whose packages import each other in a circle. Python and JavaScript allow circular imports, so we needed to test our checker on projects written in those languages. On three of the six Python projects, it gave the wrong answer. The Python fixes are in [pyscn 1.32.3](https://github.com/ludo-technologies/pyscn/releases/tag/v1.32.3). This post is about what we got wrong, because those mistakes reveal the hard part of finding circular imports.
+
+## What a circular import is
+
+Imports tell you which other modules a file needs. FastAPI's package entry point, `__init__.py`, imports the module that defines the application. That module imports some utility functions. And the utility module imports the package itself:
+
+```python
+# fastapi/__init__.py
+__version__ = "0.142.2"
+
+from .applications import FastAPI      # → applications.py → utils.py → ...
+
+# fastapi/utils.py
+import fastapi                         # ... back to __init__.py
+```
+
+That is a circle: A needs B, B needs C, C needs A. When Python loads FastAPI, it starts at `__init__.py` and follows the import chain back to the same module before that module has finished loading. At that point, the module is available, but only the code above the imports has run. Crucially, that includes the version assignment. FastAPI's telemetry code also imports `__version__` from the package while it is still partially initialized. That works because the version is assigned before the imports.
+
+Move just that version assignment below the imports, and FastAPI no longer starts:
+
+```
+ImportError: cannot import name '__version__' from partially initialized
+module 'fastapi' (most likely due to a circular import)
+```
+
+This is why circular imports are worth knowing about, even when they work today. They can make code depend on the *order* of seemingly independent lines, without any comment explaining why. That matters even more as coding agents write more code. An agent tidying up the top of a file might not realize that the position of a version assignment keeps the package working. In this case, the tests would catch the breakage immediately. In other cases, a circular import may fail only when a particular module is imported first. Tests that always import modules in the same order can miss that.
+
+Even when nothing breaks, a circle makes the modules harder to understand, test, or change in isolation. Each depends, directly or indirectly, on all the others.
+
+## Finding the circle is the easy part
+
+A tool that looks for circular imports does two things. First, it draws a map: every module is a dot, and every import is an arrow from the importing module to the imported one. Then it looks for groups in which every dot can reach every other dot by following the arrows.
+
+The second step has been solved since 1972, when Robert Tarjan published a method that finds every such group in one pass over the map. These groups are called *strongly connected components*. A group with more than one module contains a cycle; a single module forms a cycle only if it imports itself. The algorithm takes time proportional to the number of dots and arrows. For a project the size of requests, our whole dependency analysis takes about 20 milliseconds. Tarjan's algorithm is a standard choice for this task, and it is the one we use.
+
+So when a tool gets this wrong, the loop-finding is almost never the problem. The map is. Every one of our mistakes came from drawing an arrow that should not have been there, or leaving out one that should.
+
+## The hard part: which imports count
+
+The rule sounds simple: draw an arrow for every import that runs when the module is loaded. In practice, that means accounting for how the language executes or compiles the code, rather than just searching for import statements. Here is what the rule has to handle, and where we got it wrong.
+
+**Imports inside a function.** An import inside a function body runs only when the function is called. Our checker treats these as deferred imports and leaves them out of the map used for finding loops. This is a simplification: if the function is called during module initialization, its imports can still participate in a load-time cycle. We already handled these imports separately.
+
+**Imports that only run as a script.** Many Python files end with a block that runs only when you execute the file directly:
+
+```python
+# rich/color.py, at the very bottom
+if __name__ == "__main__":  # pragma: no cover
+    from .console import Console
+    from .table import Table
+    from .text import Text
+```
+
+rich uses blocks like this in 45 files to demonstrate their output. When another file imports `rich.color`, that block never runs. Our checker treated those imports like the ones at the top of the file. The extra arrows linked 35 modules into a circular dependency that never occurs when the package is imported. We now exclude these imports from the loop-finding map, just as we do with imports inside functions.
+
+**Imports that exist only for type checkers.** Both Python and TypeScript let you import something purely for use in a type annotation. In Python, these imports go under `if TYPE_CHECKING:`; in TypeScript, you can use `import type`. Neither executes at runtime: Python skips the block, and the TypeScript compiler removes the statement. pyscn already left these out. polyscan, our multi-language analyzer, did not. In [got](https://github.com/sindresorhus/got), the HTTP library, it reported a circular dependency involving seven files that disappears when type-only imports are excluded. `source/core/errors.ts`, for example, imports three of the other six files in that group, all with `import type`.
+
+The TypeScript case has a wrinkle. `import { type Options } from './options'`, with `type` inside the braces, can still load the file under some compiler settings. A tool should keep that arrow, and ours does.
+
+**Which file a name points to.** This one was the most embarrassing. pydantic has a file called `pydantic/v1/types.py`. Its neighbor `pydantic/v1/utils.py` starts with:
+
+```python
+from types import BuiltinFunctionType, CodeType, FunctionType, ...
+```
+
+That refers to Python's standard-library `types` module. In Python 3, `from types import ...` is an absolute import: Python searches for a top-level module named `types`, rather than implicitly looking for a sibling module inside the package. Our checker relied on a hand-maintained list of about 35 standard-library module names. `types` was missing, so it pointed the arrow at the project's own `types.py` next door. Both of pydantic's reported loops came from that mistake. The checker now uses Python's own list of standard-library module names, which contains about 300 entries.
+
+**The package's front door.** A regular Python package has an `__init__.py` file that runs when the package is first imported, including when one of its submodules is imported. FastAPI's loop passes through that file. Our checker had been written to skip arrows from an `__init__.py` to modules in the same folder. Those arrows are not noise: that file really does load the others. Leaving them out made FastAPI's loop invisible. When we put them back, the checker found the loop, and the results for the other five projects stayed the same.
+
+## What the excluded imports still mean
+
+An import excluded from the load-time map is still a dependency. A function that imports a module when it is called will break if that module is renamed without updating the import. A type-only import means that changes to a type in one file may require changes in the other.
+
+So the tools keep two maps. Loop-finding uses the narrower one, focused on imports that run at load time. Other dependency metrics, including how tightly a piece of code is connected to the rest, use the full map.
+
+## Coupling: the everyday version
+
+A circular dependency is one form of tight coupling. A more common case is code that simply depends on many other parts of the project. One way to measure *coupling* is to count how many other types each class or type refers to. A type with a coupling score of 3 has three direct dependencies to understand. At 25, there is much more context to keep in your head.
+
+The type with the highest coupling score in polyscan is our JavaScript duplicate-code detector, at 22. Second, at 18, is our duplicate-code detector for Go, Rust and C++. They depend on nearly the same components: tree comparison, fingerprinting, grouping, and pair classification. If you read our [post on duplicate code](/blog/how-duplicate-code-is-found), you can guess what that means. Two detectors evolved side by side, each wiring the same parts together in its own way. The coupling scores alone didn't tell us that. They told us where to look; comparing the dependency lists revealed the overlap.
+
+High coupling is not automatically bad. Something has to wire the parts together, and that code will need to know about all of them. The useful question is whether the score makes sense for the type's role: a coordinator with a score of 20 may be doing its job; a small helper with the same score may be doing too much.
+
+## What to do with the answer
+
+**Read each loop before you fix it.** A loop reported by a tool is a list of files, not a diagnosis. FastAPI's loop is worth a look because reordering a single line can break it. Many loops cause no runtime problems, and plenty of excellent projects ship with some. [Vite](https://github.com/vitejs/vite) has a circular dependency involving 44 files in its Node.js code, even after type-only imports are excluded. If you do want to break a loop, a common fix is straightforward: move the thing both sides need, such as a version string or a shared constant, into a small module that imports nothing from the package. Both sides import from that module instead of each other.
+
+**Don't aim for zero; watch for changes.** Long-standing loops do not necessarily need to be removed. Pay attention when a new one appears or an existing one grows from 8 files to 20.
+
+**Give the coding agent the tool.** An agent adding an import can check whether it creates a loop and, if necessary, move the code while the reason for the import is still fresh in its context. Both polyscan and pyscn can be called directly by a coding agent.
+
+**Check the checker.** I had no reason to doubt a 35-module loop in rich until I opened the files and found the arrows pointing into demo code. If a finding surprises you, open the files it names and look for the import that closes the loop. Either you'll learn something about your code or you'll catch a bug in the tool. This time, it was the tool.
+
+## Try it
+
+```bash
+uvx pyscn analyze --select deps .            # Python
+npx polyscan analyze --select deps .         # JS/TS and Go
+```
+
+Both commands list the circular dependencies they find and the files involved. Open those files and follow the imports.
+
+---
+
+Sources and further reading:
+
+- R. Tarjan, *Depth-First Search and Linear Graph Algorithms*, SIAM Journal on Computing 1(2), 1972.
+- The Go Programming Language Specification, [Import declarations](https://go.dev/ref/spec#Import_declarations): "It is illegal for a package to import itself, directly or indirectly."
+- Python documentation, [How can I have modules that mutually import each other?](https://docs.python.org/3/faq/programming.html#how-can-i-have-modules-that-mutually-import-each-other)
+- TypeScript documentation, [Type-only imports and exports](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-8.html#type-only-imports-and-export) and [`verbatimModuleSyntax`](https://www.typescriptlang.org/tsconfig/#verbatimModuleSyntax).
+- The fixes: pyscn [#827](https://github.com/ludo-technologies/pyscn/issues/827), [#828](https://github.com/ludo-technologies/pyscn/issues/828), [#829](https://github.com/ludo-technologies/pyscn/issues/829); polyscan [#175](https://github.com/ludo-technologies/polyscan/issues/175).
+- Measurements in this post: requests at `611c616`, Flask at `d73fa1c`, HTTPX at `b5addb6`, rich at `9d8f9a3`, FastAPI at `33d411d`, pydantic at `e2ac21d` with pyscn 1.32.3; got at `e1d87d2` and Vite at `1003321` with polyscan 0.5.1; polyscan's own coupling on its 0.5.0 source, measured with 0.5.1. All with default settings. requests, Flask and HTTPX had no loops before or after the fixes.
