@@ -5,9 +5,8 @@ import SetupPage, {
 	SetupStep,
 	SetupSteps,
 } from "@/components/pyscn-bot/SetupPage";
+import { LINKS } from "@/lib/links";
 import { localizedAlternates } from "@/lib/localized-metadata";
-
-const GITHUB_APP_INSTALL_URL = "https://github.com/apps/polyscan-app";
 
 export async function generateMetadata({
 	params,
@@ -59,7 +58,7 @@ export default async function CheckoutSuccessPage() {
 					description={t("checkout.success.step3.description")}
 				>
 					<a
-						href={GITHUB_APP_INSTALL_URL}
+						href={LINKS.appInstall}
 						className="text-sm text-[var(--brand-blue)] hover:text-[var(--brand-blue-hover)]"
 					>
 						{t("checkout.success.step3.button")} →
