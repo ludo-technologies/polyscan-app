@@ -96,10 +96,7 @@ export default function Header({
 								{t("nav.mypage")}
 							</LocaleLink>
 						) : (
-							<a
-								href="/pyscn-bot/api/auth?plan=free"
-								className={accentLinkClass}
-							>
+							<a href={LINKS.appInstall} className={accentLinkClass}>
 								{t("trial.hero")}
 								<span aria-hidden="true">→</span>
 							</a>

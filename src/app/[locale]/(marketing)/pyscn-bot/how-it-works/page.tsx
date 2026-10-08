@@ -3,6 +3,7 @@ import { getTranslations } from "next-intl/server";
 import type { ReactNode } from "react";
 import SubpageHeader from "@/components/pyscn-bot/SubpageHeader";
 import { Link } from "@/i18n/navigation";
+import { LINKS } from "@/lib/links";
 import { localizedAlternates } from "@/lib/localized-metadata";
 
 const rich = { strong: (chunks: ReactNode) => <strong>{chunks}</strong> };
@@ -14,8 +15,6 @@ const richCodeStrong = {
 		</code>
 	),
 };
-
-const GITHUB_APP_INSTALL_URL = "https://github.com/apps/polyscan-app";
 
 const toolIds = {
 	complexity: "CC",
@@ -331,7 +330,7 @@ export default async function HowItWorksPage() {
 						{t("tech.cta.p1")}
 					</p>
 					<a
-						href={GITHUB_APP_INSTALL_URL}
+						href={LINKS.appInstall}
 						className="inline-flex border border-[var(--brand-blue)] bg-[var(--brand-blue)] px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[var(--brand-blue-hover)]"
 					>
 						{t("tech.cta.button")} →

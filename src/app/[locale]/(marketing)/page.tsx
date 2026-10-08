@@ -115,7 +115,8 @@ export default async function Home() {
 	});
 
 	/* Unauthenticated CTAs must stay plain <a>: a locale prefix would break
-	   the /pyscn-bot/api rewrite. */
+	   the /pyscn-bot/api rewrite. The free plan needs no session, so it goes
+	   straight to the App install instead of through sign-in. */
 	function Cta({
 		label,
 		plan,
@@ -130,7 +131,14 @@ export default async function Home() {
 				{t("nav.mypage")}
 			</Link>
 		) : (
-			<a href={`/pyscn-bot/api/auth?plan=${plan}`} className={className}>
+			<a
+				href={
+					plan === "free"
+						? LINKS.appInstall
+						: `/pyscn-bot/api/auth?plan=${plan}`
+				}
+				className={className}
+			>
 				{label} <span aria-hidden="true">→</span>
 			</a>
 		);
