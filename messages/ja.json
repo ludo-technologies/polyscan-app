@@ -463,5 +463,106 @@
 	"trial": {
 		"badge": "14日間無料",
 		"hero": "無料でインストール"
+	},
+	"dashboard": {
+		"backToDashboard": "ダッシュボードに戻る",
+		"enterprise": "Enterprise",
+		"repositoriesTracked": "{count} 件のリポジトリを追跡中",
+		"averageAcrossAll": "全リポジトリの平均",
+		"repositories": "リポジトリ",
+		"repositoriesSubtitle": "リポジトリを開くと詳細なメトリクスと改善提案が表示されます。",
+		"healthScoreTrend": "ヘルススコアの推移",
+		"metrics": "メトリクス",
+		"lastReport": "最終レポート",
+		"health": "ヘルス",
+		"security": "セキュリティ",
+		"complexity": "複雑度",
+		"deadCode": "デッドコード",
+		"duplication": "重複",
+		"coupling": "結合度",
+		"dependency": "依存関係",
+		"architecture": "アーキテクチャ",
+		"healthScore": "ヘルススコア",
+		"gradeDistribution": "グレード分布",
+		"noReports": "監査レポートのあるリポジトリはまだありません。",
+		"installApp": "Polyscan App をリポジトリにインストールすると、コード品質の追跡が始まります。",
+		"repository": "リポジトリ",
+		"grade": "グレード",
+		"issueCount": "{count} 件の問題",
+		"plan": "プラン",
+		"since": "開始日",
+		"upgradeToPro": "Pro にアップグレード",
+		"manageSubscription": "サブスクリプション管理",
+		"manageSubscriptionNote": "プラン変更・支払い方法の更新・解約",
+		"logout": "ログアウト",
+		"critical": "重大",
+		"high": "高",
+		"medium": "中",
+		"low": "低",
+		"actionQueue": "アクションキュー",
+		"noRisks": "最新レポートで対処すべきリスクは検出されませんでした。",
+		"openItems": "{count} 件の未対応項目",
+		"status": "ステータス",
+		"owner": "担当者",
+		"due": "期限",
+		"evidence": "根拠",
+		"executiveSummary": "エグゼクティブサマリー",
+		"generatedAt": "生成日時",
+		"period": "対象期間",
+		"exportPdf": "PDFを出力",
+		"slaCompliance": "SLA達成率",
+		"overdueItems": "期限超過項目",
+		"criticalOpen": "未対応の重大項目",
+		"avgHealthScore": "平均ヘルススコア",
+		"target": "目標",
+		"targetMet": "達成",
+		"targetUnmet": "未達",
+		"topRisks": "主要リスク",
+		"noTopRisks": "最新データで未対応の主要リスクはありません。",
+		"priorityActions": "優先アクション",
+		"noPriorityActions": "直近で必要な対応はありません。",
+		"trend30d": "30日トレンド",
+		"healthDelta30d": "ヘルス差分（30日）",
+		"gradeDowngrades": "グレード低下リポジトリ",
+		"noGradeDowngrades": "この期間にグレード低下したリポジトリはありません。",
+		"category": "カテゴリ",
+		"severity": "重大度",
+		"reason": "理由",
+		"execAction": {
+			"resolveCritical": {
+				"title": "今週中に重大な期限超過項目を解消する",
+				"reason": "{count} 件の重大項目がリポジトリ横断で期限超過しています。"
+			},
+			"burnHigh": {
+				"title": "高優先度の期限超過バックログを解消する",
+				"reason": "{count} 件の高優先度項目が現在期限超過です。"
+			},
+			"recoverSla": {
+				"title": "SLA達成率を目標値まで回復する",
+				"reason": "現在の達成率は {current}% で、目標は {target}% です。"
+			},
+			"mitigateTop": {
+				"title": "{repo} の最重要オープンリスクを軽減する",
+				"reason": "{severity} リスクが未対応のため、次回レビュー前にクローズが必要です。"
+			},
+			"maintainCadence": {
+				"title": "週次リスクレビューの運用を維持する",
+				"reason": "期限超過のオープンリスクはありません。現在の運用リズムを維持してください。"
+			}
+		},
+		"overall": {
+			"healthy": {
+				"title": "全システム正常",
+				"detail": "重大な問題はありません。SLA目標を達成しています。"
+			},
+			"warning": {
+				"title": "要確認",
+				"detail": "一部のKPIが目標を下回っています。優先アクションを確認してください。"
+			},
+			"critical": {
+				"title": "即時対応が必要",
+				"detail": "重大な問題が検出されました。以下の優先アクションを確認してください。"
+			}
+		}
 	}
 }

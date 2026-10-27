@@ -17,5 +17,9 @@ export const config = {
 		"/(en|ja|zh)",
 		"/pyscn-bot/((?!api/|.*\\..*).*)",
 		"/(ja|zh)/pyscn-bot/((?!api/|.*\\..*).*)",
+		// Repository names may contain dots (next.js), so the account pages
+		// are matched without the static-asset exclusion.
+		"/pyscn-bot/account/:path*",
+		"/(ja|zh)/pyscn-bot/account/:path*",
 	],
 };

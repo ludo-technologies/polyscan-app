@@ -463,5 +463,106 @@
 	"trial": {
 		"badge": "14-Day Free Trial",
 		"hero": "Install Free"
+	},
+	"dashboard": {
+		"backToDashboard": "Back to Dashboard",
+		"enterprise": "Enterprise",
+		"repositoriesTracked": "{count, plural, one {# repository tracked} other {# repositories tracked}}",
+		"averageAcrossAll": "Average across all repositories",
+		"repositories": "Repositories",
+		"repositoriesSubtitle": "Open a repository to see its metrics and recommendations.",
+		"healthScoreTrend": "Health score trend",
+		"metrics": "Metrics",
+		"lastReport": "Last report",
+		"health": "Health",
+		"security": "Security",
+		"complexity": "Complexity",
+		"deadCode": "Dead code",
+		"duplication": "Duplication",
+		"coupling": "Coupling",
+		"dependency": "Dependency",
+		"architecture": "Architecture",
+		"healthScore": "Health score",
+		"gradeDistribution": "Grade distribution",
+		"noReports": "No repositories with audit reports yet.",
+		"installApp": "Install the Polyscan App on your repositories to start tracking code quality.",
+		"repository": "Repository",
+		"grade": "Grade",
+		"issueCount": "{count, plural, one {# issue} other {# issues}}",
+		"plan": "Plan",
+		"since": "since",
+		"upgradeToPro": "Upgrade to Pro",
+		"manageSubscription": "Manage subscription",
+		"manageSubscriptionNote": "Change plan, update payment method, or cancel",
+		"logout": "Logout",
+		"critical": "Critical",
+		"high": "High",
+		"medium": "Medium",
+		"low": "Low",
+		"actionQueue": "Action queue",
+		"noRisks": "No actionable risks detected in the latest report.",
+		"openItems": "{count} open items",
+		"status": "Status",
+		"owner": "Owner",
+		"due": "Due",
+		"evidence": "Evidence",
+		"executiveSummary": "Executive summary",
+		"generatedAt": "Generated at",
+		"period": "Period",
+		"exportPdf": "Export PDF",
+		"slaCompliance": "SLA compliance",
+		"overdueItems": "Overdue items",
+		"criticalOpen": "Critical open",
+		"avgHealthScore": "Average health score",
+		"target": "Target",
+		"targetMet": "Met",
+		"targetUnmet": "Unmet",
+		"topRisks": "Top risks",
+		"noTopRisks": "No open risks in the latest data.",
+		"priorityActions": "Priority actions",
+		"noPriorityActions": "No immediate action is required.",
+		"trend30d": "30-day trend",
+		"healthDelta30d": "Health delta (30d)",
+		"gradeDowngrades": "Grade downgrades",
+		"noGradeDowngrades": "No repositories were downgraded in this period.",
+		"category": "Category",
+		"severity": "Severity",
+		"reason": "Reason",
+		"execAction": {
+			"resolveCritical": {
+				"title": "Resolve critical overdue findings this week",
+				"reason": "{count} critical item(s) are past due across repositories."
+			},
+			"burnHigh": {
+				"title": "Burn down high-severity overdue backlog",
+				"reason": "{count} high-severity item(s) are currently overdue."
+			},
+			"recoverSla": {
+				"title": "Recover SLA compliance to target",
+				"reason": "Current compliance is {current}% against a target of {target}%."
+			},
+			"mitigateTop": {
+				"title": "Mitigate top open risk in {repo}",
+				"reason": "{severity} risk is still open and should be closed before the next review."
+			},
+			"maintainCadence": {
+				"title": "Keep weekly risk review cadence",
+				"reason": "No open risks are currently overdue. Maintain the current operating rhythm."
+			}
+		},
+		"overall": {
+			"healthy": {
+				"title": "All systems nominal",
+				"detail": "No critical issues. SLA targets met."
+			},
+			"warning": {
+				"title": "Attention needed",
+				"detail": "Some KPIs are below target. Review priority actions."
+			},
+			"critical": {
+				"title": "Immediate action required",
+				"detail": "Critical issues detected. See priority actions below."
+			}
+		}
 	}
 }

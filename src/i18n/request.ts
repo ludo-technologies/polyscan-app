@@ -11,5 +11,8 @@ export default getRequestConfig(async ({ requestLocale }) => {
 	return {
 		locale,
 		messages: (await import(`../../messages/${locale}.json`)).default,
+		// Dashboard dates are rendered on the server, where the viewer's zone
+		// is unknown; UTC keeps them deterministic.
+		timeZone: "UTC",
 	};
 });

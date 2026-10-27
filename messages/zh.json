@@ -463,5 +463,106 @@
 	"trial": {
 		"badge": "14天免费试用",
 		"hero": "免费安装"
+	},
+	"dashboard": {
+		"backToDashboard": "返回仪表板",
+		"enterprise": "Enterprise",
+		"repositoriesTracked": "{count} 个仓库已追踪",
+		"averageAcrossAll": "所有仓库的平均值",
+		"repositories": "仓库",
+		"repositoriesSubtitle": "打开任一仓库查看详细指标和建议。",
+		"healthScoreTrend": "健康评分趋势",
+		"metrics": "指标",
+		"lastReport": "最新报告",
+		"health": "健康",
+		"security": "安全",
+		"complexity": "复杂度",
+		"deadCode": "死代码",
+		"duplication": "重复",
+		"coupling": "耦合度",
+		"dependency": "依赖",
+		"architecture": "架构",
+		"healthScore": "健康评分",
+		"gradeDistribution": "等级分布",
+		"noReports": "暂无包含审计报告的仓库。",
+		"installApp": "在您的仓库中安装 Polyscan App 以开始追踪代码质量。",
+		"repository": "仓库",
+		"grade": "等级",
+		"issueCount": "{count} 个问题",
+		"plan": "套餐",
+		"since": "开始于",
+		"upgradeToPro": "升级到 Pro",
+		"manageSubscription": "管理订阅",
+		"manageSubscriptionNote": "更改套餐、更新付款方式或取消",
+		"logout": "退出登录",
+		"critical": "严重",
+		"high": "高",
+		"medium": "中",
+		"low": "低",
+		"actionQueue": "待办队列",
+		"noRisks": "最新报告中未检测到需要处理的风险。",
+		"openItems": "{count} 个待处理项",
+		"status": "状态",
+		"owner": "负责人",
+		"due": "截止日期",
+		"evidence": "证据",
+		"executiveSummary": "高管摘要",
+		"generatedAt": "生成时间",
+		"period": "统计周期",
+		"exportPdf": "导出 PDF",
+		"slaCompliance": "SLA 达成率",
+		"overdueItems": "逾期项",
+		"criticalOpen": "严重未处理项",
+		"avgHealthScore": "平均健康评分",
+		"target": "目标",
+		"targetMet": "已达成",
+		"targetUnmet": "未达成",
+		"topRisks": "关键风险",
+		"noTopRisks": "最新数据中没有未处理的关键风险。",
+		"priorityActions": "优先行动",
+		"noPriorityActions": "当前没有需要立即执行的动作。",
+		"trend30d": "30天趋势",
+		"healthDelta30d": "健康分变化（30天）",
+		"gradeDowngrades": "评级下降仓库",
+		"noGradeDowngrades": "该周期内没有仓库评级下降。",
+		"category": "类别",
+		"severity": "严重度",
+		"reason": "原因",
+		"execAction": {
+			"resolveCritical": {
+				"title": "本周内关闭严重逾期问题",
+				"reason": "共有 {count} 个严重问题在多个仓库中已逾期。"
+			},
+			"burnHigh": {
+				"title": "清理高优先级逾期积压",
+				"reason": "当前有 {count} 个高优先级问题已逾期。"
+			},
+			"recoverSla": {
+				"title": "将 SLA 达成率恢复到目标值",
+				"reason": "当前达成率为 {current}%，目标为 {target}%。"
+			},
+			"mitigateTop": {
+				"title": "优先缓解 {repo} 的首要开放风险",
+				"reason": "{severity} 风险仍处于开放状态，应在下次评审前关闭。"
+			},
+			"maintainCadence": {
+				"title": "保持每周风险评审节奏",
+				"reason": "当前没有逾期的开放风险，请保持现有运作节奏。"
+			}
+		},
+		"overall": {
+			"healthy": {
+				"title": "系统运行正常",
+				"detail": "无严重问题。SLA 目标已达成。"
+			},
+			"warning": {
+				"title": "需要关注",
+				"detail": "部分 KPI 低于目标。请查看优先行动。"
+			},
+			"critical": {
+				"title": "需要立即处理",
+				"detail": "检测到严重问题。请查看下方优先行动。"
+			}
+		}
 	}
 }
