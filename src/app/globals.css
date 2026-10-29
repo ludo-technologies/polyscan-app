@@ -53,6 +53,7 @@
 
 	/* Readings */
 	--reading-over: #d64533;
+	--reading-warn: #9a6700;
 	--reading-ok: #0e7a5f;
 
 	/* Text */
@@ -557,5 +558,24 @@ body {
 	.landing-page.landing-page *::after {
 		animation: none;
 		transition: none;
+	}
+}
+
+/* Executive summary print sheet: the page chrome goes, the sheet fills the
+   paper. */
+@media print {
+	body {
+		background: white;
+	}
+
+	/* Doubled to outrank the utility classes on the same element. */
+	.print-hide.print-hide {
+		display: none;
+	}
+
+	.print-sheet {
+		max-width: none;
+		padding: 0;
+		border: 0;
 	}
 }
