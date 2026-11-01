@@ -1,0 +1,130 @@
+---
+title: "How Tools Find Dead Code"
+description: "A statement after a return is the easy case. Knowing where a function can go next, through else chains, finally blocks and exceptions, is the hard one. What we learned when our own checker flagged the cleanup code in two popular TypeScript projects."
+date: "2026-11-01"
+tags: ["code-quality", "static-analysis", "dead-code", "polyscan", "pyscn"]
+lang: "en"
+draft: false
+---
+
+Take two TypeScript projects we use to test our dead-code checker: [got](https://github.com/sindresorhus/got), the HTTP library, and [latchkey](https://github.com/imbue-ai/latchkey), a tool that logs coding agents in to web services. polyscan 0.6.0 reports five unreachable statements in got and nine in latchkey.
+
+Every one of them is cleanup code: a timer being cleared, a browser being closed, a listener being removed. All of it runs, every time. Fourteen findings, fourteen wrong.
+
+Our own code never exposed this. polyscan and pyscn are written in Go, which our dead-code analysis does not cover yet, and our TypeScript and Python contain no unreachable statements at all. That is normal: four of the five Python projects in this post have none either. So the real test is other people's code. We run the checker over open-source projects and compare each finding with the source, and that is how this one surfaced in September. The fix is in [polyscan 0.6.1](https://github.com/ludo-technologies/polyscan/releases/tag/polyscan/v0.6.1), along with two more that this post gets to.
+
+## What dead code is
+
+Here is a function from [pyved-engine](https://github.com/gaudiatech/pyved-engine), a Python game engine, shortened:
+
+```python
+def do_flip(self, show_widgets=True, reset_standing_by=True):
+    # TODO inspect before removal
+    raise NotImplementedError  # not sure we should still use this in Pyved ...
+    self.widget_tooltip = None
+    if show_widgets:
+        self.render_widgets()
+    if self.notifications:
+        self.render_notifications()
+    ...                                       # fourteen more lines
+```
+
+The `raise` on the second line ends the function. The eighteen lines below it can never run. The author knew that and said so in the comment: the function is parked, not deleted. It still has a cost. The next person to open this file reads eighteen lines of rendering code to learn that they do nothing, then has to decide whether the `raise` is a bug or a decision. A coding agent reading the same function may decide for them. Agents also leave this kind of code behind themselves. When we [compared fourteen models with the humans who fixed the same bugs](/blog/messier-than-the-human), thirteen of them raised complexity or added dead code more often than the people did.
+
+That is the first kind of dead code: code inside a function that no path of execution reaches. There is a second kind, code that nothing calls, such as a function no file imports. Finding it is a different job, done by following references between files rather than the flow inside one. We looked at that kind [last month](/blog/ai-slop-static-analysis), with our own site's leftovers as the example. This post is about the first kind.
+
+## Finding unreachable code is the easy part
+
+A tool that looks for unreachable code draws a map of each function. Every statement is a stop. Every place execution can go next is an arrow: an `if` draws two arrows out, a loop draws one back to its start, a `return` draws one to the exit. Then the tool starts at the entrance and follows every arrow it can. Any stop it never arrives at is dead.
+
+The map is called a control flow graph, and the idea is older than most languages in use today; Frances Allen described it in 1970. The walk is as cheap as it sounds. Mapping and walking all 7,383 functions in got takes about 300 milliseconds on a laptop.
+
+So when a tool gets this wrong, the walk is not the problem. The map is. Each of our mistakes was an arrow that was missing, or one drawn where execution never goes.
+
+## The hard part: where execution can go
+
+The rule sounds simple: draw an arrow wherever execution can go next. In practice the tool has to know, for every construct in the language, exactly where that is. Here is what the rule has to handle, and where we got it wrong.
+
+**After a `return`.** The easy case, and the one the pyved-engine function shows. `return`, `raise` or `throw`, `break` and `continue` each end the current stop, and whatever follows them in the same block starts a stop with no arrow into it. Findings like this are reported as critical, because there is nothing to infer: the terminator is right there.
+
+**When every branch leaves.** If both sides of an `if`/`else` return, nothing after the `if` can run. There is no terminator next to the dead code this time. The tool has to notice that no arrow reaches it, which is why polyscan and pyscn report these as warnings rather than critical. Our JavaScript checker missed them entirely until October. The parser handed the map-drawer each `else` as a sealed box, and the map-drawer never opened it. A `return` inside an `else` did not end its branch, and an `else if` did not count as a decision at all. Code after an `if`/`else` that returned both ways went unreported, and complexity came out too low on every `else if` chain. Opening the box raised got's total complexity by a little under one percent.
+
+**When the `try` leaves through `finally`.** A `finally` block runs however its `try` ends: normally, by `return`, or by `throw`. That is the whole point of it, and the idiom is everywhere in asynchronous code. got tracks option changes like this:
+
+```ts
+// got, source/core/options.ts
+try {
+    return await operation(changedState);
+} finally {
+    this.#trackedStateMutations = undefined;   // reported as unreachable
+}
+```
+
+Our map drew the arrow from the `try` into the `finally` only when the `try` ended normally. A `try` that ended in a `return` had no arrow out except the one to the exit, so its `finally` was a stop nothing pointed to. Every `try { return await ... } finally { cleanup }` in got and latchkey was flagged. The fix adds one arrow from the `try` into the `finally` that stands for every abrupt exit. The `finally` connects onward to the code after the `try` only if the `try` or `catch` can end normally, so `after()` in `try { return } finally { ... } after()` is still reported. pyscn already treated `finally` as always reachable, which is why the Python side never had this bug.
+
+**Exceptions can start anywhere.** A `catch` block is reachable even when the `try` returns on its first line, because almost any line can throw. Both tools draw an arrow from the `try` into every handler and never report a `catch` as dead. This hides some real dead code, and it is the right trade.
+
+**Loops that never end.** A `while (true)` with no `break` inside has no arrow out. Code after the loop is reported as unreachable.
+
+**What the map deliberately does not know.** Values. `if (false)` is not flagged, because the tool does not evaluate conditions; a compiler or a linter that tracks values does that job. Calls that never return, such as `process.exit()` or `sys.exit()`, or a helper whose only job is to throw, look like ordinary calls on the map, so the code after them is not flagged either. The tool reports less than there is, so that what it reports is certain.
+
+## One region, one finding
+
+Finding the dead code is only half of a useful report. The other half is saying what and why, once. In September, pyscn's report on the pyved-engine function above contained four findings for that one dead region, with overlapping line ranges, and in other functions the blocks further down a region came out as separate "unreachable branch" findings with a different reason from the block above them.
+
+The cause was a shortcut. The reason attached to a dead stop came from whatever `return` or `raise` appeared within five source lines above it. Stops further down the region matched nothing and became findings of their own. The fix dropped the line counting. The map-drawer now labels the stop it creates after each terminator, and every dead stop reachable from it inherits that label. pyscn now reports the function above as one finding, nineteen lines, unreachable after `raise`. The same fix went into the JavaScript checker in October.
+
+Counts matter because people and agents triage by them. A report of 77 findings in a repository with a handful of dead regions sends the reader to the wrong place first.
+
+## Dead on purpose
+
+Not everything unreachable should go. pyscn reports three unreachable statements in [httpx](https://github.com/encode/httpx), the HTTP client, and they all look like this:
+
+```python
+# httpx/_types.py
+class SyncByteStream:
+    def __iter__(self) -> Iterator[bytes]:
+        raise NotImplementedError(
+            "The '__iter__' method must be implemented."
+        )  # pragma: no cover
+        yield b""  # pragma: no cover
+```
+
+The `yield` can never run, and the checker is right to say so. It is also the one line that makes the method a generator. Call a generator function and you get an iterator back; the `raise` happens only when someone starts iterating. Delete the `yield`, and `__iter__` raises the moment it is called, and no longer returns the iterator its signature promises. The authors marked the line with `# pragma: no cover`, a note to the coverage tool that it will never execute. The dead-code checker agrees with the note. The code stays.
+
+A finding is a reason to look, not a verdict.
+
+## The other kind: code nobody calls
+
+A function that no file imports is dead too, and no map of a single function will show it. Finding it means a different map: files as dots, imports as arrows, and the question of which exports nothing points at. The hard part there is deciding who counts as a caller. A framework loads `robots.ts` by its name without importing it, a test runner collects test files on its own, and a library's public API is used by nobody inside the repository. polyscan reports this kind for JavaScript and TypeScript, with exemptions for the Next.js conventions it knows about; pyscn does not report it for Python, where vulture does that job. Our own site's results, including the seven icon files an agent left behind, are in [last month's post](/blog/ai-slop-static-analysis).
+
+## What to do with the answer
+
+**Critical findings are usually leftovers.** A `return` from a debugging session, a function parked behind a `raise`, or an early return a coding agent put above the code it meant to replace. Delete the code. If you want to keep it for later, delete it anyway; version control remembers.
+
+**One is enough to read.** Duplication is different: every project has some. Four of the five Python projects here have no unreachable code, and the fifth has three statements it wants. There is no number to chase. A new finding is worth opening the file for.
+
+**Read before you delete.** httpx's `yield` is the pattern to remember. If the dead statement changes what the function *is*, such as a generator or an abstract method, it is doing a job without running.
+
+**Give the coding agent the tool.** An agent that adds an early return can run the checker in the same session and remove what it cut off, while it still remembers why it made the cut. By the time a reviewer sees the diff, the leftover looks like it was always there. Both polyscan and pyscn can be called directly by a coding agent.
+
+**Check the checker.** If a tool tells you that your cleanup code never runs, open the file before you believe it. Fourteen times out of fourteen, it was the tool.
+
+## Try it
+
+```bash
+uvx pyscn analyze --select deadcode .        # Python
+npx polyscan analyze --select deadcode .     # JS/TS
+```
+
+Both list each unreachable region with its file, lines and the terminator that cut it off. polyscan also reports the unused exports and files.
+
+---
+
+Sources and further reading:
+
+- F. E. Allen, *Control Flow Analysis*, SIGPLAN Notices 5(7), 1970.
+- Python documentation, [The `try` statement](https://docs.python.org/3/reference/compound_stmts.html#the-try-statement): when a `return` runs inside a `try`, "the `finally` clause is also executed 'on the way out'"; [Yield expressions](https://docs.python.org/3/reference/expressions.html#yield-expressions): "Using a yield expression in a function's body causes that function to be a generator function."
+- MDN, [`try...catch`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/try...catch), on when the `finally` block runs.
+- The fixes: polyscan [#172](https://github.com/ludo-technologies/polyscan/issues/172), [#206](https://github.com/ludo-technologies/polyscan/issues/206) and [#211](https://github.com/ludo-technologies/polyscan/pull/211); pyscn [#471](https://github.com/ludo-technologies/pyscn/issues/471).
+- Measurements in this post: got at `6b5aafc` and latchkey at `0d61172`, before with polyscan 0.6.0 and after with polyscan 0.6.1; pyved-engine at `73383cf`, httpx at `b5addb6`, requests at `3c7baaa`, rich at `9d8f9a3`, FastAPI at `45cb225` and Flask at `49943b5` with pyscn 1.33.1. All with default settings. The quoted code is shortened; the comments are in the originals.

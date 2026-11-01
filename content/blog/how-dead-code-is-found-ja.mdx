@@ -1,0 +1,130 @@
+---
+title: "ツールはどうやってデッドコードを見つけるか"
+description: "return の後ろの文を見つけるのは簡単です。難しいのは、else の連鎖や finally、例外を通って実行がどこへ進めるかを正確に知ること。自分たちのチェッカーが、有名な TypeScript プロジェクトの後始末コードを「実行されない」と誤報した話です。"
+date: "2026-11-01"
+tags: ["code-quality", "static-analysis", "dead-code", "polyscan", "pyscn"]
+lang: "ja"
+draft: false
+---
+
+polyscan 0.6.0 のデッドコード検出を、テストに使っている2つの TypeScript プロジェクトにかけてみます。HTTP ライブラリの [got](https://github.com/sindresorhus/got) と、コーディングエージェントに Web サービスへログインさせるツール [latchkey](https://github.com/imbue-ai/latchkey) です。got で5か所、latchkey で9か所の「到達不能な文」が報告されます。
+
+その全部が後始末のコードでした。タイマーを止める、ブラウザを閉じる、イベントリスナーを外す。どれも毎回必ず実行されます。14件の指摘、14件とも誤り。
+
+自分たちのコードでは、この誤りに気づけませんでした。polyscan と pyscn は Go で書かれていて、デッドコード検出はまだ Go に対応していません。自分たちの TypeScript と Python には、到達不能な文がひとつもありません。それ自体は珍しいことではなく、この記事で扱う Python プロジェクト5つのうち4つにもありません。だから本当のテストは他人のコードです。オープンソースのプロジェクトにチェッカーをかけ、指摘をひとつずつソースと突き合わせる作業の中で、9月にこのバグが見つかりました。修正は [polyscan 0.6.1](https://github.com/ludo-technologies/polyscan/releases/tag/polyscan/v0.6.1) に入っています。この記事で触れるあと2つの修正も同じです。
+
+## デッドコードとは何か
+
+Python のゲームエンジン [pyved-engine](https://github.com/gaudiatech/pyved-engine) にある関数です（一部省略）。
+
+```python
+def do_flip(self, show_widgets=True, reset_standing_by=True):
+    # TODO inspect before removal
+    raise NotImplementedError  # not sure we should still use this in Pyved ...
+    self.widget_tooltip = None
+    if show_widgets:
+        self.render_widgets()
+    if self.notifications:
+        self.render_notifications()
+    ...                                       # さらに14行
+```
+
+2行目の `raise` で関数は終わります。その下の18行は、決して実行されません。作者はそれを知っていて、コメントにそう書いています。削除ではなく、保留。それでもコストはあります。次にこのファイルを開いた人は、18行の描画コードを読んでから、それが何もしないと知ります。そして `raise` がバグなのか判断なのかを考えることになります。コーディングエージェントが同じ関数を読めば、勝手に判断するかもしれません。エージェント自身もこの種のコードを残します。[14個のモデルを、同じバグを直した人間と比べた記事](/blog/messier-than-the-human)では、13個のモデルが人間より高い頻度で、複雑度を上げるかデッドコードを増やしていました。
+
+これが第一の種類のデッドコードです。関数の中にあって、どの実行経路からも到達しないコード。もうひとつの種類があります。誰からも呼ばれないコード、たとえばどのファイルからも import されない関数です。こちらを見つけるのは別の仕事で、関数の中の流れではなく、ファイル間の参照をたどります。[先月の記事](/blog/ai-slop-static-analysis-ja)で、自分たちのサイトに残っていたファイルを例に扱いました。この記事は第一の種類の話です。
+
+## 到達不能なコードを見つけるのは簡単
+
+到達不能なコードを探すツールは、関数ごとに地図を描きます。文のひとつひとつが停留所。実行が次に進める先が矢印です。`if` は矢印を2本出し、ループは先頭へ戻る矢印を1本描き、`return` は出口への矢印を描きます。地図ができたら、入口から出発して、たどれる矢印をすべてたどる。一度も着かなかった停留所が、デッドコードです。
+
+この地図は制御フローグラフと呼ばれます。考え方は今使われている大半の言語より古く、1970年に Frances Allen が記述したものです。たどる作業は見た目どおり安く、got の7,383個の関数を地図にしてたどるのに、ノート PC で300ミリ秒ほどです。
+
+だからツールが間違えるとき、問題はたどり方ではありません。地図です。私たちの間違いはどれも、あるべき矢印がなかったか、実行が決して通らないところに矢印があったか、どちらかでした。
+
+## 難しいのは「実行がどこへ進めるか」
+
+ルールは単純に聞こえます。実行が次に進めるところすべてに矢印を描く。実際には、言語のあらゆる構文について、それが正確にどこなのかをツールが知っていなければなりません。ルールが扱わなければならないものと、私たちが間違えた場所です。
+
+**`return` の後。** いちばん簡単な場合で、pyved-engine の関数がそれです。`return`、`raise` や `throw`、`break`、`continue` はそれぞれ今の停留所を終わらせ、同じブロックでその後に続く文は、入ってくる矢印のない停留所になります。この種の指摘は critical として報告されます。推測の余地がなく、終端がすぐそこにあるからです。
+
+**すべての分岐が抜けるとき。** `if`/`else` の両側が `return` すれば、`if` の後ろは何も実行されません。今度はデッドコードの隣に終端がありません。ツールは、そこへ届く矢印がないことに気づく必要があります。polyscan と pyscn がこれを critical ではなく warning として報告するのはそのためです。私たちの JavaScript チェッカーは、10月までこれを完全に見落としていました。パーサーは `else` を封をした箱として地図描きに渡し、地図描きはその箱を開けませんでした。`else` の中の `return` はその分岐を終わらせず、`else if` は分岐として数えられもしませんでした。両側で `return` する `if`/`else` の後ろのコードは報告されず、`else if` の連鎖がある関数はすべて複雑度が低めに出ていました。箱を開けると、got 全体の複雑度は1パーセント弱上がりました。
+
+**`try` が `finally` を通って抜けるとき。** `finally` ブロックは、`try` がどう終わっても実行されます。普通に終わっても、`return` でも、`throw` でも。それが `finally` の存在理由で、この書き方は非同期コードのいたるところにあります。got はオプションの変更をこう追跡しています。
+
+```ts
+// got, source/core/options.ts
+try {
+    return await operation(changedState);
+} finally {
+    this.#trackedStateMutations = undefined;   // 到達不能として報告された行
+}
+```
+
+私たちの地図は、`try` が普通に終わるときだけ、`try` から `finally` への矢印を描いていました。`return` で終わる `try` には出口への矢印しかなく、その `finally` は誰も指さない停留所になります。got と latchkey にある `try { return await ... } finally { 後始末 }` が、すべて指摘されました。修正では、`try` から `finally` へ、あらゆる途中退出を代表する矢印を1本追加しています。`finally` から `try` の後ろへ進む矢印は、`try` か `catch` が普通に終われる場合にだけ描くので、`try { return } finally { ... } after()` の `after()` は引き続き報告されます。pyscn はもともと `finally` を常に到達可能として扱っていたので、Python 側にこのバグはありませんでした。
+
+**例外はどこからでも始まる。** `try` の1行目で `return` していても、`catch` ブロックには到達できます。ほぼどの行でも例外は投げられるからです。どちらのツールも `try` からすべてのハンドラへ矢印を描き、`catch` をデッドコードとして報告することはありません。これで本物のデッドコードがいくらか隠れますが、正しいトレードオフです。
+
+**終わらないループ。** 中に `break` のない `while (true)` には、出ていく矢印がありません。ループの後ろのコードは到達不能として報告されます。
+
+**地図があえて知らないこと。** 値です。`if (false)` は指摘されません。ツールは条件を評価しないからで、それはコンパイラや、値を追跡するリンターの仕事です。`process.exit()` や `sys.exit()` のような戻ってこない呼び出しも、投げるためだけのヘルパー関数も、地図の上では普通の呼び出しに見えるので、その後ろのコードは指摘されません。ツールは実際より少なく報告します。報告したものを確実にするためです。
+
+## ひとつの領域に、ひとつの指摘
+
+デッドコードを見つけるのは、役に立つレポートの半分です。残りの半分は、何がなぜ死んでいるかを一度だけ言うこと。9月の時点で、pyscn は上の pyved-engine の関数のひとつの領域に対して4件の指摘を出していて、行範囲が重なっていました。別の関数では、領域の下のほうのブロックが、上のブロックとは違う理由の「到達不能な分岐」として、別件で出ていました。
+
+原因は近道でした。死んだ停留所につける理由を、その上5行以内にある `return` や `raise` から拾っていたのです。領域の下のほうの停留所は何にも一致せず、独立した指摘になっていました。修正では、行数を数えるのをやめました。地図描きが終端の後ろに作る停留所にラベルをつけ、そこからたどれる死んだ停留所はすべてそのラベルを引き継ぎます。pyscn は今、上の関数を「`raise` の後、19行」という1件として報告します。同じ修正を、10月に JavaScript チェッカーにも入れました。
+
+件数が大事なのは、人もエージェントも件数で優先順位をつけるからです。死んだ領域がひと握りしかないリポジトリに「77件」と出れば、読む人はまず違う場所へ向かいます。
+
+## わざと死んでいるコード
+
+到達不能なものすべてを消すべきではありません。pyscn は HTTP クライアントの [httpx](https://github.com/encode/httpx) に3か所の到達不能な文を報告し、その全部がこの形です。
+
+```python
+# httpx/_types.py
+class SyncByteStream:
+    def __iter__(self) -> Iterator[bytes]:
+        raise NotImplementedError(
+            "The '__iter__' method must be implemented."
+        )  # pragma: no cover
+        yield b""  # pragma: no cover
+```
+
+この `yield` は決して実行されず、チェッカーがそう言うのは正しい。同時にこの1行が、このメソッドをジェネレータにしています。ジェネレータ関数を呼ぶとイテレータが返り、`raise` は誰かが反復を始めたときに初めて起きます。`yield` を消すと `__iter__` は呼ばれた瞬間に `raise` し、シグネチャが約束するイテレータを返さなくなります。作者はこの行に `# pragma: no cover` をつけています。カバレッジツールに宛てた「この行は実行されない」というメモです。デッドコードチェッカーはそのメモに同意しているだけで、コードはそのまま残ります。
+
+指摘は見に行く理由であって、判決ではありません。
+
+## もうひとつの種類：誰も呼ばないコード
+
+どのファイルからも import されない関数もデッドコードですが、関数ひとつの地図には現れません。見つけるには別の地図がいります。ファイルを点、import を矢印にして、どのエクスポートを誰も指していないかを問う地図です。そこで難しいのは、誰を呼び出し元として数えるかです。フレームワークは `robots.ts` を import せずに名前で読み込み、テストランナーはテストファイルを勝手に集め、ライブラリの公開 API はリポジトリの中の誰にも使われません。polyscan は JavaScript と TypeScript でこの種類を報告し、知っている Next.js の規約は除外します。pyscn は Python では報告しません。そちらは vulture の仕事です。エージェントが残した7つのアイコンファイルを含む自分たちのサイトの結果は、[先月の記事](/blog/ai-slop-static-analysis-ja)にあります。
+
+## 結果をどう扱うか
+
+**critical の指摘は、たいてい残骸です。** デバッグ中に入れた `return`、`raise` の後ろに保留した関数、コーディングエージェントが置き換えるはずだったコードの上に置いた早期 `return`。消してください。あとで使うかもしれないなら、それでも消してください。バージョン管理が覚えています。
+
+**1件で読む価値があります。** 重複とは違います。重複はどのプロジェクトにもあります。ここで扱った Python プロジェクト5つのうち4つには到達不能なコードがなく、5つ目にある3つの文は、本人が望んで置いたものです。追いかける数字はありません。新しい指摘が1件出たら、ファイルを開く価値があります。
+
+**消す前に読む。** httpx の `yield` が、覚えておくべきパターンです。死んだ文が関数の「何であるか」を変えているなら、たとえばジェネレータや抽象メソッドにしているなら、それは実行されずに仕事をしています。
+
+**コーディングエージェントにツールを渡す。** 早期 `return` を入れたエージェントは、同じセッションでチェッカーを走らせ、なぜ切ったかを覚えているうちに、切り落とした側を消せます。レビュアーが diff を見る頃には、残骸は最初からそこにあったように見えます。polyscan も pyscn も、コーディングエージェントから直接呼べます。
+
+**チェッカーを疑う。** ツールが「あなたの後始末コードは実行されない」と言ってきたら、信じる前にファイルを開いてください。14回中14回、間違っていたのはツールでした。
+
+## 試す
+
+```bash
+uvx pyscn analyze --select deadcode .        # Python
+npx polyscan analyze --select deadcode .     # JS/TS
+```
+
+どちらも到達不能な領域ごとに、ファイル、行、それを切り落とした終端を表示します。polyscan は未使用のエクスポートとファイルも報告します。
+
+---
+
+出典と参考:
+
+- F. E. Allen, *Control Flow Analysis*, SIGPLAN Notices 5(7), 1970.
+- Python ドキュメント [The `try` statement](https://docs.python.org/3/reference/compound_stmts.html#the-try-statement)：`try` の中で `return` が実行されると "the `finally` clause is also executed 'on the way out'"。[Yield expressions](https://docs.python.org/3/reference/expressions.html#yield-expressions)："Using a yield expression in a function's body causes that function to be a generator function."
+- MDN [`try...catch`](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Statements/try...catch)、`finally` ブロックが実行されるタイミングについて。
+- 修正：polyscan [#172](https://github.com/ludo-technologies/polyscan/issues/172)、[#206](https://github.com/ludo-technologies/polyscan/issues/206)、[#211](https://github.com/ludo-technologies/polyscan/pull/211)。pyscn [#471](https://github.com/ludo-technologies/pyscn/issues/471)。
+- この記事の計測：got は `6b5aafc`、latchkey は `0d61172` で、修正前は polyscan 0.6.0、修正後は polyscan 0.6.1。pyved-engine は `73383cf`、httpx は `b5addb6`、requests は `3c7baaa`、rich は `9d8f9a3`、FastAPI は `45cb225`、Flask は `49943b5` で pyscn 1.33.1。いずれも既定の設定。引用したコードは短縮してあり、コメントは原文のままです。
